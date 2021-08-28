@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Categories on SadBird的狗窝</title>
+    <title>Categories on 仙羡小站</title>
     <link>https://www.liyangjie.cn:4443/categories/</link>
-    <description>Recent content in Categories on SadBird的狗窝</description>
+    <description>Recent content in Categories on 仙羡小站</description>
     <image>
-      <url>https://www.liyangjie.cn:4443/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>https://www.liyangjie.cn:4443/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
+      <url>https://www.liyangjie.cn:4443/papermod-cover.png</url>
+      <link>https://www.liyangjie.cn:4443/papermod-cover.png</link>
     </image>
     <generator>Hugo -- gohugo.io</generator><atom:link href="https://www.liyangjie.cn:4443/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
