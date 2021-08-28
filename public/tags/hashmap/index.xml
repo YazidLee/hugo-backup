@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Posts on 仙羡小站</title>
-    <link>https://www.liyangjie.cn:4443/posts/</link>
-    <description>Recent content in Posts on 仙羡小站</description>
+    <title>HashMap on 仙羡小站</title>
+    <link>https://www.liyangjie.cn:4443/tags/hashmap/</link>
+    <description>Recent content in HashMap on 仙羡小站</description>
     <image>
       <url>https://www.liyangjie.cn:4443/papermod-cover.png</url>
       <link>https://www.liyangjie.cn:4443/papermod-cover.png</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 29 Aug 2021 04:08:04 +0800</lastBuildDate><atom:link href="https://www.liyangjie.cn:4443/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Aug 2021 04:08:04 +0800</lastBuildDate><atom:link href="https://www.liyangjie.cn:4443/tags/hashmap/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HashMap基础</title>
       <link>https://www.liyangjie.cn:4443/posts/hashmap%E5%9F%BA%E7%A1%80/</link>
@@ -23,51 +23,6 @@ Java8对HashMap进行了大修改，为了防止链表过大，影响插入和�
  capacity: 数组当前的最大长度，即为桶数量的最大值，最多存放多少个桶，这个数值在第一次添加元素的时候初始化为16。满足一定条件时，会扩容。这个长度必须是2的整数次方(16, 32, 64, 128 &amp;hellip;)，稍后在扩容章节会详细讲解其中的原因 loadFactor：负载因子，它搭配capacity使用，判断扩容条件，默认值为0.75 size：当前HashMap中的Node总数量 threshold：扩容阈值，它的值为loadFactor * capacity，重点：当size的值大于threshold值时，进行扩容  源码分析 table域-数组 这就是图中所示的那个数组，类型为Node：
 1  transient Node&amp;lt;K,V&amp;gt;[] table;   再看看Node的内容，很明显，就是一个简单的链表结构:
 1 2 3 4 5 6 7 8  static class Node&amp;lt;K,V&amp;gt; implements Map.Entry&amp;lt;K,V&amp;gt; { final int hash; // 当前节点中Key的hash值，注意不是hashCode()的返回值，具体是什么会在扩容中介绍  final K key; // 键  V value; // 值  Node&amp;lt;K,V&amp;gt; next; // 下一个结点  ... }   当然还有其他类型的Node，如TreeNode，这里就不展示了</description>
-    </item>
-    
-    <item>
-      <title>GitHookTest4</title>
-      <link>https://www.liyangjie.cn:4443/posts/githooktest4/</link>
-      <pubDate>Sat, 28 Aug 2021 02:02:56 +0800</pubDate>
-      
-      <guid>https://www.liyangjie.cn:4443/posts/githooktest4/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GitHookTest3</title>
-      <link>https://www.liyangjie.cn:4443/posts/githooktest3/</link>
-      <pubDate>Sat, 28 Aug 2021 01:58:48 +0800</pubDate>
-      
-      <guid>https://www.liyangjie.cn:4443/posts/githooktest3/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GitHookTest2</title>
-      <link>https://www.liyangjie.cn:4443/posts/githooktest2/</link>
-      <pubDate>Sat, 28 Aug 2021 01:57:39 +0800</pubDate>
-      
-      <guid>https://www.liyangjie.cn:4443/posts/githooktest2/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GitHookTest</title>
-      <link>https://www.liyangjie.cn:4443/posts/githooktest/</link>
-      <pubDate>Sat, 28 Aug 2021 01:54:33 +0800</pubDate>
-      
-      <guid>https://www.liyangjie.cn:4443/posts/githooktest/</guid>
-      <description>Git Hook Demo </description>
-    </item>
-    
-    <item>
-      <title>HelloHugo</title>
-      <link>https://www.liyangjie.cn:4443/posts/hellohugo/</link>
-      <pubDate>Sat, 28 Aug 2021 01:26:43 +0800</pubDate>
-      
-      <guid>https://www.liyangjie.cn:4443/posts/hellohugo/</guid>
-      <description>HelloHugo 这是我的第一个Hugo测试</description>
     </item>
     
   </channel>
