@@ -1,3 +1,20 @@
+{{- /* 加载自定义字体，该字体较大，使用这种延迟加载的方式 */ -}}
+{{ $webfontloaderjs := resources.Get "js/webfontloader.min.js" }}
+<script src='{{ $webfontloaderjs.RelPermalink }}'>
+</script>
+<script>
+    WebFont.load({
+        custom: {
+            families: ['CascadiaCodePL'],
+        },
+        classes: false,
+        active() {
+            document.querySelectorAll("code").forEach(ele => ele.style.fontFamily = 'CascadiaCodePL');
+        }
+    });
+</script>
+
+<!-- 自定义footer，备案信息 -->
 <footer class="footer">
 <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备16007812号-1</a>
 </footer>

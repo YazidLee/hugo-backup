@@ -1,16 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
+<html lang="cn" dir="auto">
 
 <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>HelloHugo | 仙羡小站</title>
-<meta name="keywords" content="" />
-<meta name="description" content="HelloHugo 这是我的第一个Hugo测试">
+<title>Hello Hugo | 仙羡小站</title>
+<meta name="keywords" content="Hugo" />
+<meta name="description" content="以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。
+刚好处于工作真空期，想把一些平时学习的零碎内容整理一下，这次就坚持把这个博客完成了。这里就简单介绍下整个流程，及其中的一些坑和细节。
+首先是这次使用的博客平台，选择Hugo的理由很简单，因为没用过它，觉得新鲜，但实际上使用流程和搭建过程其实和以前接触过的静态站点生成框架大同小异。个人电脑环境是Win10，以前安装过scoop，因此安装方法如下：
+1 2 3 4  scoop install hugo # 检查hubo是否安装完成 hugo version hugo v0.82.1-60618210 windows/amd64 BuildDate=2021-04-20T11:02:50Z VendorInfo=gohugoio   其他系统环境下安装方式见官网。
+Hello Hugo 开始使用Hugo创建一个新站点hello-hugo (这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录):
+1  hugo new site hello-hugo   执行成功后，Hugo会给出温馨的提示：
+ Just a few more steps and you&rsquo;re ready to go:
+ Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/ or create your own with the &ldquo;hugo new theme &rdquo; command.">
 <meta name="author" content="SadBird">
 <link rel="canonical" href="https://www.liyangjie.cn:4443/posts/hellohugo/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.80467fccb3e1aba13e3f9074b381615766bd128bd591562762fec06e0a8da993.css" integrity="sha256-gEZ/zLPhq6E&#43;P5B0s4FhV2a9EovVkVYnYv7AbgqNqZM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c9d98dc7bcde651472cfd1c1b114c5ca75a111f686d8d49a90b9bf571c917c9a.css" integrity="sha256-ydmNx7zeZRRyz9HBsRTFynWhEfaG2NSakLm/VxyRfJo=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://www.liyangjie.cn:4443/favicon/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://www.liyangjie.cn:4443/favicon/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://www.liyangjie.cn:4443/favicon/favicon-32x32.png">
@@ -19,18 +26,32 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.82.1" />
-<meta property="og:title" content="HelloHugo" />
-<meta property="og:description" content="HelloHugo 这是我的第一个Hugo测试" />
+<meta property="og:title" content="Hello Hugo" />
+<meta property="og:description" content="以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。
+刚好处于工作真空期，想把一些平时学习的零碎内容整理一下，这次就坚持把这个博客完成了。这里就简单介绍下整个流程，及其中的一些坑和细节。
+首先是这次使用的博客平台，选择Hugo的理由很简单，因为没用过它，觉得新鲜，但实际上使用流程和搭建过程其实和以前接触过的静态站点生成框架大同小异。个人电脑环境是Win10，以前安装过scoop，因此安装方法如下：
+1 2 3 4  scoop install hugo # 检查hubo是否安装完成 hugo version hugo v0.82.1-60618210 windows/amd64 BuildDate=2021-04-20T11:02:50Z VendorInfo=gohugoio   其他系统环境下安装方式见官网。
+Hello Hugo 开始使用Hugo创建一个新站点hello-hugo (这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录):
+1  hugo new site hello-hugo   执行成功后，Hugo会给出温馨的提示：
+ Just a few more steps and you&rsquo;re ready to go:
+ Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/ or create your own with the &ldquo;hugo new theme &rdquo; command." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.liyangjie.cn:4443/posts/hellohugo/" /><meta property="og:image" content="https://www.liyangjie.cn:4443/papermod-cover.png"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://www.liyangjie.cn:4443/posts/hellohugo/" />
+<meta property="og:image" content="https://d33wubrfki0l68.cloudfront.net/c38c7334cc3f23585738e40334284fddcaf03d5e/2e17c/images/hugo-logo-wide.svg" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-08-28T01:26:43&#43;08:00" />
 <meta property="article:modified_time" content="2021-08-28T01:26:43&#43;08:00" />
 
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://www.liyangjie.cn:4443/papermod-cover.png"/>
-
-<meta name="twitter:title" content="HelloHugo"/>
-<meta name="twitter:description" content="HelloHugo 这是我的第一个Hugo测试"/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://d33wubrfki0l68.cloudfront.net/c38c7334cc3f23585738e40334284fddcaf03d5e/2e17c/images/hugo-logo-wide.svg" />
+<meta name="twitter:title" content="Hello Hugo"/>
+<meta name="twitter:description" content="以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。
+刚好处于工作真空期，想把一些平时学习的零碎内容整理一下，这次就坚持把这个博客完成了。这里就简单介绍下整个流程，及其中的一些坑和细节。
+首先是这次使用的博客平台，选择Hugo的理由很简单，因为没用过它，觉得新鲜，但实际上使用流程和搭建过程其实和以前接触过的静态站点生成框架大同小异。个人电脑环境是Win10，以前安装过scoop，因此安装方法如下：
+1 2 3 4  scoop install hugo # 检查hubo是否安装完成 hugo version hugo v0.82.1-60618210 windows/amd64 BuildDate=2021-04-20T11:02:50Z VendorInfo=gohugoio   其他系统环境下安装方式见官网。
+Hello Hugo 开始使用Hugo创建一个新站点hello-hugo (这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录):
+1  hugo new site hello-hugo   执行成功后，Hugo会给出温馨的提示：
+ Just a few more steps and you&rsquo;re ready to go:
+ Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/ or create your own with the &ldquo;hugo new theme &rdquo; command."/>
 
 
 <script type="application/ld+json">
@@ -47,7 +68,7 @@
     {
       "@type": "ListItem",
       "position":  2 ,
-      "name": "HelloHugo",
+      "name": "Hello Hugo",
       "item": "https://www.liyangjie.cn:4443/posts/hellohugo/"
     }
   ]
@@ -57,16 +78,16 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "HelloHugo",
-  "name": "HelloHugo",
-  "description": "HelloHugo 这是我的第一个Hugo测试",
+  "headline": "Hello Hugo",
+  "name": "Hello Hugo",
+  "description": "以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。\n刚好处于工作真空期，想把一些平时学习的零碎内容整理一下，这次就坚持把这个博客完成了。这里就简单介绍下整个流程，及其中的一些坑和细节。\n首先是这次使用的博客平台，选择Hugo的理由很简单，因为没用过它，觉得新鲜，但实际上使用流程和搭建过程其实和以前接触过的静态站点生成框架大同小异。个人电脑环境是Win10，以前安装过scoop，因此安装方法如下：\n1 2 3 4  scoop install hugo # 检查hubo是否安装完成 hugo version hugo v0.82.1-60618210 windows/amd64 BuildDate=2021-04-20T11:02:50Z VendorInfo=gohugoio   其他系统环境下安装方式见官网。\nHello Hugo 开始使用Hugo创建一个新站点hello-hugo (这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录):\n1  hugo new site hello-hugo   执行成功后，Hugo会给出温馨的提示：\n Just a few more steps and you\u0026rsquo;re ready to go:\n Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/ or create your own with the \u0026ldquo;hugo new theme \u0026rdquo; command.",
   "keywords": [
-    
+    "Hugo"
   ],
-  "articleBody": "HelloHugo 这是我的第一个Hugo测试\n",
-  "wordCount" : "2",
-  "inLanguage": "en",
-  "datePublished": "2021-08-28T01:26:43+08:00",
+  "articleBody": "以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。\n刚好处于工作真空期，想把一些平时学习的零碎内容整理一下，这次就坚持把这个博客完成了。这里就简单介绍下整个流程，及其中的一些坑和细节。\n首先是这次使用的博客平台，选择Hugo的理由很简单，因为没用过它，觉得新鲜，但实际上使用流程和搭建过程其实和以前接触过的静态站点生成框架大同小异。个人电脑环境是Win10，以前安装过scoop，因此安装方法如下：\n1 2 3 4  scoop install hugo # 检查hubo是否安装完成 hugo version hugo v0.82.1-60618210 windows/amd64 BuildDate=2021-04-20T11:02:50Z VendorInfo=gohugoio   其他系统环境下安装方式见官网。\nHello Hugo 开始使用Hugo创建一个新站点hello-hugo (这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录):\n1  hugo new site hello-hugo   执行成功后，Hugo会给出温馨的提示：\n Just a few more steps and you’re ready to go:\n Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/ or create your own with the “hugo new theme ” command. Perhaps you want to add some content. You can add single files with “hugo new .”. Start the built-in live server via “hugo server”.   等会我们就按这个顺序完成站点的创建。先看看执行完hugo new site命令后，Hugo为我们做了什么。\n工作目录内容 进入hello-hugo目录，Hugo生成的内容如下图所示：\n这些大致作用如下：\n archetypes：存放博客的模板，默认提供了一个default.md作为所有博客的模板 content：顾名思义，存放我们所有的博客正文 data：存放一些数据，如xml、json等 layouts：与博客页面布局相关的内容，如博客网页中的header、footer等 static：存放静态资源，如图标、图片等 themes：主题相关 config.toml：站点、主题等相关内容的配置文件，它支持yaml、toml和json格式，后续将会一直和这个文件打交道  除了上述几个目录之外，Hugo还规定了许多其他目录用于提供不同的作用，如assets、i18n等。\n主题下载和使用 根据提示，要使用Hugo，我们必须先下载主题(或自己创建主题)，这里我选择自己比较喜欢的PaperMod。\n先到PaperMod Giuhub，根据官方文档的提示进行主题的下载。PaperMod官方提供了3种下载方式，这里推荐第二种，以git submodule的方式下载。\n进入hello-hugo目录，分别执行如下命令：\n1 2 3  git init # 将hello-hugo初始化为git仓库 git submodule add https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod --depth=1 # 将PaperMod作为hello-hugo依赖的submodule git submodule update --init --recursive # needed when you reclone your repo (submodules may not get cloned automatically)   完成后，会在themes目录下会多出一个PaperMod目录：\n可以发现，这个目录的结构与我们自己的hello-hugo目录十分相似，各目录的作用也基本一致。\n随后，为了使用这个主题，需要在config.toml中激活，为了保持和PaperMod一致，这里将这个文件的后缀修改为.yml，在config.yml中配置如下：\n1 2 3 4  baseURL: \"http://example.org/\" languageCode: \"en-us\" title: \"Hello Hugo\" theme: \"PaperMod\"   这时候主题已经激活了，我们先往博客中添加一篇文章，首先创建名为posts的section：\n1  hugo new section posts   完成后，在content目录下创建了一个名为posts的目录，这就是我们存放文章的目录。随后创建一篇文章：\n1 2  hugo new posts/HelloHugo1.md hugo new posts/HelloHugo2.md   进入posts目录，编辑两个.md文件，写点内容：\n1 2 3 4 5 6 7 8  --- title: \"HelloHugo1\" date: 2021-08-29T21:13:55+08:00 draft: false --- # Hello, Hugo1 你好，雨果   1 2 3 4 5 6 7 8  --- title: \"HelloHugo2\" date: 2021-08-29T21:18:38+08:00 draft: false --- # Hello, Hugo2 你好，雨果   文件头部为Hugo自动添加的内容，它来自archetypes目录中的default.md模板，注意draft属性，默认值为true表示文章处于草稿状态，该状态下的文档不会参与站点的生成，也就是说网站上没有草稿文章，所以此处需要将其先设置为false。\n现在可以使用Hugo内置的Server预览一下成果(工作目录必须在hugo-hello)：\n1  hugo server   😭emmmmmmm，怎么说呢，有成果出来了，但是效果好像不太好，别急，接下来我们慢慢完善。\n主题配置完善 基本上每个主题都会提供相应的demo，PaperMod的demo如下：\n我们现在就以它为目标进行改进。\n学习的最快方式就是模仿，所以我们直接到demo的github(注意是PaperMod demo的github，而不是PaperMod的github)上把config.yml抄过来。\n可以注意到前几行配置我们就新增了一条paginate: 5，其他保持不变，从enableInlineShortcodes开始都是来自demo的配置。\nlanguages、archives、search 在demo的languages的配置段中，有en、fr和fa3块，它们使用的主题Mode不同，且包含部分国际化的配置，我们暂时只需要使用en，可以将fr和fa注释或者直接删除掉。\nen下最重要的就是menu配置了，它表示了导航栏显示的内容，demo中提供了最常用的4项，即Archive、Search、Tags及Categories。每项中包含一个weight，表示它们在导航栏中的显示顺序，越小越靠前。\n根据PaperMod官方使用文档的描述，要使用Archive和Search，需要进行以下操作：\n  在content下增加archives.md文件，具体位置如下：\n1 2 3 4 5 6 7 8  . ├── config.yml ├── content/ │ ├── archives.md   archives.md内容为：\n1 2 3 4 5 6  --- title: \"Archive\" layout: \"archives\" url: \"/archives/\" summary: archives ---     在config.yml中新增如下内容，demo中已经配置好的，这步可以跳过：\n1 2 3 4 5  outputs: home: - HTML - RSS - JSON # is necessary   同样在content新增一个search.md，内容如下：\n1 2 3 4 5 6 7  --- title: \"Search\" # in any language you want layout: \"search\" # is necessary # url: \"/archive\" # description: \"Description for Search\" summary: \"search\" ---     完成上述操作后，再看看效果：\n😏像那么回事了吧！\nparams params包括了PaperMod主题中的重要配置参数，下面举几个例子来进行说明，其他详细配置用法可以参照官方说明，也可以自己试试，大部分配置都是见名知意的。\n主题样式相关   defaultTheme：设置白色主题或者黑色主题，设置为auto则表示跟随浏览器\n  disableThemeToggle:：是否允许白色主题和黑色主题进行手动切换，设置成true则在网页顶部提供切换按钮\n  homeInfoParams、socialIcons：这两参数配置的首页显示的内容，修改内容如下：\n1 2 3 4 5 6 7 8 9 10 11 12  homeInfoParams: Title: \"Hello Hugo\" Content: Lorem ipsum dolor sit amet, consectetuer adipiscing elit, - sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. socialIcons: - name: github url: \"https://github.com/adityatelange/hugo-PaperMod\" - name: telegram url: \"https://ko-fi.com/adityatelange\" - name: RsS url: \"index.xml\"   结果如下：\n关于socialIcons参数，PaperMod官网给出了具体的参照表。\n  网站图标相关参数如下，可以指定网络路径或本地路径：\n1 2 3 4 5 6  assets: favicon: \"\" favicon16x16: \"\" favicon32x32: \"\" apple_touch_icon: \"\" safari_pinned_tab: \"\"     博客内容相关   ShowShareButtons是否显示分享博客按钮，具体按钮的设定仍可参照PaperMod官网\n  ShowReadingTime是否显示文章阅读时间\n  ShowBreadCrumbs 是否显示面包屑\n  ShowCodeCopyButtons是否显示代码复制按钮\n  ShowToc是否显示文章目录\n  博客封面相关：\n1 2 3 4 5  cover: responsiveImages: false # 仅仅用在Page Bundle情况下，此处不讨论 hidden: false # hide everywhere but not in structured data 是否在下面两种情况下显示 hiddenInList: false # hide on list pages and home 是否在列表视图中显示 hiddenInSingle: false # hide on single page 是否在单页视图中显示   为了测试，我将后面3个配置项全部设置为true，并在两篇测试博客中修改front matter(就是博客最上方的数据):\n1 2 3 4 5 6 7 8 9  --- title: \"HelloHugo1\" date: 2021-08-29T21:13:55+08:00 draft: cover: image: \"https://images.liyangjie.cn/Sekiro_01.jpg\" alt: \"替换文本\" caption: \"封面标题\" ---   1 2 3 4 5 6 7 8 9  --- title: \"HelloHugo2\" date: 2021-08-29T21:18:38+08:00 draft: cover: image: \"https://images.liyangjie.cn/Sekiro_02.jpg\" alt: \"替换文本\" caption: \"封面标题\" ---   再来看看结果，是不是有点味道了：\n  分类相关 默认情况下，Hugo支持categories、tags两个级别的分类，通过配置新增更多的分类：\n1 2 3 4  taxonomies: category: categories tag: tags series: series   这里又配置了一个series的分类维度，可以在博客的front matter中使用：\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  --- title: \"HelloHugo1\" date: 2021-08-29T21:13:55+08:00 draft: cover: image: \"https://images.liyangjie.cn/Sekiro_01.jpg\" alt: \"替换文本\" caption: \"封面标题\" categories: - Hugo tags: - Hugo series: - Hugo ---   这时候再进入网站的Tags导航项，就可以看到我们的标签和数量了：\n代码样式相关 PaperMod0配置代码显示样式如下，这里是我个人使用的配置：\n1 2 3 4 5 6 7 8 9 10 11  markup: goldmark: renderer: unsafe: true highlight: # anchorLineNos: true codeFences: true guessSyntax: true lineNos: true # noClasses: false style: monokai   将lineNos设置为true后，会产生bug，官方提供了解决方案：\n在hugo-hello，即工作目录下创建assets/css/custom.css文件，在文件中添加如下内容即可：\n1 2 3  .chroma { background-color: unset; }   现在往第一篇博客中添加一个代码段如下：\n1 2 3 4 5  ```java public V put(K key, V value) { return putVal(hash(key), key, value, false, true); } ```   显示效果如图：\n增加评论区 我选择使用的是Valine，前置工作需要在LeanCloud上注册并创建应用，获取到相关的AppID和AppKey，具体流程请参照Valine官方网站。\n获取到这两个参数后，根据PaperMod官方文档的指示，创建layouts/partials/comments.html文件，partials路径不存在就自己创建，在文件中添加以下内容：\n1 2 3 4 5 6 7 8 9 10 11  {{ $valinejs := resources.Get \"js/Valine.min.js\" }} script src='{{ $valinejs.RelPermalink }}'script div id=\"vcomments\"div script new Valine({ el: '#vcomments', appId: '这里是你的AppID', appKey: '这里是你的AppKey', placeholder: '来都来了，说两句~' }) script   随后创建assets/js/Valine.min.js，将CDN中的内容全部拷贝到该文件中，保存。\n在config.yml配置文件中设置评论开启即可，直接查找comments就可以定位到该配置的位置了，默认是关闭状态：\n1  comments: true   最后来看看效果：\n配置入门大致就先讲到这里，下面简单介绍下我的站点部署方式。\n部署相关 [TODO]\n",
+  "wordCount" : "689",
+  "inLanguage": "cn",
+  "image":"https://d33wubrfki0l68.cloudfront.net/c38c7334cc3f23585738e40334284fddcaf03d5e/2e17c/images/hugo-logo-wide.svg","datePublished": "2021-08-28T01:26:43+08:00",
   "dateModified": "2021-08-28T01:26:43+08:00",
   "author":{
     "@type": "Person",
@@ -194,11 +215,14 @@
   <header class="post-header">
     <div class="breadcrumbs"><a href="https://www.liyangjie.cn:4443/">Home</a>&nbsp;»&nbsp;<a href="https://www.liyangjie.cn:4443/posts/">Posts</a></div>
     <h1 class="post-title">
-      HelloHugo
+      Hello Hugo
     </h1>
-    <div class="post-meta">August 28, 2021&nbsp;·&nbsp;1 min&nbsp;·&nbsp;SadBird
+    <div class="post-meta">August 28, 2021&nbsp;·&nbsp;4 min&nbsp;·&nbsp;SadBird
 </div>
-  </header> <div class="toc">
+  </header> 
+<figure class="entry-cover"><img loading="lazy" src="https://d33wubrfki0l68.cloudfront.net/c38c7334cc3f23585738e40334284fddcaf03d5e/2e17c/images/hugo-logo-wide.svg" alt="Hugo">
+        
+</figure><div class="toc">
     <details >
         <summary accesskey="c" title="(Alt + C)">
             <div class="details">Table of Contents</div>
@@ -206,24 +230,654 @@
 
         <div class="inner"><ul>
                 <li>
-                    <a href="#hellohugo" aria-label="HelloHugo">HelloHugo</a>
+                    <a href="#hello-hugo" aria-label="Hello Hugo">Hello Hugo</a><ul>
+                        
+                <li>
+                    <a href="#%e5%b7%a5%e4%bd%9c%e7%9b%ae%e5%bd%95%e5%86%85%e5%ae%b9" aria-label="工作目录内容">工作目录内容</a></li>
+                <li>
+                    <a href="#%e4%b8%bb%e9%a2%98%e4%b8%8b%e8%bd%bd%e5%92%8c%e4%bd%bf%e7%94%a8" aria-label="主题下载和使用">主题下载和使用</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e4%b8%bb%e9%a2%98%e9%85%8d%e7%bd%ae%e5%ae%8c%e5%96%84" aria-label="主题配置完善">主题配置完善</a><ul>
+                        
+                <li>
+                    <a href="#languagesarchivessearch" aria-label="languages、archives、search">languages、archives、search</a></li>
+                <li>
+                    <a href="#params" aria-label="params">params</a><ul>
+                        
+                <li>
+                    <a href="#%e4%b8%bb%e9%a2%98%e6%a0%b7%e5%bc%8f%e7%9b%b8%e5%85%b3" aria-label="主题样式相关">主题样式相关</a></li>
+                <li>
+                    <a href="#%e5%8d%9a%e5%ae%a2%e5%86%85%e5%ae%b9%e7%9b%b8%e5%85%b3" aria-label="博客内容相关">博客内容相关</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e5%88%86%e7%b1%bb%e7%9b%b8%e5%85%b3" aria-label="分类相关">分类相关</a></li>
+                <li>
+                    <a href="#%e4%bb%a3%e7%a0%81%e6%a0%b7%e5%bc%8f%e7%9b%b8%e5%85%b3" aria-label="代码样式相关">代码样式相关</a></li>
+                <li>
+                    <a href="#%e5%a2%9e%e5%8a%a0%e8%af%84%e8%ae%ba%e5%8c%ba" aria-label="增加评论区">增加评论区</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e9%83%a8%e7%bd%b2%e7%9b%b8%e5%85%b3" aria-label="部署相关">部署相关</a>
                 </li>
             </ul>
         </div>
     </details>
 </div>
 
-  <div class="post-content"><h1 id="hellohugo">HelloHugo<a hidden class="anchor" aria-hidden="true" href="#hellohugo">#</a></h1>
-<p>这是我的第一个Hugo测试</p>
+  <div class="post-content"><p>以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。</p>
+<p>刚好处于工作真空期，想把一些平时学习的零碎内容整理一下，这次就坚持把这个博客完成了。这里就简单介绍下整个流程，及其中的一些坑和细节。</p>
+<p>首先是这次使用的博客平台，选择<a href="https://gohugo.io/">Hugo</a>的理由很简单，因为没用过它，觉得新鲜，但实际上使用流程和搭建过程其实和以前接触过的静态站点生成框架大同小异。个人电脑环境是Win10，以前安装过<code>scoop</code>，因此安装方法如下：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">scoop install hugo
+<span style="color:#75715e"># 检查hubo是否安装完成</span>
+hugo version
+hugo v0.82.1-60618210 windows/amd64 BuildDate<span style="color:#f92672">=</span>2021-04-20T11:02:50Z VendorInfo<span style="color:#f92672">=</span>gohugoio
+</code></pre></td></tr></table>
+</div>
+</div><p>其他系统环境下安装方式见<a href="https://gohugo.io/getting-started/installing/">官网</a>。</p>
+<h1 id="hello-hugo">Hello Hugo<a hidden class="anchor" aria-hidden="true" href="#hello-hugo">#</a></h1>
+<p>开始使用Hugo创建一个新站点<code>hello-hugo</code> (这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录):</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hugo new site hello-hugo
+</code></pre></td></tr></table>
+</div>
+</div><p>执行成功后，Hugo会给出温馨的提示：</p>
+<blockquote>
+<p>Just a few more steps and you&rsquo;re ready to go:</p>
+<ol>
+<li>Download a theme into the same-named folder.<br/>
+Choose a theme from <a href="https://themes.gohugo.io/">https://themes.gohugo.io/</a> or create your own with the &ldquo;hugo new theme <THEMENAME>&rdquo; command.</li>
+<li>Perhaps you want to add some content. You can add single files with &ldquo;hugo new <SECTIONNAME>&lt;FILENAME&gt;.<FORMAT>&rdquo;.</li>
+<li>Start the built-in live server via &ldquo;hugo server&rdquo;.</li>
+</ol>
+</blockquote>
+<p>等会我们就按这个顺序完成站点的创建。先看看执行完<code>hugo new site</code>命令后，Hugo为我们做了什么。</p>
+<h2 id="工作目录内容">工作目录内容<a hidden class="anchor" aria-hidden="true" href="#工作目录内容">#</a></h2>
+<p>进入<code>hello-hugo</code>目录，Hugo生成的内容如下图所示：</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_init_directory.png#center" alt=""  />
+</p>
+<p>这些大致作用如下：</p>
+<ul>
+<li><code>archetypes</code>：存放博客的模板，默认提供了一个<code>default.md</code>作为所有博客的模板</li>
+<li><code>content</code>：顾名思义，存放我们所有的博客正文</li>
+<li><code>data</code>：存放一些数据，如<code>xml</code>、<code>json</code>等</li>
+<li><code>layouts</code>：与博客页面布局相关的内容，如博客网页中的<code>header</code>、<code>footer</code>等</li>
+<li><code>static</code>：存放静态资源，如图标、图片等</li>
+<li><code>themes</code>：主题相关</li>
+<li><code>config.toml</code>：站点、主题等相关内容的配置文件，它支持<code>yaml</code>、<code>toml</code>和<code>json</code>格式，后续将会一直和这个文件打交道</li>
+</ul>
+<p>除了上述几个目录之外，Hugo还规定了许多其他目录用于提供不同的作用，如<code>assets</code>、<code>i18n</code>等。</p>
+<h2 id="主题下载和使用">主题下载和使用<a hidden class="anchor" aria-hidden="true" href="#主题下载和使用">#</a></h2>
+<p>根据提示，要使用Hugo，我们必须先下载<a href="https://themes.gohugo.io/">主题</a><del>(或自己创建主题)</del>，这里我选择自己比较喜欢的<a href="https://themes.gohugo.io/themes/hugo-papermod/">PaperMod</a>。</p>
+<p>先到<a href="https://github.com/adityatelange/hugo-PaperMod">PaperMod Giuhub</a>，根据官方文档的提示进行主题的下载。PaperMod官方提供了3种下载方式，这里推荐第二种，以<code>git submodule</code>的方式下载。</p>
+<p>进入<code>hello-hugo</code>目录，分别执行如下命令：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git init <span style="color:#75715e"># 将hello-hugo初始化为git仓库</span>
+git submodule add https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod --depth<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> <span style="color:#75715e"># 将PaperMod作为hello-hugo依赖的submodule</span>
+git submodule update --init --recursive <span style="color:#75715e"># needed when you reclone your repo (submodules may not get cloned automatically)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>完成后，会在<code>themes</code>目录下会多出一个<code>PaperMod</code>目录：</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_theme_directory.png#center" alt=""  />
+</p>
+<p>可以发现，这个目录的结构与我们自己的<code>hello-hugo</code>目录十分相似，各目录的作用也基本一致。</p>
+<p>随后，为了使用这个主题，需要在<code>config.toml</code>中激活，为了保持和PaperMod一致，这里将这个文件的后缀修改为<code>.yml</code>，在<code>config.yml</code>中配置如下：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">baseURL</span>: <span style="color:#e6db74">&#34;http://example.org/&#34;</span>
+<span style="color:#f92672">languageCode</span>: <span style="color:#e6db74">&#34;en-us&#34;</span>
+<span style="color:#f92672">title</span>: <span style="color:#e6db74">&#34;Hello Hugo&#34;</span>
+<span style="color:#f92672">theme</span>: <span style="color:#e6db74">&#34;PaperMod&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这时候主题已经激活了，我们先往博客中添加一篇文章，首先创建名为<code>posts</code>的<code>section</code>：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hugo new section posts
+</code></pre></td></tr></table>
+</div>
+</div><p>完成后，在<code>content</code>目录下创建了一个名为<code>posts</code>的目录，这就是我们存放文章的目录。随后创建一篇文章：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hugo new posts/HelloHugo1.md
+hugo new posts/HelloHugo2.md
+</code></pre></td></tr></table>
+</div>
+</div><p>进入<code>posts</code>目录，编辑两个<code>.md</code>文件，写点内容：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">---
+title: &#34;HelloHugo1&#34;
+date: 2021-08-29T21:13:55+08:00
+draft: false
+---
+
+# Hello, Hugo1
+你好，雨果
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">---
+title: &#34;HelloHugo2&#34;
+date: 2021-08-29T21:18:38+08:00
+draft: false
+---
+
+# Hello, Hugo2
+你好，雨果
+</code></pre></td></tr></table>
+</div>
+</div><p>文件头部为Hugo自动添加的内容，它来自<code>archetypes</code>目录中的<code>default.md</code>模板，注意<code>draft</code>属性，默认值为<code>true</code>表示文章处于草稿状态，该状态下的文档不会参与站点的生成，也就是说网站上没有草稿文章，所以此处需要将其先设置为<code>false</code>。</p>
+<p>现在可以使用Hugo内置的Server预览一下成果(工作目录必须在<code>hugo-hello</code>)：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">hugo server
+</code></pre></td></tr></table>
+</div>
+</div><p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_PaperMod_init.png#center" alt=""  />
+</p>
+<p>😭emmmmmmm，怎么说呢，有成果出来了，但是效果好像不太好，别急，接下来我们慢慢完善。</p>
+<h1 id="主题配置完善">主题配置完善<a hidden class="anchor" aria-hidden="true" href="#主题配置完善">#</a></h1>
+<p>基本上每个主题都会提供相应的demo，PaperMod的<a href="https://adityatelange.github.io/hugo-PaperMod/">demo</a>如下：</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_PaperMod_demo.png#center" alt=""  />
+</p>
+<p>我们现在就以它为目标进行改进。</p>
+<p>学习的最快方式就是模仿，所以我们直接到<a href="https://adityatelange.github.io/hugo-PaperMod/">demo</a>的github(注意是PaperMod demo的github，而不是PaperMod的github)上把<code>config.yml</code>抄过来。</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_PaperMod_demo_config.png#center" alt=""  />
+</p>
+<p>可以注意到前几行配置我们就新增了一条<code>paginate: 5</code>，其他保持不变，从<code>enableInlineShortcodes</code>开始都是来自demo的配置。</p>
+<h2 id="languagesarchivessearch">languages、archives、search<a hidden class="anchor" aria-hidden="true" href="#languagesarchivessearch">#</a></h2>
+<p>在demo的<code>languages</code>的配置段中，有<code>en</code>、<code>fr</code>和<code>fa</code>3块，它们使用的主题Mode不同，且包含部分国际化的配置，我们暂时只需要使用<code>en</code>，可以将<code>fr</code>和<code>fa</code>注释或者直接删除掉。</p>
+<p><code>en</code>下最重要的就是<code>menu</code>配置了，它表示了导航栏显示的内容，demo中提供了最常用的4项，即<code>Archive</code>、<code>Search</code>、<code>Tags</code>及<code>Categories</code>。每项中包含一个<code>weight</code>，表示它们在导航栏中的显示顺序，越小越靠前。</p>
+<p>根据<a href="https://github.com/adityatelange/hugo-PaperMod/wiki/Features">PaperMod官方使用文档</a>的描述，要使用<code>Archive</code>和<code>Search</code>，需要进行以下操作：</p>
+<ul>
+<li>
+<p>在<code>content</code>下增加<code>archives.md</code>文件，具体位置如下：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">.
+├── config.yml
+├── content/
+│   ├── archives.md   &lt;--- Create archive.md here
+│   └── posts/
+├── static/
+└── themes/
+    └── PaperMod/
+</code></pre></td></tr></table>
+</div>
+</div><p><code>archives.md</code>内容为：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">---
+title: &#34;Archive&#34;
+layout: &#34;archives&#34;
+url: &#34;/archives/&#34;
+summary: archives
+---
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>在<code>config.yml</code>中新增如下内容，demo中已经配置好的，这步可以跳过：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">outputs</span>:
+    <span style="color:#f92672">home</span>:
+        - <span style="color:#ae81ff">HTML</span>
+        - <span style="color:#ae81ff">RSS</span>
+        - <span style="color:#ae81ff">JSON</span> <span style="color:#75715e"># is necessary</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>同样在<code>content</code>新增一个<code>search.md</code>，内容如下：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">---
+title: &#34;Search&#34; # in any language you want
+layout: &#34;search&#34; # is necessary
+# url: &#34;/archive&#34;
+# description: &#34;Description for Search&#34;
+summary: &#34;search&#34;
+---
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<p>完成上述操作后，再看看效果：</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_PaperMod_archives&#43;search.png#center" alt=""  />
+</p>
+<p>😏像那么回事了吧！</p>
+<h2 id="params">params<a hidden class="anchor" aria-hidden="true" href="#params">#</a></h2>
+<p><code>params</code>包括了PaperMod主题中的重要配置参数，下面举几个例子来进行说明，其他详细配置用法可以参照官方说明，也可以自己试试，大部分配置都是见名知意的。</p>
+<h3 id="主题样式相关">主题样式相关<a hidden class="anchor" aria-hidden="true" href="#主题样式相关">#</a></h3>
+<ul>
+<li>
+<p><code>defaultTheme</code>：设置白色主题或者黑色主题，设置为<code>auto</code>则表示跟随浏览器</p>
+</li>
+<li>
+<p><code>disableThemeToggle:</code>：是否允许白色主题和黑色主题进行手动切换，设置成<code>true</code>则在网页顶部提供切换按钮</p>
+</li>
+<li>
+<p><code>homeInfoParams</code>、<code>socialIcons</code>：这两参数配置的首页显示的内容，修改内容如下：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">homeInfoParams</span>:
+        <span style="color:#f92672">Title</span>: <span style="color:#e6db74">&#34;Hello Hugo&#34;</span>
+        <span style="color:#f92672">Content</span>: &gt;<span style="color:#e6db74">
+</span><span style="color:#e6db74">            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, 
+</span><span style="color:#e6db74">            - sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</span>            
+<span style="color:#f92672">socialIcons</span>:
+        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">github</span>
+          <span style="color:#f92672">url</span>: <span style="color:#e6db74">&#34;https://github.com/adityatelange/hugo-PaperMod&#34;</span>
+        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">telegram</span>
+          <span style="color:#f92672">url</span>: <span style="color:#e6db74">&#34;https://ko-fi.com/adityatelange&#34;</span>
+        - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">RsS</span>
+          <span style="color:#f92672">url</span>: <span style="color:#e6db74">&#34;index.xml&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>结果如下：</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_PaperMod_home_info.png#center" alt=""  />
+</p>
+<p>关于<code>socialIcons</code>参数，<a href="https://github.com/adityatelange/hugo-PaperMod/wiki/Icons">PaperMod官网</a>给出了具体的参照表。</p>
+</li>
+<li>
+<p>网站图标相关参数如下，可以指定网络路径或本地路径：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">assets</span>:
+    <span style="color:#f92672">favicon</span>: <span style="color:#e6db74">&#34;&lt;link / abs url&gt;&#34;</span>
+    <span style="color:#f92672">favicon16x16</span>: <span style="color:#e6db74">&#34;&lt;link / abs url&gt;&#34;</span>
+    <span style="color:#f92672">favicon32x32</span>: <span style="color:#e6db74">&#34;&lt;link / abs url&gt;&#34;</span>
+    <span style="color:#f92672">apple_touch_icon</span>: <span style="color:#e6db74">&#34;&lt;link / abs url&gt;&#34;</span>
+    <span style="color:#f92672">safari_pinned_tab</span>: <span style="color:#e6db74">&#34;&lt;link / abs url&gt;&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="博客内容相关">博客内容相关<a hidden class="anchor" aria-hidden="true" href="#博客内容相关">#</a></h3>
+<ul>
+<li>
+<p><code>ShowShareButtons</code>是否显示分享博客按钮，具体按钮的设定仍可参照<a href="https://github.com/adityatelange/hugo-PaperMod/wiki/Icons">PaperMod官网</a></p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_shareicons.png#center" alt=""  />
+</p>
+</li>
+<li>
+<p><code>ShowReadingTime</code>是否显示文章阅读时间</p>
+</li>
+<li>
+<p><code>ShowBreadCrumbs</code> 是否显示面包屑</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_breadcrumbs.png#center" alt=""  />
+</p>
+</li>
+<li>
+<p><code>ShowCodeCopyButtons</code>是否显示代码复制按钮</p>
+</li>
+<li>
+<p><code>ShowToc</code>是否显示文章目录</p>
+</li>
+<li>
+<p>博客封面相关：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">cover</span>:
+    <span style="color:#f92672">responsiveImages</span>: <span style="color:#66d9ef">false</span> <span style="color:#75715e"># 仅仅用在Page Bundle情况下，此处不讨论</span>
+    <span style="color:#f92672">hidden</span>: <span style="color:#66d9ef">false</span> <span style="color:#75715e"># hide everywhere but not in structured data 是否在下面两种情况下显示</span>
+    <span style="color:#f92672">hiddenInList</span>: <span style="color:#66d9ef">false</span> <span style="color:#75715e"># hide on list pages and home 是否在列表视图中显示</span>
+    <span style="color:#f92672">hiddenInSingle</span>: <span style="color:#66d9ef">false</span> <span style="color:#75715e"># hide on single page 是否在单页视图中显示</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>为了测试，我将后面3个配置项全部设置为true，并在两篇测试博客中修改front matter(就是博客最上方的数据):</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown">---
+title: &#34;HelloHugo1&#34;
+date: 2021-08-29T21:13:55+08:00
+draft: 
+cover:
+    image: &#34;https://images.liyangjie.cn/Sekiro_01.jpg&#34;
+    alt: &#34;替换文本&#34;
+    caption: &#34;封面标题&#34;
+---
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">---
+title: &#34;HelloHugo2&#34;
+date: 2021-08-29T21:18:38+08:00
+draft: 
+cover:
+    image: &#34;https://images.liyangjie.cn/Sekiro_02.jpg&#34;
+    alt: &#34;替换文本&#34;
+    caption: &#34;封面标题&#34;
+---
+</code></pre></td></tr></table>
+</div>
+</div><p>再来看看结果，是不是有点味道了：</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_list_with_cover.png#center" alt=""  />
+</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_single_with_cover.png#center" alt=""  />
+</p>
+</li>
+</ul>
+<h2 id="分类相关">分类相关<a hidden class="anchor" aria-hidden="true" href="#分类相关">#</a></h2>
+<p>默认情况下，Hugo支持<code>categories</code>、<code>tags</code>两个级别的分类，通过配置新增更多的分类：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">taxonomies</span>:
+    <span style="color:#f92672">category</span>: <span style="color:#ae81ff">categories</span>
+    <span style="color:#f92672">tag</span>: <span style="color:#ae81ff">tags</span>
+    <span style="color:#f92672">series</span>: <span style="color:#ae81ff">series</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这里又配置了一个<code>series</code>的分类维度，可以在博客的front matter中使用：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">---
+title: &#34;HelloHugo1&#34;
+date: 2021-08-29T21:13:55+08:00
+draft: 
+cover:
+    image: &#34;https://images.liyangjie.cn/Sekiro_01.jpg&#34;
+    alt: &#34;替换文本&#34;
+    caption: &#34;封面标题&#34;
+categories:
+    - Hugo
+tags:
+    - Hugo
+series:
+    - Hugo
+---
+</code></pre></td></tr></table>
+</div>
+</div><p>这时候再进入网站的<code>Tags</code>导航项，就可以看到我们的标签和数量了：</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_tags.png#center" alt=""  />
+</p>
+<h2 id="代码样式相关">代码样式相关<a hidden class="anchor" aria-hidden="true" href="#代码样式相关">#</a></h2>
+<p>PaperMod0配置代码显示样式如下，这里是我个人使用的配置：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">markup</span>:
+    <span style="color:#f92672">goldmark</span>:
+        <span style="color:#f92672">renderer</span>:
+            <span style="color:#f92672">unsafe</span>: <span style="color:#66d9ef">true</span>
+    <span style="color:#f92672">highlight</span>:
+        <span style="color:#75715e"># anchorLineNos: true</span>
+        <span style="color:#f92672">codeFences</span>: <span style="color:#66d9ef">true</span>
+        <span style="color:#f92672">guessSyntax</span>: <span style="color:#66d9ef">true</span>
+        <span style="color:#f92672">lineNos</span>: <span style="color:#66d9ef">true</span>
+        <span style="color:#75715e"># noClasses: false</span>
+        <span style="color:#f92672">style</span>: <span style="color:#ae81ff">monokai</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>将<code>lineNos</code>设置为true后，会产生bug，官方提供了解决方案：</p>
+<p>在<code>hugo-hello</code>，即工作目录下创建<code>assets/css/custom.css</code>文件，在文件中添加如下内容即可：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css">.<span style="color:#a6e22e">chroma</span> {
+    <span style="color:#66d9ef">background-color</span>: <span style="color:#66d9ef">unset</span>;
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>现在往第一篇博客中添加一个代码段如下：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-markdown" data-lang="markdown"><span style="color:#e6db74">```java
+</span><span style="color:#e6db74"></span><span style="color:#66d9ef">public</span> V <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> putVal<span style="color:#f92672">(</span>hash<span style="color:#f92672">(</span>key<span style="color:#f92672">),</span> key<span style="color:#f92672">,</span> value<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+<span style="color:#e6db74">```</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>显示效果如图：</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_code.png#center" alt=""  />
+</p>
+<h2 id="增加评论区">增加评论区<a hidden class="anchor" aria-hidden="true" href="#增加评论区">#</a></h2>
+<p>我选择使用的是<code>Valine</code>，前置工作需要在LeanCloud上注册并创建应用，获取到相关的<code>AppID</code>和<code>AppKey</code>，具体流程请参照<a href="https://valine.js.org/quickstart.html">Valine官方网站</a>。</p>
+<p>获取到这两个参数后，根据PaperMod官方文档的指示，创建<code>layouts/partials/comments.html</code>文件，<code>partials</code>路径不存在就自己创建，在文件中添加以下内容：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">{{ $valinejs := resources.Get &#34;js/Valine.min.js&#34; }}
+&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{{ $valinejs.RelPermalink }}&#39;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;vcomments&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+&lt;<span style="color:#f92672">script</span>&gt;
+    <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Valine</span>({
+        <span style="color:#a6e22e">el</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;#vcomments&#39;</span>,
+        <span style="color:#a6e22e">appId</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;这里是你的AppID&#39;</span>,
+        <span style="color:#a6e22e">appKey</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;这里是你的AppKey&#39;</span>,
+        <span style="color:#a6e22e">placeholder</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;来都来了，说两句~&#39;</span>
+    })
+&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>随后创建<code>assets/js/Valine.min.js</code>，将<a href="https://cdnjs.cloudflare.com/ajax/libs/valine/1.4.14/Valine.min.js">CDN</a>中的内容全部拷贝到该文件中，保存。</p>
+<p>在<code>config.yml</code>配置文件中设置评论开启即可，直接查找<code>comments</code>就可以定位到该配置的位置了，默认是关闭状态：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#f92672">comments</span>: <span style="color:#66d9ef">true</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>最后来看看效果：</p>
+<p><img loading="lazy" src="http://images.liyangjie.cn/image/Hugo_comments.png#center" alt=""  />
+</p>
+<p>配置入门大致就先讲到这里，下面简单介绍下我的站点部署方式。</p>
+<h1 id="部署相关">部署相关<a hidden class="anchor" aria-hidden="true" href="#部署相关">#</a></h1>
+<p>[TODO]</p>
 
 
   </div>
   <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://www.liyangjie.cn:4443/tags/hugo/">Hugo</a></li>
+    </ul>
 <nav class="paginav">
-  <a class="prev" href="https://www.liyangjie.cn:4443/posts/githooktest/">
+  <a class="prev" href="https://www.liyangjie.cn:4443/posts/hashmap%E5%9F%BA%E7%A1%80/">
     <span class="title">« Prev Page</span>
     <br>
-    <span>GitHookTest</span>
+    <span>HashMap基础</span>
   </a>
 </nav>
 
@@ -477,7 +1131,23 @@
             <path d="M12 6H0l6-6z" />
         </svg>
     </button>
-</a><footer class="footer">
+</a>
+<script src='/js/webfontloader.min.js'>
+</script>
+<script>
+    WebFont.load({
+        custom: {
+            families: ['CascadiaCodePL'],
+        },
+        classes: false,
+        active() {
+            document.querySelectorAll("code").forEach(ele => ele.style.fontFamily = 'CascadiaCodePL');
+        }
+    });
+</script>
+
+
+<footer class="footer">
 <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备16007812号-1</a>
 </footer>
 

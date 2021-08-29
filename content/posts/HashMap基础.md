@@ -2,6 +2,9 @@
 title: "HashMap基础"
 date: 2021-08-29T04:08:04+08:00
 draft: false
+cover:
+    image: "http://images.liyangjie.cn/image/Hasmap_cover.png"
+    alt: "HashMap"
 categories:
   - Java
 tags: 
@@ -306,7 +309,7 @@ final Node<K,V>[] resize() {
 3. 由于红黑树较为复杂 ~~(我还不会)~~ ，这里只分析链表的情况
 4. 请注意这个地方有个很显眼的 `preserve order` ，这个是JDK开发人员的注释，为什么要特别加这么一条注释呢？其实是因为这个地方在Java8之前有个不算坑的坑，这里就稍微说明一下：由于Java8之前，采用的是链表的头插法，因此在扩容过程中，有可能导致链表结点之间的顺序改变，这在一般情况下并不是什么问题，但在多线程环境下，有概率出现循环链表，从而出现死循环的情况。有人就把这个问题反馈给了JDK开发人员，但是，HashMap的说明中明确指出了，HashMap是线程不安全的，所以当时也并没有对这个问题进行解决(这纯粹就是使用者的锅)。但是到了Java8，这个问题被重写HashMap的JDK开发人员顺手给解决了，他特地在这标注了一个 `preserve order`，表示已经解决了那个坑，有兴趣的话可以访问这个链接[JAVA HASHMAP的死循环](https://coolshell.cn/articles/9606.html)
 5. 这个位置就是要开始将旧数组中的链表搬到新数组的桶中了。与Java8之前的方法不同，在这段代码中，没有对每个Node重新进行hash值的计算(为了在新的数组中确定Node的索引值)，而是使用了`(e.hash & oldCap) == 0`这么一个熟悉的条件判断进行索引位置的确定。啧，怎么又是个按位与操作？之前我们使用过`hash & (length - 1)`确定索引值，而这里的`(e.hash & oldCap) == 0`又是个什么操作？仔细分析，不难发现，`oldCap`表示扩容前的容量，是一个2的整数幂的值，所以它的二进制表示为某个特定位上的值为1，其余位置全是0，用它和结点的hash值进行按位与，就是判断结点的`hash`值在那个对应的特定位置上是否为0。那这又有什么用呢？结合下面图片进行分析：
-   ![](![](http://images.liyangjie.cn/image/HashMap_resize.png)
+   ![](http://images.liyangjie.cn/image/HashMap_resize.png)
    图中，上面两个二进制数表示的是扩容前的某个结的`hash`值和`oldCap - 1`；下面两个二进制数表示的是扩容后的**同一个**结点的hash值和`newCap - 1`。通过观察，由于扩容时容量加倍，使得`newCap - 1`比`oldCap - 1`多出了一位1(绿色的部分)，因此进行`hash & (length - 1)`时，`hash`中参与计算的位也多了一位(红色的部分)。这个位置`hash`的值不是0就是1，也就是说，`hash & (newCap - 1)`和`hash & (oldCap - 1)`的结果就差在这一位上(因为是计算同一个结点在新老数组中的索引位置，参与计算的`hash`值是相同的，而且容量减1的值在各个位上都是1)。所以我们就可以做出一个判断：
    - 当红色部分的值为0时，新数组中的索引值newIndex和老数组中的索引值相同，即`newIndex = oldIndex`
    - 当红色部分的值为1时，新数组中的索引值newIndex是老数组中的索引值的2倍，同时，由于新老数组的容量都刚好是2的整数幂，因此可以写成`newIndex = oldIndex + oldCap`的形式

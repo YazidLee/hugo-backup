@@ -2,6 +2,7 @@ baseURL: "https://www.liyangjie.cn:4443/"
 title: 仙羡小站
 paginate: 5
 theme: PaperMod
+defaultContentLanguage: cn
 
 outputs:
     home:
@@ -23,8 +24,9 @@ minify:
     # minifyOutput: true
 
 languages:
-    en:
-        languageName: "English"
+    # 偷懒，直接使用en的国际化
+    cn:
+        languageName: "Chinese"
         weight: 1
         menu:
             main:
@@ -40,23 +42,24 @@ languages:
                 - name: Categories
                   url: categories/
                   weight: 13
-    # cn: 
-    #   languageName: "Chinese"
-    #   weight: 2
-    #   menu:
+    # en:
+    #     languageName: "English"
+    #     weight: 1
+    #     menu:
     #         main:
-    #             - name: 归档
+    #             - name: Archive
     #               url: archives
-    #               weight: 5
-    #             - name: 搜索
+    #               weight: 15
+    #             - name: Search
     #               url: search/
-    #               weight: 10
-    #             - name: 标签
+    #               weight: 16
+    #             - name: Tags
     #               url: tags/
-    #               weight: 10
-    #             - name: 分类
+    #               weight: 14
+    #             - name: Categories
     #               url: categories/
-    #               weight: 10
+    #               weight: 13
+    
 
 outputs:
     home:
@@ -66,7 +69,7 @@ outputs:
 
 params:
     env: production # to enable google analytics, opengraph, twitter-cards and schema.
-    description: "SadBird的狗窝"
+    description: "SadBird的狗窝-工作、学习和生活"
     author: SadBird
     # author: ["Me", "You"] # multiple authors
 
@@ -99,12 +102,12 @@ params:
     homeInfoParams:
         Title: "SadBird的狗窝"
         Content: >
-            这个人很懒，什么都没留下.
+            怨无大小，生于所爱；物无美恶，过则为灾。
     socialIcons:
         - name: email
           url: "mailto:foreverxianxian@gmail.com"
         - name: telegram
-          url: "https://t.me/OphiliaT"
+          url: "https://web.telegram.org/"
         - name: RsS
           url: "index.xml"
 
@@ -130,10 +133,10 @@ params:
         apple_touch_icon: "/favicon/apple-touch-icon.png"
         safari_pinned_tab: "/favicon/safari-pinned-tab.svg"
 
-    # cover:
-    #     hidden: true # hide everywhere but not in structured data
-    #     hiddenInList: true # hide on list pages and home
-    #     hiddenInSingle: true # hide on single page
+    cover:
+        hidden: true # hide everywhere but not in structured data
+        hiddenInList: true # hide on list pages and home
+        hiddenInSingle: false # hide on single page
 
     # fuseOpts:
     #     isCaseSensitive: false

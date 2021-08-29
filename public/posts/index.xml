@@ -26,48 +26,19 @@ Java8对HashMap进行了大修改，为了防止链表过大，影响插入和�
     </item>
     
     <item>
-      <title>GitHookTest4</title>
-      <link>https://www.liyangjie.cn:4443/posts/githooktest4/</link>
-      <pubDate>Sat, 28 Aug 2021 02:02:56 +0800</pubDate>
-      
-      <guid>https://www.liyangjie.cn:4443/posts/githooktest4/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GitHookTest3</title>
-      <link>https://www.liyangjie.cn:4443/posts/githooktest3/</link>
-      <pubDate>Sat, 28 Aug 2021 01:58:48 +0800</pubDate>
-      
-      <guid>https://www.liyangjie.cn:4443/posts/githooktest3/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GitHookTest2</title>
-      <link>https://www.liyangjie.cn:4443/posts/githooktest2/</link>
-      <pubDate>Sat, 28 Aug 2021 01:57:39 +0800</pubDate>
-      
-      <guid>https://www.liyangjie.cn:4443/posts/githooktest2/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GitHookTest</title>
-      <link>https://www.liyangjie.cn:4443/posts/githooktest/</link>
-      <pubDate>Sat, 28 Aug 2021 01:54:33 +0800</pubDate>
-      
-      <guid>https://www.liyangjie.cn:4443/posts/githooktest/</guid>
-      <description>Git Hook Demo </description>
-    </item>
-    
-    <item>
-      <title>HelloHugo</title>
+      <title>Hello Hugo</title>
       <link>https://www.liyangjie.cn:4443/posts/hellohugo/</link>
       <pubDate>Sat, 28 Aug 2021 01:26:43 +0800</pubDate>
       
       <guid>https://www.liyangjie.cn:4443/posts/hellohugo/</guid>
-      <description>HelloHugo 这是我的第一个Hugo测试</description>
+      <description>以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。
+刚好处于工作真空期，想把一些平时学习的零碎内容整理一下，这次就坚持把这个博客完成了。这里就简单介绍下整个流程，及其中的一些坑和细节。
+首先是这次使用的博客平台，选择Hugo的理由很简单，因为没用过它，觉得新鲜，但实际上使用流程和搭建过程其实和以前接触过的静态站点生成框架大同小异。个人电脑环境是Win10，以前安装过scoop，因此安装方法如下：
+1 2 3 4  scoop install hugo # 检查hubo是否安装完成 hugo version hugo v0.82.1-60618210 windows/amd64 BuildDate=2021-04-20T11:02:50Z VendorInfo=gohugoio   其他系统环境下安装方式见官网。
+Hello Hugo 开始使用Hugo创建一个新站点hello-hugo (这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录):
+1  hugo new site hello-hugo   执行成功后，Hugo会给出温馨的提示：
+ Just a few more steps and you&amp;rsquo;re ready to go:
+ Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/ or create your own with the &amp;ldquo;hugo new theme &amp;rdquo; command.</description>
     </item>
     
   </channel>

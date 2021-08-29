@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
+<html lang="cn" dir="auto">
 
 <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,10 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>仙羡小站</title>
 
-<meta name="description" content="SadBird的狗窝">
+<meta name="description" content="SadBird的狗窝-工作、学习和生活">
 <meta name="author" content="SadBird">
 <link rel="canonical" href="https://www.liyangjie.cn:4443/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.80467fccb3e1aba13e3f9074b381615766bd128bd591562762fec06e0a8da993.css" integrity="sha256-gEZ/zLPhq6E&#43;P5B0s4FhV2a9EovVkVYnYv7AbgqNqZM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.c9d98dc7bcde651472cfd1c1b114c5ca75a111f686d8d49a90b9bf571c917c9a.css" integrity="sha256-ydmNx7zeZRRyz9HBsRTFynWhEfaG2NSakLm/VxyRfJo=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://www.liyangjie.cn:4443/favicon/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://www.liyangjie.cn:4443/favicon/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://www.liyangjie.cn:4443/favicon/favicon-32x32.png">
@@ -22,7 +22,7 @@
 <link rel="alternate" type="application/rss+xml" href="https://www.liyangjie.cn:4443/index.xml">
 <link rel="alternate" type="application/json" href="https://www.liyangjie.cn:4443/index.json">
 <meta property="og:title" content="仙羡小站" />
-<meta property="og:description" content="SadBird的狗窝" />
+<meta property="og:description" content="SadBird的狗窝-工作、学习和生活" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://www.liyangjie.cn:4443/" /><meta property="og:image" content="https://www.liyangjie.cn:4443/papermod-cover.png"/>
 
@@ -30,7 +30,7 @@
 <meta name="twitter:image" content="https://www.liyangjie.cn:4443/papermod-cover.png"/>
 
 <meta name="twitter:title" content="仙羡小站"/>
-<meta name="twitter:description" content="SadBird的狗窝"/>
+<meta name="twitter:description" content="SadBird的狗窝-工作、学习和生活"/>
 
 <script type="application/ld+json">
 {
@@ -38,10 +38,10 @@
   "@type": "Organization",
   "name": "仙羡小站",
   "url": "https://www.liyangjie.cn:4443/",
-  "description": "SadBird的狗窝",
+  "description": "SadBird的狗窝-工作、学习和生活",
   "thumbnailUrl": "https://www.liyangjie.cn:4443/favicon/favicon.ico",
   "sameAs": [
-      "mailto:foreverxianxian@gmail.com", "https://t.me/OphiliaT", "index.xml"
+      "mailto:foreverxianxian@gmail.com", "https://web.telegram.org/", "index.xml"
   ]
 }
 </script>
@@ -153,7 +153,7 @@
         <h1>SadBird的狗窝</h1>
     </header>
     <section class="entry-content">
-        <p>这个人很懒，什么都没留下.</p>
+        <p>怨无大小，生于所爱；物无美恶，过则为灾。</p>
     </section>
     <footer class="entry-footer">
         <div class="social-icons">
@@ -164,7 +164,7 @@
     <polyline points="22,6 12,13 2,6"></polyline>
 </svg>
     </a>
-    <a href="https://t.me/OphiliaT" target="_blank" rel="noopener noreferrer me" title="Telegram">
+    <a href="https://web.telegram.org/" target="_blank" rel="noopener noreferrer me" title="Telegram">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
     stroke-linecap="round" stroke-linejoin="round">
     <path
@@ -203,52 +203,21 @@ Java8对HashMap进行了大修改，为了防止链表过大，影响插入和�
 
 <article class="post-entry"> 
   <header class="entry-header">
-    <h2>GitHookTest4</h2>
+    <h2>Hello Hugo</h2>
   </header>
   <section class="entry-content">
-    <p></p>
+    <p>以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。
+刚好处于工作真空期，想把一些平时学习的零碎内容整理一下，这次就坚持把这个博客完成了。这里就简单介绍下整个流程，及其中的一些坑和细节。
+首先是这次使用的博客平台，选择Hugo的理由很简单，因为没用过它，觉得新鲜，但实际上使用流程和搭建过程其实和以前接触过的静态站点生成框架大同小异。个人电脑环境是Win10，以前安装过scoop，因此安装方法如下：
+1 2 3 4  scoop install hugo # 检查hubo是否安装完成 hugo version hugo v0.82.1-60618210 windows/amd64 BuildDate=2021-04-20T11:02:50Z VendorInfo=gohugoio   其他系统环境下安装方式见官网。
+Hello Hugo 开始使用Hugo创建一个新站点hello-hugo (这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录):
+1  hugo new site hello-hugo   执行成功后，Hugo会给出温馨的提示：
+ Just a few more steps and you’re ready to go:
+ Download a theme into the same-named folder. Choose a theme from https://themes.gohugo.io/ or create your own with the “hugo new theme ” command....</p>
   </section>
-  <footer class="entry-footer">August 28, 2021&nbsp;·&nbsp;0 min&nbsp;·&nbsp;SadBird</footer>
-  <a class="entry-link" aria-label="post link to GitHookTest4" href="https://www.liyangjie.cn:4443/posts/githooktest4/"></a>
+  <footer class="entry-footer">August 28, 2021&nbsp;·&nbsp;4 min&nbsp;·&nbsp;SadBird</footer>
+  <a class="entry-link" aria-label="post link to Hello Hugo" href="https://www.liyangjie.cn:4443/posts/hellohugo/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>GitHookTest3</h2>
-  </header>
-  <section class="entry-content">
-    <p></p>
-  </section>
-  <footer class="entry-footer">August 28, 2021&nbsp;·&nbsp;0 min&nbsp;·&nbsp;SadBird</footer>
-  <a class="entry-link" aria-label="post link to GitHookTest3" href="https://www.liyangjie.cn:4443/posts/githooktest3/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>GitHookTest2</h2>
-  </header>
-  <section class="entry-content">
-    <p></p>
-  </section>
-  <footer class="entry-footer">August 28, 2021&nbsp;·&nbsp;0 min&nbsp;·&nbsp;SadBird</footer>
-  <a class="entry-link" aria-label="post link to GitHookTest2" href="https://www.liyangjie.cn:4443/posts/githooktest2/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>GitHookTest</h2>
-  </header>
-  <section class="entry-content">
-    <p>Git Hook Demo </p>
-  </section>
-  <footer class="entry-footer">August 28, 2021&nbsp;·&nbsp;1 min&nbsp;·&nbsp;SadBird</footer>
-  <a class="entry-link" aria-label="post link to GitHookTest" href="https://www.liyangjie.cn:4443/posts/githooktest/"></a>
-</article>
-<footer class="page-footer">
-  <nav class="pagination">
-    <a class="next" href="https://www.liyangjie.cn:4443/page/2/">Next Page »</a>
-  </nav>
-</footer>
     </main>
     <footer class="footer">
     <span>&copy; 2021 <a href="https://www.liyangjie.cn:4443/">仙羡小站</a></span>
@@ -264,7 +233,23 @@ Java8对HashMap进行了大修改，为了防止链表过大，影响插入和�
             <path d="M12 6H0l6-6z" />
         </svg>
     </button>
-</a><footer class="footer">
+</a>
+<script src='/js/webfontloader.min.js'>
+</script>
+<script>
+    WebFont.load({
+        custom: {
+            families: ['CascadiaCodePL'],
+        },
+        classes: false,
+        active() {
+            document.querySelectorAll("code").forEach(ele => ele.style.fontFamily = 'CascadiaCodePL');
+        }
+    });
+</script>
+
+
+<footer class="footer">
 <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备16007812号-1</a>
 </footer>
 
