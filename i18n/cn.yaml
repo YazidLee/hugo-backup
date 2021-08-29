@@ -1,0 +1,26 @@
+# 偷懒，直接拷贝en的国际化内容
+- id: prev_page
+  translation: "Prev Page"
+
+- id: next_page
+  translation: "Next Page"
+
+- id: read_time
+  translation:
+    one : "1 min"
+    other: "{{ .Count }} min"
+
+- id: toc
+  translation: "Table of Contents"
+
+- id: translations
+  translation: "Translations"
+
+- id: home
+  translation: "Home"
+
+- id: code_copy
+  translation: "copy"
+
+- id: code_copied
+  translation: "copied!"

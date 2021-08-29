@@ -1,0 +1,14 @@
+@font-face {
+    font-family: "CascadiaCodePL";
+    src: url("/font/CascadiaCodePL.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Merriweather-Regular";
+    src: url("/font/Merriweather-Regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Lato-Regular";
+    src: url("/font/Lato-Regular.woff2") format("woff2");
+}
