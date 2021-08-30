@@ -5,15 +5,13 @@ draft: false
 cover:
     image: "https://d33wubrfki0l68.cloudfront.net/c38c7334cc3f23585738e40334284fddcaf03d5e/2e17c/images/hugo-logo-wide.svg"
     alt: "Hugo"
-categories:
-    - Hugo
-tags:
-    - Hugo
+categories: ["Hugo"]
+tags: ["Hugo"]
 ---
 
 以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。
 
-刚好处于工作真空期，想把一些平时学习的零碎内容整理一下，这次就坚持把这个博客完成了。这里就简单介绍下整个流程，及其中的一些坑和细节。
+刚好处于工作真空期，想把一些平时学习的零碎内容整理一下，这次就坚持把这个博客完成了。这里就简单介绍下整个流程，及其中的一些坑和细节。篇幅较长，过程中可能有部分遗漏，轻喷。
 
 首先是这次使用的博客平台，选择[Hugo](https://gohugo.io/)的理由很简单，因为没用过它，觉得新鲜，但实际上使用流程和搭建过程其实和以前接触过的静态站点生成框架大同小异。个人电脑环境是Win10，以前安装过`scoop`，因此安装方法如下：
 
@@ -430,5 +428,164 @@ comments: true
 
 # 部署相关
 
-[TODO]
+Hugo与Hexo类似，提供了直接部署为Github Pages的方式，比较简单，请直接移步到[官网](https://gohugo.io/hosting-and-deployment/hosting-on-github/)。
+
+但我自己想折腾折腾，以前使用Hexo的时候在自己的云主机上进行了部署，当时域名整了好久(国内域名，需要备案)，等域名搞定，黄花菜都凉了，所以这次刚好手头还保留着一台云主机，域名也一直在续费，就借此机会再折腾折腾。
+
+## 准备工作
+
+### 软件环境准备
+
+- 云主机的操作系统为`Debian 4.19.37-5+deb10u2 (2019-08-08) x86_64 GNU/Linux`，其他发行版也都可以
+- 静态资源服务器`nginx/1.20.1`
+- `git/2.20.1`
+
+### 域名、证书准备
+
+- 准备好一个域名，并DNS解析至云服务器，国内需要走备案审批流程，国外域名则不需要，大家自行斟酌
+
+- 证书可选择各平台免费的DV证书，这里我随便找了一个腾讯云的SSL证书，品牌为`TrustAsia`，有效期一年
+
+## git仓库及钩子
+
+  准备充分后，先在服务器上新建一个名为git的用户专门用于git同步：
+
+```shell
+sudo adduser git
+```
+
+为了安全，修改分配给该用户的shell环境，编辑`/etc/passwd`文件，在末尾可以找到我们新增的git用户，修改后效果如下：
+
+```shell
+... ...
+# 修改前为 git:x:1001:1001:,,,:/home/git:/bin/bash
+git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
+```
+
+在自己的**客户端(Win10)**准备好SSH公钥，具体流程可以参照[Github教程](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)。完成后，将公钥拷贝至服务器`/home/git/.ssh/authorized_keys`文件里，该文件中若有其他公钥，则在末尾换行后添加即可。
+
+在适当目录创建hugo的裸仓库：
+
+```shell
+git init --bare hello-hugo.git
+```
+
+将该目录授权给刚创建好的git用户
+
+```shell
+sudo chown -R git:git hello-hugo.git
+```
+
+现在服务端的git仓库已经完成了，我们回到客户端。
+
+进入`hello-hugo`目录，执行git初始化命令，将当前目录作为版本管理仓库：
+
+```shell
+git init
+```
+
+然后将当前目录及其子目录下的所有文件纳入版本管理，并提交到git本地仓库：
+
+```shell
+git add .
+git commit -m "Hello, hugo"
+```
+
+将当前仓库关联到我们上面创建好的远程仓库，由于已经配置了SSH公钥，可以使用ssh协议：
+
+```shell
+git remote add origin ssh://git@your.domain:port/path/to/hello-hugo.git
+git push --set-upstream origin master
+```
+
+远程仓库地址中的`git`为我们上面在服务器上创建的用户，`your.domai`表示你自己的域名，`port`为服务端的ssh端口，默认22可以不写，但是不为22的时候一定要使用如上的完整路径，此时`ssh://`不可省略。
+
+我们已经完成了远程仓库和本地仓库的上下游关系关联。
+
+为了方便每次提交文件后将静态目录自动部署到nginx，选择用git hook在`post-receive`阶段将仓库中的`/public`整体移动到nginx指定路径。
+
+再切回到服务端，进入`hello-hugo.git`目录，可以看到该目录下有个`hooks`目录，里面存放的就是git支持的所有钩子，git官方在里面已经放了很多`.sample`结尾的示例，我们只选择使用`post-receive`钩子。创建`post-receive`文件，并使用vim进行修改，修改内容如下：
+
+```shell
+#!/bin/bash
+git --work-tree=/usr/share/nginx/hello-hugo --git-dir=/path/to/hello-hugo.git checkout -f
+```
+
+其中`--work-tree`为nginx中要配置的静态资源路径，**请确保对于这个路径，我们上面创建的git用户需要有写入权限**，具体命令参照上面的`hello-hugo.git`配置；`--git-dir`就是服务端的`hello-hugo.git`仓库路径。
+
+在**客户端**我们新建一篇名为`HelloHugo3.md`的博客，记得把`draft`设置为false，然后往里面加点内容。同样在**客户端**进入`hello-hugo`目录，执行`hugo`命令，该命令的作用是将所有的资源生成为静态站点，并将站点存放在`hello-hugo`的`public`目录下：
+
+```shell
+hugo # 生成站点
+```
+
+再执行git操作：
+
+```shell
+git add .
+git commit -m "publish site"
+git push # 这个客户端操作将会触发服务端执行post-receive脚本
+```
+
+一切正常的话，服务端的`/usr/share/nginx/hello-hugo`目录下将会和我们的客户端工作目录一致(空目录和`submodule`不会被git纳入版本控制，因此`data`、`static`、`themes`目录不会同步到服务器)。
+
+## nginx配置
+
+上传SSL证书至`/etc/nginx/cert`目录下，nginx使用的格式为：
+
+- `your.domain_bundle.crt ` 
+- `your.domain.key`
+
+进入nginx配置目录`/etc/nginx/conf.d`，新建`hello-hugo.conf`文件，内容如下，端口号和路径可以根据实际情况进行修改，保证没有被占用：
+
+```nginx
+server {
+    listen 443 ssl; # https端口号，默认为443，可以自己修改
+    server_name your.domain; # 域名，与申请证书时候使用的域名要一致
+
+    # https相关配置
+    ssl_certificate  cert/your.domain_bundle.crt;
+    ssl_certificate_key cert/your.domain.key; 
+    ssl_session_timeout 5m;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+
+    # 这个路径就是上面我们的git hook指定的路径，再接上一个public
+    root /usr/share/nginx/hello-hugo/public;
+
+    # 默认查找路径下的index.html
+    location / {
+        index index.html index.htm;
+    }
+
+    # 默认的404页面
+    error_page 404 /404.html; 
+        location = /40x.html {
+    }
+}
+
+server {
+    listen 80; # 端口号可以自己修改
+    server_name your.domain; # 域名，与申请证书时候使用的域名要一致
+
+    # 将http重定向到https，host后面的端口号与上一个server的端口号保持一致即可
+    return 301 https://$host:443$request_uri;  
+}
+
+```
+
+最后，开启nginx：
+
+```shell
+nginx
+```
+
+客户端打开浏览器，输入你的域名(默认80端口可以不写，否则必须写)，能够成功跳转到`https`，地址栏能够显示小锁(小锁表示网站使用的证书是安全的)就表示已经成功了：
+
+![](http://images.liyangjie.cn/image/Hugo_nginx_success.png)
+
+# 留个坑
+
+至此，Hugo从入门部署已经完成了，关于Hugo的使用细节没有覆盖到，主要是我自己也才刚开始使用，后续会慢慢积累和整理，争取把记录生活的习惯坚持下去，共勉:sunglasses:。
 

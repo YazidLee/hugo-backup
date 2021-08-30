@@ -5,9 +5,7 @@ draft: true
 cover:
     image: ""
     alt: ""
-categories:
-  - 
-tags: 
-  - 
+categories: []
+tags: []
 ---
 

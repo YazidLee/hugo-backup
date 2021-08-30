@@ -10,7 +10,6 @@ outputs:
         - RSS
         - JSON # is necessary
 
-#pygmentsUseClasses: true
 enableInlineShortcodes: true
 enableRobotsTXT: true
 buildDrafts: false
@@ -84,20 +83,20 @@ params:
     ShowCodeCopyButtons: true
     ShowToc: true
     comments: true
-    images: ["papermod-cover.png"]
+    images: ["https://images.liyangjie.cn/image/SadBird.png"] # link or path of image for opengraph, twitter-cards
 
-    profileMode:
-        enabled: false
-        title: PaperMod
-        imageUrl: "#"
-        imageTitle: my image
-        # imageWidth: 120
-        # imageHeight: 120
-        buttons:
-            - name: Archives
-              url: archives
-            - name: Tags
-              url: tags
+    # profileMode:
+    #     enabled: false
+    #     title: PaperMod
+    #     imageUrl: "#"
+    #     imageTitle: my image
+    #     # imageWidth: 120
+    #     # imageHeight: 120
+    #     buttons:
+    #         - name: Archives
+    #           url: archives
+    #         - name: Tags
+    #           url: tags
 
     homeInfoParams:
         Title: "SadBird的狗窝"
@@ -116,10 +115,10 @@ params:
     #     Text: "Suggest Changes" # edit text
     #     appendFilePath: true # to append file path to Edit link
 
-    # label:
-    #     text: "Home"
-    #     icon: icon.png
-    #     iconHeight: 35
+    label:
+        text: "仙羡小站"
+        icon: "http://images.liyangjie.cn/image/earlybirds.png"
+        iconHeight: 30
 
     # analytics:
     #     google:
@@ -152,6 +151,7 @@ taxonomies:
     tag: tags
     series: series
 
+#pygmentsUseClasses: true
 markup:
     goldmark:
         renderer:

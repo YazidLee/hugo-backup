@@ -5,10 +5,8 @@ draft: false
 cover:
     image: "http://images.liyangjie.cn/image/Hasmap_cover.png"
     alt: "HashMap"
-categories:
-  - Java
-tags: 
-  - HashMap
+categories: ["Java"]
+tags: ["HashMap"]
 ---
 HashMap是Java程序员使用频率最高的用于映射(键值对)处理的数据类型，除了线程不安全外，基本上等同于HashTable，但是它允许null作为键和值。HashMap的Key要求是不可变类型的，因为如果是可变类型的Key，那么在使用过程中很有可能对Key对象进行了修改，导致哈希值发生变化，最终无法定位到HashMap中的元素。
 
