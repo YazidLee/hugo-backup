@@ -462,7 +462,7 @@ sudo adduser git
 git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
 ```
 
-在自己的**客户端(Win10)**准备好SSH公钥，具体流程可以参照[Github教程](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)。完成后，将公钥拷贝至服务器`/home/git/.ssh/authorized_keys`文件里，该文件中若有其他公钥，则在末尾换行后添加即可。
+在自己的 **客户端(Win10)** 准备好SSH公钥，具体流程可以参照[Github教程](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)。完成后，将公钥拷贝至服务器`/home/git/.ssh/authorized_keys`文件里，该文件中若有其他公钥，则在末尾换行后添加即可。
 
 在适当目录创建hugo的裸仓库：
 
