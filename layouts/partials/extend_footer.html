@@ -1,15 +1,15 @@
-{{- /* 加载自定义字体，该字体较大，使用这种延迟加载的方式 */ -}}
+{{- /* 加载自定义字体，字体文件较大，使用这种延迟加载的方式 */ -}}
 {{ $webfontloaderjs := resources.Get "js/webfontloader.min.js" }}
 <script src='{{ $webfontloaderjs.RelPermalink }}'>
 </script>
 <script>
     WebFont.load({
         custom: {
-            families: ['CascadiaCodePL'],
+            families: ['JetBrainsMono-Regular'],
         },
         classes: false,
         active() {
-            document.querySelectorAll("code").forEach(ele => ele.style.fontFamily = 'CascadiaCodePL');
+            document.querySelectorAll("code").forEach(ele => ele.style.fontFamily = 'JetBrainsMono-Regular');
         }
     });
 </script>

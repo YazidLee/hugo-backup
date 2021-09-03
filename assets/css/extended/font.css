@@ -12,3 +12,8 @@
     font-family: "Lato-Regular";
     src: url("/font/Lato-Regular.woff2") format("woff2");
 }
+
+@font-face {
+    font-family: "JetBrainsMono-Regular";
+    src: url("/font/JetBrainsMono-Regular.woff2") format("woff2");
+}
