@@ -16,7 +16,7 @@ buildDrafts: false
 buildFuture: false
 buildExpired: false
 enableEmoji: true
-googleAnalytics: G-08T3ZZYDYC
+googleAnalytics: G-6RF5116E5V
 
 minify:
     disableXML: true
