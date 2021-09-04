@@ -16,7 +16,7 @@ buildDrafts: false
 buildFuture: false
 buildExpired: false
 enableEmoji: true
-googleAnalytics: G-6RF5116E5V
+googleAnalytics: G-C6GDZ56F4S
 
 minify:
     disableXML: true
@@ -30,7 +30,7 @@ languages:
         menu:
             main:
                 - name: Archive
-                  url: archives
+                  url: archives/
                   weight: 15
                 - name: Search
                   url: search/
