@@ -417,3 +417,278 @@ public void  weakHashMapTest() {
 ![](http://images.liyangjie.cn/image/reference-visualvm.png#center)
 
 果然，此时的 `size` 为2，且关联队列中的 `queueLength` 为1，表示队列中有元素待清理。
+
+## PhantomReference
+
+`PhantomReference` 在使用方法上与 `SoftReference` 、 `WeakReference` 稍有不同，查看它的源码：
+
+```java
+public class PhantomReference<T> extends Reference<T> {
+
+    /**
+     * Returns this reference object's referent.  Because the referent of a
+     * phantom reference is always inaccessible, this method always returns
+     * <code>null</code>.
+     *
+     * @return  <code>null</code>
+     */
+    public T get() {
+        return null;
+    }
+
+    /**
+     * Creates a new phantom reference that refers to the given object and
+     * is registered with the given queue.
+     *
+     * <p> It is possible to create a phantom reference with a <tt>null</tt>
+     * queue, but such a reference is completely useless: Its <tt>get</tt>
+     * method will always return null and, since it does not have a queue, it
+     * will never be enqueued.
+     *
+     * @param referent the object the new phantom reference will refer to
+     * @param q the queue with which the reference is to be registered,
+     *          or <tt>null</tt> if registration is not required
+     */
+    public PhantomReference(T referent, ReferenceQueue<? super T> q) {
+        super(referent, q);
+    }
+
+}
+```
+
+可以发现，它的构造函数必须接收一个 `ReferenceQueue` 参数，且它的 `get` 方法永远返回 `null` (注意， `PhantomReference` 仍然持有一个 `referent` ，只是它不对外公开)。
+
+既然永远获得不到 `referent` ，那么 `PhantomReference` 即使从 `queue` 中获取到了该对象，也无法改变其实际目标对象的命运，它最终将被回收。
+
+[Why Garbage Collection?](https://www.artima.com/insidejvm/ed2/gcP.html)
+
+在阅读上面参考文章的时候发现了这段描述：
+
+> Note that whereas the garbage collector enqueues soft and weak reference objects when their referents are leaving the relevant reachability state, it enqueues phantom references when the referents are entering the relevant state. You can also see this difference in that the garbage collector clears soft and weak reference objects before enqueueing them, but not phantom reference objects. Thus, the garbage collector enqueues soft reference objects to indicate their referents have just left the softly reachable state. Likewise, the garbage collector enqueues weak reference objects to indicate their referents have just left the weakly reachable state. But the garbage collector enqueues phantom reference objects to indicate their referents have entered the phantom reachable state. Phantom reachable objects will remain phantom reachable until their reference objects are explicitly cleared by the program.
+
+也就是说，GC将 `SoftReference` 、 `WeakReference` 入队的时机是在清理完它们的目标对象之后，亦即它们的目标*softly reachable*、 *weakly reachabl*e状态结束之后，而 `PhantomReference` 的入队时机是在它的目标对象被清理之前，亦即它的目标对象刚进入*phantom reachable*时，它将一直保持这种状态，直到他们的目标对象被应用程序显示清理(调用 `clear` 方法)或被GC回收。
+
+### PhantomReference应用
+
+`PhantomReference` 既然无法对目标对象产生实际的影响，那么它的作用就是在对象进入phantom reachable状态后，利用 `queue` 进行最后的资源清理工作(*pre-mortem clean*)。
+
+下面以Java NIO中的 `DirectByteBuffer` 为例进行简单说明。
+
+`DirectByteBuffer` 分配的是堆外内存，该空间无法通过GC进行回收，因此在 `DirectByteBuffer` 对象被回收时，需要通过另外的手段将该对象分配的堆外空间进行回收。
+
+`Reference` 中除了 `referent` 和 `queue` 两个重要字段外，还有个一个静态字段与将要介绍的清理工作息息相关：
+
+```java
+/* List of References waiting to be enqueued.  The collector adds
+ * References to this list, while the Reference-handler thread removes
+ * them.  This list is protected by the above lock object. The
+ * list uses the discovered field to link its elements.
+ */
+private static Reference<Object> pending = null;
+```
+
+通过注释能够了解到，它的作用是维护一个链表，链表中的对象是待入队(放入 `queue` 中)的 `Reference` 对象。GC将 `Reference` 对象放入这个链表中，而有一个后台线程 `Reference-handler` 从这个链表中移除 `Reference` 并将其放入 `queue` 中。
+
+ `Reference-handler` 的在 `Reference` 中的定义和使用如下：
+
+```java
+/* High-priority thread to enqueue pending References
+ */
+private static class ReferenceHandler extends Thread {
+
+    // ...
+
+    ReferenceHandler(ThreadGroup g, String name) {
+        super(g, name);
+    }
+
+    public void run() {
+        while (true) {
+            // 具体执行的任务
+            tryHandlePending(true);
+        }
+    }
+}
+
+// ...
+
+static {                                                                  
+    ThreadGroup tg = Thread.currentThread().getThreadGroup();             
+    for (ThreadGroup tgn = tg;                                            
+         tgn != null;                                                     
+         tg = tgn, tgn = tg.getParent());                                 
+    Thread handler = new ReferenceHandler(tg, "Reference Handler");       
+    /* If there were a special system-only priority greater than          
+     * MAX_PRIORITY, it would be used here                                
+     */                                                                   
+    handler.setPriority(Thread.MAX_PRIORITY);                             
+    handler.setDaemon(true);                                              
+    handler.start();                                                                                                                                                                                  
+}
+```
+
+`Reference` 在静态代码块中启动了该线程，也就是说只要 `Reference` 被加载，就会启动该线程，线程的核心任务为 `tryHandlePending` ，如下：
+
+```java
+static boolean tryHandlePending(boolean waitForNotify) {                                      
+    Reference<Object> r;                                                                      
+    Cleaner c;                                                                                
+    try {                                                                                     
+        synchronized (lock) {                                                                 
+            if (pending != null) {                                                            
+                r = pending;                                                                  
+                // 'instanceof' might throw OutOfMemoryError sometimes                        
+                // so do this before un-linking 'r' from the 'pending' chain... 
+                // 如果为Cleaner类型，则赋值给c               
+                c = r instanceof Cleaner ? (Cleaner) r : null;                                
+                // unlink 'r' from 'pending' chain                                            
+                pending = r.discovered;                                                       
+                r.discovered = null;                                                          
+            } else {                                                                          
+                // The waiting on the lock may cause an OutOfMemoryError                      
+                // because it may try to allocate exception objects.                          
+                if (waitForNotify) {                                                          
+                    lock.wait();                                                              
+                }                                                                             
+                // retry if waited                                                            
+                return waitForNotify;                                                         
+            }                                                                                 
+        }                                                                                     
+    } catch (OutOfMemoryError x) {                                                            
+        // Give other threads CPU time so they hopefully drop some live references            
+        // and GC reclaims some space.                                                        
+        // Also prevent CPU intensive spinning in case 'r instanceof Cleaner' above           
+        // persistently throws OOME for some time...                                          
+        Thread.yield();                                                                       
+        // retry                                                                              
+        return true;                                                                          
+    } catch (InterruptedException x) {                                                        
+        // retry                                                                              
+        return true;                                                                          
+    }                                                                                         
+                                                                                              
+    // Fast path for cleaners                                                                 
+    if (c != null) {
+        // c不为空，表示需要执行清理操作                                                                          
+        c.clean();                                                                            
+        return true;                                                                          
+    }                                                                                         
+    
+    // 如果该引用对象的 queue 不为空，则执行入队操作                                                                                          
+    ReferenceQueue<? super Object> q = r.queue;                                               
+    if (q != ReferenceQueue.NULL) q.enqueue(r);                                               
+    return true;                                                                              
+}
+```
+
+重点看代码中的中文注释部分，方法的主要工作就是执行 `Cleaner` 的 `clean` 操作，并将引用对象入队。
+
+`Cleaner` 的定义：
+
+```java
+public class Cleaner extends PhantomReference<Object> {
+    // ...
+    private static final ReferenceQueue<Object> dummyQueue = new ReferenceQueue();
+    private final Runnable thunk;
+ 
+    // Cleaner本身也是双向链表结构
+    private Cleaner next = null; 
+    private Cleaner prev = null;
+
+    // 静态字段，存储Cleaner队列头节点
+    private static Cleaner first = null;
+
+    // 创建cleaner的工厂方法，将新的Cleaner插入静态队列头部
+    public static Cleaner create(Object var0, Runnable var1) { 
+        //    
+        return var1 == null ? null : add(new Cleaner(var0, var1));
+    }
+    // ...
+
+    public void clean() {                                                                        
+        if (remove(this)) {                                                                      
+            try {      
+                // 重点                                                                          
+                this.thunk.run();                                                                
+            } catch (final Throwable var2) {                                                     
+                AccessController.doPrivileged(new PrivilegedAction<Void>() {                     
+                    public Void run() {                                                          
+                        if (System.err != null) {                                                
+                            (new Error("Cleaner terminated abnormally", var2)).printStackTrace();
+                        }                                                                        
+                                                                                             
+                        System.exit(1);                                                          
+                        return null;                                                             
+                    }                                                                            
+                });                                                                              
+            }                                                                                                                                                                    
+        }                                                                                        
+    }
+}
+```
+
+`Cleaner` 继承自 `PhantomReference` ，除了关联的队列外，还包含了一个 `Runable` 类型的 `thunk` 字段，这个字段就是底层的清理工， `clean` 最核心的工作就是执行该字段的 `run` 方法。因此， `Reference` 中的辅助线程除了入队操作外，最主要的任务就是执行这个 `thunk` 的 `run` 方法。 `Cleaner` 可以理解为一个具有清理功能的 `PhantomReference` 。
+
+现在回到 `DirectByteBuffer` 中，先看看它的构造方法：
+
+```java
+DirectByteBuffer(int cap) {                   // package-private                                                                          
+    // ...
+ 
+    // 重点                                                               
+    cleaner = Cleaner.create(this, new Deallocator(base, size, cap));   
+    att = null;                                                                                                                                                                                                
+}
+```
+
+忽略构造函数中具体分配内存的代码，这里重点看与 `DirectByteBuffer` 对象关联的 `cleaner` ，它的 `PhantomReference` `referent` 字段指向当前 `DirectByteBuffer` 对象，并且它的清理工 `thunk` 字段为 `Deallocator` 。 `Deallocator` 为 `DirectByteBuffer` 的静态内部类，其定义如下：
+
+```java
+private static class Deallocator                                
+    implements Runnable                                         
+{                                                               
+                                                                
+    private static Unsafe unsafe = Unsafe.getUnsafe();          
+                                                                
+    private long address;                                       
+    private long size;                                          
+    private int capacity;                                       
+                                                                
+    private Deallocator(long address, long size, int capacity) {
+        assert (address != 0);                                  
+        this.address = address;                                 
+        this.size = size;                                       
+        this.capacity = capacity;                               
+    }                                                           
+                                                                
+    public void run() {                                         
+        if (address == 0) {                                     
+            // Paranoia                                         
+            return;                                             
+        }
+        // 这里就是最核心的清理工作                                                       
+        unsafe.freeMemory(address);                             
+        address = 0;                                            
+        Bits.unreserveMemory(size, capacity);                   
+    }                                                           
+                                                                
+}
+```
+
+`Deallocator` 最终使用 `Unsafe` 完成了堆外内存的释放。
+
+总结一下清理的原理：
+
+1. 随着`Reference` 类被加载 ， `Reference-handler` 后台线程被启动，它轮循 `pending` 链表，执行 `Cleaner` 的 `clean` 工作；
+2. `Cleaner` 继承自 `PhantomReference` ，它会被GC识别，在进入 *phantom reachable* 状态前会被GC先放入 `pending` 队列；
+3.  `clean` 方法最终执行 `Cleaner` 的 `thunk.run()` 进行清理；
+4. `DirectByteBuffer` 在创建的同时关联了一个 `Cleaner` ，该 `Cleaner` 中的 `thunk` 为 `Deallocator` ，`Deallocator` 使用 `Unsafe` 完成了堆外内存的清理释放。
+
+![](http://images.liyangjie.cn/image/reference-phantom.png)
+
+再从 `DirectByteBuffer` 的角度来看看清理的过程：
+
+1.  `DirectByteBuffer` 创建时关联了一个 `Cleaner` ，该 `Cleaner` 的 `thunk` 为 `Deallocator` ；
+2. 当 `DirectByteBuffer` 强引用断开时，GC识别到 `Cleaner` ，并将 `Cleaner` 加入到 `Reference` 的静态链表 `pending` 中；
+3. `Reference` 的后台线程 `Reference-handler` 从 `pending` 链表中获取到该 `Cleaner` ，并调用 `clean` 方法；
+4. `clean` 方法最终调用 `Deallocator` 的 `run` 方法，通过 `Unsafe` 完成了清理工作。
