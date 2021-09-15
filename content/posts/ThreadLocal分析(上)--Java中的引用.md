@@ -3,7 +3,7 @@ title: "ThreadLocal分析(上)--Java中的引用"
 date: 2021-09-15T03:07:15+08:00
 draft: false
 cover:
-    image: ""
+    image: "http://images.liyangjie.cn/image/ThreadLocal.jpg"
     alt: ""
 categories: ["Java"]
 tags: ["Java", "ThreadLocal", "Reference"]
