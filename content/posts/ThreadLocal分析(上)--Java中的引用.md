@@ -1,6 +1,6 @@
 ---
 title: "ThreadLocal分析(上)--Java中的引用"
-summary: "Java中几种引用类型(强软弱虚)，理解Reference的本质，结合示例加深理解"
+summary: "Java中几种引用类型(强软弱虚)，理解Reference的本质，结合示例加深理解。"
 date: 2021-09-15T03:07:15+08:00
 draft: false
 cover:
@@ -52,7 +52,7 @@ public void softReference() {
 
 ![](http://images.liyangjie.cn/image/reference-basic.png#center)
 
-图中，彩色部分为GC Roots，其中 `local variables` 为虚拟机栈中的**局部变量表**，而 `metaspace` 为**元数据区**。实线表示强引用，虚线表示弱引用。局部变量表中的 `soft` **强引用**指向了堆中的 `SoftReference` 实例对象， `ojb` **强引用**指向了 `Object` 实例对象。而元数据区中有个名为 `queue` 的**强引用**指向了堆中的 `ReferenceQueue` 对象。
+图中，彩色部分为GC Roots，其中 `local variables` 为虚拟机栈中的**局部变量表**，而 `metaspace` 为**元空间**。实线表示强引用，虚线表示弱引用。局部变量表中的 `soft` **强引用**指向了堆中的 `SoftReference` 实例对象， `ojb` **强引用**指向了 `Object` 实例对象。而元空间中有个名为 `queue` 的**强引用**指向了堆中的 `ReferenceQueue` 对象。
 
 `SoftReference` 需要在堆中单独使用一块堆内存记录一个软引用对象，该对象的 `referent` **软指向**(这里的软指向就是指上文中的GC**特殊对待**，本质上来说它还是一个强引用，在调用 `Reference` 的 `get` 方法时，会返回该强引用，该强引用可以赋值给GC Roots或其他可达的强引用，可以用这种方式为对象"续命")实际的 `Object` 实例对象，而 `queue` **强引用**指向了堆中的 `ReferenceQueue` 实例对象。
 
@@ -139,7 +139,7 @@ class Data {
 
 上述代码定义了一个存放 `SoftReference` 的列表 `ArrayList` (`softReferences`)以及与所有 `SoftReference` 相关联的引用队列 `ReferenceQueue` (`queue`)。 `CountDownLatch` 的使用是为了结果的打印顺序比较直观。
 
-主线程中 `softReferenceTest` 方法的第一个 `while` 循环往 `softReferences` 中添加 `Data` 的 `SoftReference` ，同时将该 `Data` 的强引用断开，使得 `Data` 对象只有 `softReferences` 中的软引用。当堆中的空间无法容纳 `Data` 时(示例中设定了虚拟机相关参数，固定堆大小为10M)，会触发OOM，而对软引用来说，在触发OOM之前会再进行一次GC，对软引用的对象进行清理，而这些被清理了实际对象的软引用。第二个 `for` 循环打印GC完成之后 `softReferences` 中所有软引用的实际对象(即 `referent` )。这段代码输出结果大致如下：加入7个 `Data` 后，再添加第8个对象时，堆中剩余空间不足，触发了GC，并将前7个 `Data` 实例对象进行了回收，腾出空间后，将第8个对象实例化并加入软引用列表。
+主线程中 `softReferenceTest` 方法的第一个 `while` 循环往 `softReferences` 中添加 `Data` 的 `SoftReference` ，同时将该 `Data` 的强引用断开，使得 `Data` 对象只有 `softReferences` 中的软引用。当堆中的空间无法容纳 `Data` 时(示例中设定了虚拟机相关参数，固定堆大小为10M)，会触发OOM，而对软引用来说，在触发OOM之前会再进行一次GC，对软引用的对象进行清理，而这些被清理了实际对象的软引用会被GC放到指定的队列 `queue` 中。第二个 `for` 循环打印GC完成之后 `softReferences` 中所有软引用的实际对象(即 `referent` )。这段代码输出结果大致如下：加入7个 `Data` 后，再添加第8个对象时，堆中剩余空间不足，触发了GC，并将前7个 `Data` 实例对象进行了回收，腾出空间后，将第8个对象实例化并加入软引用列表。
 
 ```bash
 Add Data1956725890's SoftReference to list

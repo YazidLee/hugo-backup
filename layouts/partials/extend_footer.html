@@ -1,7 +1,13 @@
-{{- /* 加载自定义字体，字体文件较大，使用这种延迟加载的方式 */ -}}
+<!-- 增加自定义footer，备案信息 -->
+<footer class="footer">
+<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备16007812号-1</a>
+</footer>
+
+{{- /* 加载自定义字体，字体文件较大时，使用这种延迟加载的方式 */ -}}
 {{ $webfontloaderjs := resources.Get "js/webfontloader.min.js" }}
 <script src='{{ $webfontloaderjs.RelPermalink }}'>
 </script>
+
 <script>
     WebFont.load({
         custom: {
@@ -13,8 +19,3 @@
         }
     });
 </script>
-
-<!-- 自定义footer，备案信息 -->
-<footer class="footer">
-<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备16007812号-1</a>
-</footer>

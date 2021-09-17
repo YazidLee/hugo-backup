@@ -16,11 +16,13 @@ h1, h2, h3, h4, h5, h6, .toc, footer {
 }
 
 .post-content img {
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
 }
 
 .post-content code {
-    font-size: 0.85em;
+    font-size: 0.8em;
+    padding: 3px 6px 3px 6px;
 }
 
 .chroma {
