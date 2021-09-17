@@ -71,6 +71,7 @@ params:
     description: "SadBird的狗窝-工作、学习和生活"
     author: SadBird
     # author: ["Me", "You"] # multiple authors
+    keywords: ["仙羡", "SadBird", "Study"]
 
     defaultTheme: auto
     # disableThemeToggle: true
@@ -132,11 +133,22 @@ params:
         apple_touch_icon: "/favicon/apple-touch-icon.png"
         safari_pinned_tab: "/favicon/safari-pinned-tab.svg"
 
+    # Verify your site ownership
+    analytics: 
+        google:
+            SiteVerificationTag: "9Y3NHOxbRwaLb2hkR4GpapDQFWHBjXBYI585l_bLo6g"
+        # bing:
+        #     SiteVerificationTag:
+        # yandex:
+        #     SiteVerificationTag:
+
     cover:
         hidden: true # hide everywhere but not in structured data
         hiddenInList: true # hide on list pages and home
         hiddenInSingle: false # hide on single page
 
+    # for search
+    # https://fusejs.io/api/options.html
     # fuseOpts:
     #     isCaseSensitive: false
     #     shouldSort: true

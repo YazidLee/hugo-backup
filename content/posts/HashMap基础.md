@@ -1,5 +1,6 @@
 ---
 title: "HashMap基础"
+summary: "Java中的HashMap，分析其基本结构及部分源码"
 date: 2021-08-29T04:08:04+08:00
 draft: false
 cover:

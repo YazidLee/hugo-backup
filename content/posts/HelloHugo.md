@@ -1,5 +1,6 @@
 ---
 title: "Hello Hugo"
+summary: "Hugo入门，以PaperMod主题为例进行基本配置，利用git完成备份和部署工作"
 date: 2021-08-28T01:26:43+08:00
 draft: false
 cover:
@@ -73,6 +74,8 @@ hugo new site hello-hugo
 git init # 将hello-hugo初始化为git仓库
 git submodule add https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod --depth=1 # 将PaperMod作为hello-hugo依赖的submodule
 git submodule update --init --recursive # needed when you reclone your repo (submodules may not get cloned automatically)
+# 使用这种方式，以后主题更新也比较方便
+git submodule update --remote --merge 
 ```
 
 完成后，会在`themes`目录下会多出一个`PaperMod`目录：

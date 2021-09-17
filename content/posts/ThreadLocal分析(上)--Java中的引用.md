@@ -1,5 +1,6 @@
 ---
 title: "ThreadLocal分析(上)--Java中的引用"
+summary: "Java中几种引用类型(强软弱虚)，理解Reference的本质，结合示例加深理解"
 date: 2021-09-15T03:07:15+08:00
 draft: false
 cover:
@@ -489,7 +490,7 @@ private static Reference<Object> pending = null;
 
 通过注释能够了解到，它的作用是维护一个链表，链表中的对象是待入队(放入 `queue` 中)的 `Reference` 对象。GC将 `Reference` 对象放入这个链表中，而有一个后台线程 `Reference-handler` 从这个链表中移除 `Reference` 并将其放入 `queue` 中。
 
- `Reference-handler` 的在 `Reference` 中的定义和使用如下：
+ `Reference-handler` 在 `Reference` 中的定义和使用如下：
 
 ```java
 /* High-priority thread to enqueue pending References

@@ -1,5 +1,6 @@
 ---
 title: "Spring泛型"
+summary: "Java中的Type家族，Spring针对Tyep的封装--ResolvableType及其应用示例"
 date: 2021-09-13T21:56:33+08:00
 draft: false
 cover:
