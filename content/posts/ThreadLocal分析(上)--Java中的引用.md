@@ -9,7 +9,7 @@ cover:
 categories: ["Java"]
 tags: ["Java", "ThreadLocal", "Reference"]
 ---
-# Java中的4种引用类型
+## 4种引用类型概述
 
 在介绍 `ThreadLocal`  之前，首先要大致了解Java的几种引用类型。如下图所示，JDK 1.2之后新增了 `Reference` 的概念，给开发人员提供了与GC交互的一种渠道。
 

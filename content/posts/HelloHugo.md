@@ -25,7 +25,7 @@ hugo v0.82.1-60618210 windows/amd64 BuildDate=2021-04-20T11:02:50Z VendorInfo=go
 
 其他系统环境下安装方式见[官网](https://gohugo.io/getting-started/installing/)。
 
-# Hello Hugo
+## Hello Hugo
 
 开始使用Hugo创建一个新站点`hello-hugo` (这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录):
 
@@ -44,7 +44,7 @@ hugo new site hello-hugo
 
 等会我们就按这个顺序完成站点的创建。先看看执行完`hugo new site`命令后，Hugo为我们做了什么。
 
-## 工作目录内容
+### 工作目录内容
 
 进入`hello-hugo`目录，Hugo生成的内容如下图所示：
 
@@ -62,7 +62,7 @@ hugo new site hello-hugo
 
 除了上述几个目录之外，Hugo还规定了许多其他目录用于提供不同的作用，如`assets`、`i18n`等。
 
-## 主题下载和使用
+### 主题下载和使用
 
 根据提示，要使用Hugo，我们必须先下载[主题](https://themes.gohugo.io/)~~(或自己创建主题)~~，这里我选择自己比较喜欢的[PaperMod](https://themes.gohugo.io/themes/hugo-papermod/)。
 
@@ -142,7 +142,7 @@ hugo server
 
 :sob:emmmmmmm，怎么说呢，有成果出来了，但是效果好像不太好，别急，接下来我们慢慢完善。
 
-# 主题配置完善
+## 主题配置完善
 
 基本上每个主题都会提供相应的demo，PaperMod的[demo](https://adityatelange.github.io/hugo-PaperMod/)如下：
 
@@ -156,7 +156,7 @@ hugo server
 
 可以注意到前几行配置我们就新增了一条`paginate: 5`，其他保持不变，从`enableInlineShortcodes`开始都是来自demo的配置。
 
-## languages、archives、search
+### languages、archives、search
 
 在demo的`languages`的配置段中，有`en`、`fr`和`fa`3块，它们使用的主题Mode不同，且包含部分国际化的配置，我们暂时只需要使用`en`，可以将`fr`和`fa`注释或者直接删除掉。
 
@@ -212,11 +212,11 @@ hugo server
 
 :smirk:像那么回事了吧！
 
-## params
+### params
 
 `params`包括了PaperMod主题中的重要配置参数，下面举几个例子来进行说明，其他详细配置用法可以参照官方说明，也可以自己试试，大部分配置都是见名知意的。
 
-### 主题样式相关
+#### 主题样式相关
 
 - `defaultTheme`：设置白色主题或者黑色主题，设置为`auto`则表示跟随浏览器
 
@@ -256,7 +256,7 @@ hugo server
       safari_pinned_tab: "<link / abs url>"
   ```
 
-### 博客内容相关
+#### 博客内容相关
 
 - `ShowShareButtons`是否显示分享博客按钮，具体按钮的设定仍可参照[PaperMod官网](https://github.com/adityatelange/hugo-PaperMod/wiki/Icons)
 
@@ -318,7 +318,7 @@ hugo server
   
   
 
-## 分类相关
+### 分类相关
 
 默认情况下，Hugo支持`categories`、`tags`两个级别的分类，通过配置新增更多的分类：
 
@@ -353,7 +353,7 @@ series:
 
 ![](http://images.liyangjie.cn/image/Hugo_tags.png#center)
 
-## 代码样式相关
+### 代码样式相关
 
 PaperMod0配置代码显示样式如下，这里是我个人使用的配置：
 
@@ -395,7 +395,7 @@ public V put(K key, V value) {
 
 ![](http://images.liyangjie.cn/image/Hugo_code.png#center)
 
-## 增加评论区
+### 增加评论区
 
 我选择使用的是`Valine`，前置工作需要在LeanCloud上注册并创建应用，获取到相关的`AppID`和`AppKey`，具体流程请参照[Valine官方网站](https://valine.js.org/quickstart.html)。
 
@@ -429,27 +429,27 @@ comments: true
 
 配置入门大致就先讲到这里，下面简单介绍下我的站点部署方式。
 
-# 部署相关
+## 部署相关
 
 Hugo与Hexo类似，提供了直接部署为Github Pages的方式，比较简单，请直接移步到[官网](https://gohugo.io/hosting-and-deployment/hosting-on-github/)。
 
 但我自己想折腾折腾，以前使用Hexo的时候在自己的云主机上进行了部署，当时域名整了好久(国内域名，需要备案)，等域名搞定，黄花菜都凉了，所以这次刚好手头还保留着一台云主机，域名也一直在续费，就借此机会再折腾折腾。
 
-## 准备工作
+### 准备工作
 
-### 软件环境准备
+#### 软件环境准备
 
 - 云主机的操作系统为`Debian 4.19.37-5+deb10u2 (2019-08-08) x86_64 GNU/Linux`，其他发行版也都可以
 - 静态资源服务器`nginx/1.20.1`
 - `git/2.20.1`
 
-### 域名、证书准备
+#### 域名、证书准备
 
 - 准备好一个域名，并DNS解析至云服务器，国内需要走备案审批流程，国外域名则不需要，大家自行斟酌
 
 - 证书可选择各平台免费的DV证书，这里我随便找了一个腾讯云的SSL证书，品牌为`TrustAsia`，有效期一年
 
-## git仓库及钩子
+### git仓库及钩子
 
   准备充分后，先在服务器上新建一个名为git的用户专门用于git同步：
 
@@ -532,7 +532,7 @@ git push # 这个客户端操作将会触发服务端执行post-receive脚本
 
 一切正常的话，服务端的`/usr/share/nginx/hello-hugo`目录下将会和我们的客户端工作目录一致(空目录和`submodule`不会被git纳入版本控制，因此`data`、`static`、`themes`目录不会同步到服务器)。
 
-## nginx配置
+### nginx配置
 
 上传SSL证书至`/etc/nginx/cert`目录下，nginx使用的格式为：
 
@@ -588,7 +588,7 @@ nginx
 
 ![](http://images.liyangjie.cn/image/Hugo_nginx_success.png)
 
-# 留个坑
+## 留个坑
 
 至此，Hugo从入门部署已经完成了，关于Hugo的使用细节没有覆盖到，主要是我自己也才刚开始使用，后续会慢慢积累和整理，争取把记录生活的习惯坚持下去，共勉:sunglasses:。
 

@@ -9,7 +9,7 @@ cover:
 categories: ["Java", "Spring"]
 tags: ["Java", "Spring", "Generic"]
 ---
-# Java中的Type
+## Type概述
 
 ```java
 public interface Type {
