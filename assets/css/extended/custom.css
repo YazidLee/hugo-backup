@@ -25,6 +25,26 @@ h1, h2, h3, h4, h5, h6, .toc, footer {
     padding: 3px 6px 3px 6px;
 }
 
-.chroma {
-    background-color: unset;
+/* 覆盖原主题中的 
+    color: rgba(255, 255, 255, 0.8); 使得代码中的默认文字始终为白色，代码风格为黑色主题时没有问题，但在白色主题下要修改为黑色
+*/
+.post-content pre code {
+    color: rgba(255, 255, 255, 0.85);
+    /* color: rgba(0, 0, 0, 0.85); */
+}
+
+/* 覆盖原主题中的 
+    background: var(--hljs-bg) !important; 这个属性Paper-Mod主题中使用了important，导致不管如何设置，代码背景始终异常，这里使用 !important将它覆盖即可
+    border-radius: var(--radius); 
+*/
+.post-content .highlight:not(table),
+.post-content pre {
+    background: unset !important;
+    border-radius: 0;
+}
+
+/* 代码突出显示的css，使用方式例： ```java {hl_lines=[24]}， 这个hl_lines数组可以包含多段分开的代码，如 {hl_lines=[24,"50-60"]} */
+.hl {
+    filter: invert(.9);
+    backdrop-filter: hue-rotate(120deg) opacity(.9);
 }

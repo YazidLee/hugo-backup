@@ -55,62 +55,62 @@ public interface ParameterizedType extends Type {
 
 ```java
 public class ParameterizedTypeDemo<K extends Number> {
-	Map.Entry<K, String> entry;
-	List<String> stringList;
-	Map<K[], ? extends Number> mapWithWildcard;
-	Map<String, List<String>> mapWithList;
-	OuterClass<K>.InnerClass<K> ownerTest;
+    Map.Entry<K, String> entry;
+    List<String> stringList;
+    Map<K[], ? extends Number> mapWithWildcard;
+    Map<String, List<String>> mapWithList;
+    OuterClass<K>.InnerClass<K> ownerTest;
 
-	public static void main(String[] args) {
-		Class<?> clazz = ParameterizedTypeDemo.class;
-		Field[] declaredFields = clazz.getDeclaredFields();
-		printHorizonLine();
-		Arrays.stream(declaredFields).forEach(ParameterizedTypeDemo::showFieldType);
-	}
+    public static void main(String[] args) {
+        Class<?> clazz = ParameterizedTypeDemo.class;
+        Field[] declaredFields = clazz.getDeclaredFields();
+        printHorizonLine();
+        Arrays.stream(declaredFields).forEach(ParameterizedTypeDemo::showFieldType);
+    }
+    
+    private static void printHorizonLine() {
+        System.out.println("---------------------------------");
+    }
 
-	private static void printHorizonLine() {
-		System.out.println("---------------------------------");
-	}
+    private static void showFieldType(Field field) {
+        Type type = field.getGenericType();
+        if (type instanceof ParameterizedType) {
+            printFieldTypeInfo(field, type);
+            printHorizonLine();
+        }
+    }
 
-	private static void showFieldType(Field field) {
-		Type type = field.getGenericType();
-		if (type instanceof ParameterizedType) {
-			printFieldTypeInfo(field, type);
-			printHorizonLine();
-		}
-	}
+    private static void printFieldTypeInfo(Field field, Type type) {
+        ParameterizedType parameterizedType = (ParameterizedType) type;
+        Type rawType = parameterizedType.getRawType();
+        Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+        Type ownerType = parameterizedType.getOwnerType();
 
-	private static void printFieldTypeInfo(Field field, Type type) {
-		ParameterizedType parameterizedType = (ParameterizedType) type;
-		Type rawType = parameterizedType.getRawType();
-		Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-		Type ownerType = parameterizedType.getOwnerType();
+        System.out.printf("Field '%s' ParameterizedType %s attrs: \n", field.getName(), type.getTypeName());
+        System.out.printf("[RawType]: %s, [OwnerType]: %s \n",
+                rawType, ownerType);
+        System.out.println("[ActualTypeArguments]:");
+        Arrays.stream(actualTypeArguments).forEach(ParameterizedTypeDemo::printActualArguments);
+    }
 
-		System.out.printf("Field '%s' ParameterizedType %s attrs: \n", field.getName(), type.getTypeName());
-		System.out.printf("[RawType]: %s, [OwnerType]: %s \n",
-				rawType, ownerType);
-		System.out.println("[ActualTypeArguments]:");
-		Arrays.stream(actualTypeArguments).forEach(ParameterizedTypeDemo::printActualArguments);
-	}
-
-	private static void printActualArguments(Type t) {
-		if (t instanceof ParameterizedType) {
-			System.out.printf("(P) %s \n", t);
-		} else if (t instanceof TypeVariable) {
-			System.out.printf("(T) %s \n", t);
-		} else if (t instanceof WildcardType) {
-			System.out.printf("(W) %s \n", t);
-		} else if (t instanceof GenericArrayType) {
-			System.out.printf("(A) %s \n", t);
-		} else if (t instanceof Class) {
-			System.out.printf("(C) %s \n", t);
-		}
-	}
+    private static void printActualArguments(Type t) {
+        if (t instanceof ParameterizedType) {
+            System.out.printf("(P) %s \n", t);
+        } else if (t instanceof TypeVariable) {
+            System.out.printf("(T) %s \n", t);
+        } else if (t instanceof WildcardType) {
+            System.out.printf("(W) %s \n", t);
+        } else if (t instanceof GenericArrayType) {
+            System.out.printf("(A) %s \n", t);
+        } else if (t instanceof Class) {
+            System.out.printf("(C) %s \n", t);
+        }
+    }
 }
 
 class OuterClass<T> {
-	class InnerClass<S> {
-	}
+    class InnerClass<S> {
+    }
 }
 ```
 
@@ -192,53 +192,53 @@ public @interface TypeBoundAnnotationE {
 public class TypeVariableDemo<T extends @TypeBoundAnnotationT Comparable<T>, 
   E extends @TypeBoundAnnotationT @TypeBoundAnnotationE Number & 
   @TypeBoundAnnotationE CharSequence> {
-	public static void main(String[] args) {
-		Class<?> typeVariableClazz = TypeVariableDemo.class;
-		TypeVariable<? extends GenericDeclaration>[] typeParameters = typeVariableClazz.getTypeParameters();
+    public static void main(String[] args) {
+        Class<?> typeVariableClazz = TypeVariableDemo.class;
+        TypeVariable<? extends GenericDeclaration>[] typeParameters = typeVariableClazz.getTypeParameters();
 
-		printHorizonLine();
+        printHorizonLine();
 
-		Arrays.stream(typeParameters).forEach(TypeVariableDemo::showTypeVariable);
+        Arrays.stream(typeParameters).forEach(TypeVariableDemo::showTypeVariable);
 
-		Class<?> methodAndConstructorTestClazz = MethodAndConstructorTest.class;
-		Constructor<?>[] declaredConstructors = methodAndConstructorTestClazz.getDeclaredConstructors();
-		Method[] declaredMethods = methodAndConstructorTestClazz.getDeclaredMethods();
+        Class<?> methodAndConstructorTestClazz = MethodAndConstructorTest.class;
+        Constructor<?>[] declaredConstructors = methodAndConstructorTestClazz.getDeclaredConstructors();
+        Method[] declaredMethods = methodAndConstructorTestClazz.getDeclaredMethods();
 
-		showMethodTypeVariables(declaredConstructors);
-		showMethodTypeVariables(declaredMethods);
-	}
+        showMethodTypeVariables(declaredConstructors);
+        showMethodTypeVariables(declaredMethods);
+    }
 
-	private static void printHorizonLine() {
-		System.out.println("---------------------------------");
-	}
+    private static void printHorizonLine() {
+        System.out.println("---------------------------------");
+    }
 
-	private static void showTypeVariable(TypeVariable<? extends GenericDeclaration> tv) {
-		String name = tv.getName();
-		Type[] bounds = tv.getBounds();
-		AnnotatedType[] annotatedBounds = tv.getAnnotatedBounds();
-		GenericDeclaration genericDeclaration = tv.getGenericDeclaration();
-		System.out.printf("[TypeVariableName]: %s\n", name);
-		System.out.printf("[Bounds]: %s\n", Arrays.toString(bounds));
-		System.out.printf("[GenericDeclaration]: %s\n", genericDeclaration);
-		System.out.println("[AnnotatedBounds]: ");
-		Arrays.stream(annotatedBounds).forEach(a -> {
-			System.out.printf("%s\n", Arrays.toString(a.getAnnotations()));
-		});
+    private static void showTypeVariable(TypeVariable<? extends GenericDeclaration> tv) {
+        String name = tv.getName();
+        Type[] bounds = tv.getBounds();
+        AnnotatedType[] annotatedBounds = tv.getAnnotatedBounds();
+        GenericDeclaration genericDeclaration = tv.getGenericDeclaration();
+        System.out.printf("[TypeVariableName]: %s\n", name);
+        System.out.printf("[Bounds]: %s\n", Arrays.toString(bounds));
+        System.out.printf("[GenericDeclaration]: %s\n", genericDeclaration);
+        System.out.println("[AnnotatedBounds]: ");
+        Arrays.stream(annotatedBounds).forEach(a -> {
+            System.out.printf("%s\n", Arrays.toString(a.getAnnotations()));
+        });
 
-		printHorizonLine();
-	}
+        printHorizonLine();
+    }
 
-	private static void showMethodTypeVariables(GenericDeclaration[] declaredConstructors) {
-		Arrays.stream(declaredConstructors).forEach(c -> {
-			TypeVariable<?>[] constructorTypeParameters = c.getTypeParameters();
-			Arrays.stream(constructorTypeParameters).forEach(TypeVariableDemo::showTypeVariable);
-		});
-	}
+    private static void showMethodTypeVariables(GenericDeclaration[] declaredConstructors) {
+        Arrays.stream(declaredConstructors).forEach(c -> {
+            TypeVariable<?>[] constructorTypeParameters = c.getTypeParameters();
+            Arrays.stream(constructorTypeParameters).forEach(TypeVariableDemo::showTypeVariable);
+        });
+    }
 }
 
 class MethodAndConstructorTest {
-	<K> MethodAndConstructorTest(K k){}
-	public <S> void methodTest(S s){}
+    <K> MethodAndConstructorTest(K k){}
+    public <S> void methodTest(S s){}
 }
 ```
 
@@ -285,28 +285,28 @@ public interface GenericArrayType extends Type {
 
 ```java
 public class GenericArrayTypeDemo<T> {
-	T[] tA;
-	T[][] tAA;
-	List<T>[] listA;
-	List<? extends T>[] wildcardListA;
-	String[] stringA;
+    T[] tA;
+    T[][] tAA;
+    List<T>[] listA;
+    List<? extends T>[] wildcardListA;
+    String[] stringA;
 
-	public static void main(String[] args) {
-		Class<?> clazz = GenericArrayTypeDemo.class;
-		Field[] fields = clazz.getDeclaredFields();
-		Arrays.stream(fields).forEach(GenericArrayTypeDemo::showGenericTypeComponentType);
-	}
+    public static void main(String[] args) {
+        Class<?> clazz = GenericArrayTypeDemo.class;
+        Field[] fields = clazz.getDeclaredFields();
+        Arrays.stream(fields).forEach(GenericArrayTypeDemo::showGenericTypeComponentType);
+    }
 
-	private static void showGenericTypeComponentType(Field f) {
-		String fieldName = f.getName();
-		Type fieldType = f.getGenericType();
-		if (fieldType instanceof GenericArrayType) {
-			GenericArrayType genericArrayType = (GenericArrayType) fieldType;
-			System.out.printf("[Field: %s] Component Type is: %s\n", fieldName, genericArrayType.getGenericComponentType());
-		} else {
-			System.out.printf("[Field: %s] is not GenericArrayType\n", fieldName);
-		}
-	}
+    private static void showGenericTypeComponentType(Field f) {
+        String fieldName = f.getName();
+        Type fieldType = f.getGenericType();
+        if (fieldType instanceof GenericArrayType) {
+            GenericArrayType genericArrayType = (GenericArrayType) fieldType;
+            System.out.printf("[Field: %s] Component Type is: %s\n", fieldName, genericArrayType.getGenericComponentType());
+        } else {
+            System.out.printf("[Field: %s] is not GenericArrayType\n", fieldName);
+        }
+    }
 }
 ```
 
@@ -348,24 +348,24 @@ public interface WildcardType extends Type {
 
 ```java
 public class WildcardTypeDemo {
-	List<? extends Number> wildcardList;
+    List<? extends Number> wildcardList;
 
-	public static void main(String[] args) {
-		Class<?> clazz = WildcardTypeDemo.class;
-		Field wildcardField = clazz.getDeclaredFields()[0];
-		Type genericType = wildcardField.getGenericType(); //List<? extends Number>
-		if (genericType instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType) genericType; 
-			Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0]; // ? extends Number
-			if (actualTypeArgument instanceof WildcardType) {
-				WildcardType wildcardType = (WildcardType) actualTypeArgument; 
-				System.out.printf("[Field %s is WildcardType]: %s, its upper bound is %s and lower bound is %s",
-						wildcardField.getName(), wildcardType,
-						Arrays.toString(wildcardType.getUpperBounds()), 
-						Arrays.toString(wildcardType.getLowerBounds()));
-			}
-		}
-	}
+    public static void main(String[] args) {
+        Class<?> clazz = WildcardTypeDemo.class;
+        Field wildcardField = clazz.getDeclaredFields()[0];
+        Type genericType = wildcardField.getGenericType(); //List<? extends Number>
+        if (genericType instanceof ParameterizedType) {
+            ParameterizedType parameterizedType = (ParameterizedType) genericType; 
+            Type actualTypeArgument = parameterizedType.getActualTypeArguments()[0]; // ? extends Number
+            if (actualTypeArgument instanceof WildcardType) {
+                WildcardType wildcardType = (WildcardType) actualTypeArgument; 
+                System.out.printf("[Field %s is WildcardType]: %s, its upper bound is %s and lower bound is %s",
+                        wildcardField.getName(), wildcardType,
+                        Arrays.toString(wildcardType.getUpperBounds()), 
+                        Arrays.toString(wildcardType.getLowerBounds()));
+            }
+        }
+    }
 }
 ```
 
@@ -410,18 +410,18 @@ Spring的事件机制(观察者模式)使用到了 `ResolvableType` 对广播的
 ```java
 public class MyListener implements ApplicationListener<MyEvent> {
 
-	@Override
-	public void onApplicationEvent(MyEvent event) {
-		System.out.printf("My Event, current person: %s %n", event.getSource());
-	}
+    @Override
+    public void onApplicationEvent(MyEvent event) {
+        System.out.printf("My Event, current person: %s %n", event.getSource());
+    }
 }
 
 class MyEvent extends ApplicationEvent {
 
-	private static final long serialVersionUID = 1L;
-	public MyEvent(Object source) {
-		super(source);
-	}
+    private static final long serialVersionUID = 1L;
+    public MyEvent(Object source) {
+        super(source);
+    }
 }
 ```
 
@@ -429,10 +429,10 @@ class MyEvent extends ApplicationEvent {
 
 ```java
 public class ContextRefreshedListener implements ApplicationListener<ContextRefreshedEvent> {
-	@Override
-	public void onApplicationEvent(ContextRefreshedEvent event) {
-		System.out.printf("ContextRefreshed, current source: %s %n", event.getSource());
-	}
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        System.out.printf("ContextRefreshed, current source: %s %n", event.getSource());
+    }
 }
 ```
 
@@ -440,16 +440,16 @@ public class ContextRefreshedListener implements ApplicationListener<ContextRefr
 
 ```java
 public static void main(String[] args) {
-		GenericApplicationContext context = new GenericApplicationContext();
-		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
-		reader.loadBeanDefinitions("META-INF/overview.xml");
-        // 此过程中会由context发布ContextRefreshedEvent
-		context.refresh();
+    GenericApplicationContext context = new GenericApplicationContext();
+    XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
+    reader.loadBeanDefinitions("META-INF/overview.xml");
+    // 此过程中会由context发布ContextRefreshedEvent
+    context.refresh();
 
-		System.out.println("--------------------------------");
+    System.out.println("--------------------------------");
     
-        // 发布自定义的MyEvent
-		context.publishEvent(new MyEvent(SpringIocDemo.class));
+    // 发布自定义的MyEvent
+    context.publishEvent(new MyEvent(SpringIocDemo.class));
 }
 ```
 
@@ -465,85 +465,83 @@ My Event, current person: class cn.liyangjie.spring.SpringIocDemo
 
 ```java
 protected boolean supportsEvent(
-			ApplicationListener<?> listener, ResolvableType eventType, @Nullable Class<?> sourceType) {
+    ApplicationListener<?> listener, ResolvableType eventType, @Nullable Class<?> sourceType) {
 
-		GenericApplicationListener smartListener = (listener instanceof GenericApplicationListener ?
-				(GenericApplicationListener) listener : new GenericApplicationListenerAdapter(listener));
-		return (smartListener.supportsEventType(eventType) && smartListener.supportsSourceType(sourceType));
+    GenericApplicationListener smartListener = (listener instanceof GenericApplicationListener ?
+            (GenericApplicationListener) listener : new GenericApplicationListenerAdapter(listener));
+    return (smartListener.supportsEventType(eventType) && smartListener.supportsSourceType(sourceType));
 }  
 ```
 
 可以看到，将原始的 `ApplicationListener` 转换为了 `GenericApplicationListenerAdapter` ，该适配器的构造器如下：
 
-```java {linenos=table,hl_lines=[24]}
+```java {hl_lines=[24]}
 public GenericApplicationListenerAdapter(ApplicationListener<?> delegate) {
-		Assert.notNull(delegate, "Delegate listener must not be null");
-		this.delegate = (ApplicationListener<ApplicationEvent>) delegate;
-		this.declaredEventType = resolveDeclaredEventType(this.delegate);
+    Assert.notNull(delegate, "Delegate listener must not be null");
+    this.delegate = (ApplicationListener<ApplicationEvent>) delegate;
+    this.declaredEventType = resolveDeclaredEventType(this.delegate);
 }
 
 @Nullable
 private static ResolvableType resolveDeclaredEventType(ApplicationListener<ApplicationEvent> listener) {
-		ResolvableType declaredEventType = resolveDeclaredEventType(listener.getClass());
-		if (declaredEventType == null || declaredEventType.isAssignableFrom(ApplicationEvent.class)) {
-			Class<?> targetClass = AopUtils.getTargetClass(listener);
-			if (targetClass != listener.getClass()) {
-				declaredEventType = resolveDeclaredEventType(targetClass);
-			}
-		}
-		return declaredEventType;
-	}
+    ResolvableType declaredEventType = resolveDeclaredEventType(listener.getClass());
+    if (declaredEventType == null || declaredEventType.isAssignableFrom(ApplicationEvent.class)) {
+        Class<?> targetClass = AopUtils.getTargetClass(listener);
+        if (targetClass != listener.getClass()) {
+            declaredEventType = resolveDeclaredEventType(targetClass);
+        }
+    }
+    return declaredEventType;
+}
 
 @Nullable
 static ResolvableType resolveDeclaredEventType(Class<?> listenerType) {
-		ResolvableType eventType = eventTypeCache.get(listenerType);
-		if (eventType == null) {
-            // 1位置，重点！！
-			eventType = ResolvableType.forClass(listenerType).as(ApplicationListener.class).getGeneric();
-			eventTypeCache.put(listenerType, eventType);
-		}
-		return (eventType != ResolvableType.NONE ? eventType : null);
+    ResolvableType eventType = eventTypeCache.get(listenerType);
+    if (eventType == null) {
+        // 1位置，重点！！
+        eventType = ResolvableType.forClass(listenerType).as(ApplicationListener.class).getGeneric();
+        eventTypeCache.put(listenerType, eventType);
+    } 
+    return (eventType != ResolvableType.NONE ? eventType : null);
 }
 ```
+代码中的1位置为重点部分， `ResolvableType` 解析了 `ApplicationListener` 具体的泛型类型。最后， `supportsEventType` 方法调用了 `ResolvableType` 的 `isAssignableFrom` 方法，以便监听器能接收泛型声明的类型及其子类事件：
 
-代码中的1位置为重点部分，使用了 `ResolvableType` 解析了 `ApplicationListener` 具体的泛型类型。最后，调用 `supportsEventType` 方法进行判断，使用了 `ResolvableType` 的 `isAssignableFrom` 方法，使得监听器能接收泛型声明的类型及其子类事件：
-
-```java
+```java {hl_lines=[11]}
 public boolean supportsEventType(ResolvableType eventType) {
-		if (this.delegate instanceof GenericApplicationListener) {
-			return ((GenericApplicationListener) this.delegate).supportsEventType(eventType);
-		}
-		else if (this.delegate instanceof SmartApplicationListener) {
-			Class<? extends ApplicationEvent> eventClass = (Class<? extends ApplicationEvent>) eventType.resolve();
-			return (eventClass != null && ((SmartApplicationListener) this.delegate).supportsEventType(eventClass));
-		}
-		else {
-            // 1位置，重点
-			return (this.declaredEventType == null || this.declaredEventType.isAssignableFrom(eventType));
-		}
+    if (this.delegate instanceof GenericApplicationListener) {
+        return ((GenericApplicationListener) this.delegate).supportsEventType(eventType);
+    }
+    else if (this.delegate instanceof SmartApplicationListener) {
+        Class<? extends ApplicationEvent> eventClass = (Class<? extends ApplicationEvent>) eventType.resolve();
+        return (eventClass != null && ((SmartApplicationListener) this.delegate).supportsEventType(eventClass));
+    }
+    else {
+        // 1位置，重点
+        return (this.declaredEventType == null || this.declaredEventType.isAssignableFrom(eventType));
+    }
 }
 ```
-
 现新增一个事件 `MyEventChild`，继承 `MyEvent` ，并在代码中发布该事件，可以发现 `MyListener` 也能接收到该事件：
 
 ```java
 class MyEventChild extends MyEvent {
-	private static final long serialVersionUID = 1L;
-	public MyEventChild(Object source) {
-		super(source);
-	}
+    private static final long serialVersionUID = 1L;
+    public MyEventChild(Object source) {
+        super(source);
+    }
 }
 ```
 
 ```java
 public static void main(String[] args) {
-	GenericApplicationContext context = new GenericApplicationContext();
-	XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
-	reader.loadBeanDefinitions("META-INF/overview.xml");
+    GenericApplicationContext context = new GenericApplicationContext();
+    XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
+    reader.loadBeanDefinitions("META-INF/overview.xml");
     // 此过程中会由context发布ContextRefreshedEvent
-	context	.refresh();
+    context.refresh();
 
-	System.out.println("--------------------------------");
+    System.out.println("--------------------------------");
     
     // 发布自定义的MyEvent
     context.publishEvent(new MyEvent(SpringIocDemo.class));
