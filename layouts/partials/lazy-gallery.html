@@ -1,0 +1,41 @@
+{{/* https://github.com/verlok/vanilla-lazyload */}}
+{{- if not .Site.Params.assets.disableFingerprinting }}
+{{- $intersectionobserver := resources.Get "js/intersection-observer.js" | minify | fingerprint }}
+<script crossorigin="anonymous" src="{{ $intersectionobserver.RelPermalink }}" integrity="{{ $intersectionobserver.Data.Integrity }}"></script>
+{{- else }}
+{{- $intersectionobserver := resources.Get "js/intersection-observer.js" | minify }}
+<script crossorigin="anonymous" src="{{ $intersectionobserver.RelPermalink }}"></script>
+{{- end }}
+
+{{- if not .Site.Params.assets.disableFingerprinting }}
+{{- $lazyload := resources.Get "js/lazyload.min.js" | minify | fingerprint }}
+<script crossorigin="anonymous" src="{{ $lazyload.RelPermalink }}" integrity="{{ $lazyload.Data.Integrity }}"></script>
+{{- else }}
+{{- $lazyload := resources.Get "js/lazyload.min.js" | minify }}
+<script crossorigin="anonymous" src="{{ $lazyload.RelPermalink }}"></script>
+{{- end }}
+
+{{/* https://github.com/sachinchoolur/lightgallery.js */}}
+{{- if not .Site.Params.assets.disableFingerprinting }}
+{{- $lightgallery := resources.Get "js/lightgallery.js" | minify | fingerprint }}
+<script crossorigin="anonymous" src="{{ $lightgallery.RelPermalink }}" integrity="{{ $lightgallery.Data.Integrity }}"></script>
+{{- else }}
+{{- $lightgallery := resources.Get "js/lightgallery.js" | minify }}
+<script crossorigin="anonymous" src="{{ $lightgallery.RelPermalink }}"></script>
+{{- end }}
+
+{{- if not .Site.Params.assets.disableFingerprinting }}
+{{- $lgthumbnail := resources.Get "js/lg-thumbnail.js" | minify | fingerprint }}
+<script crossorigin="anonymous" src="{{ $lgthumbnail.RelPermalink }}" integrity="{{ $lgthumbnail.Data.Integrity }}"></script>
+{{- else }}
+{{- $lgthumbnail := resources.Get "js/lg-thumbnail.js" | minify }}
+<script crossorigin="anonymous" src="{{ $lgthumbnail.RelPermalink }}"></script>
+{{- end }}
+
+{{- if not .Site.Params.assets.disableFingerprinting }}
+{{- $lgzoom := resources.Get "js/lg-zoom.js" | minify | fingerprint }}
+<script crossorigin="anonymous" src="{{ $lgzoom.RelPermalink }}" integrity="{{ $lgzoom.Data.Integrity }}"></script>
+{{- else }}
+{{- $lgzoom := resources.Get "js/lg-zoom.js" | minify }}
+<script defer crossorigin="anonymous" src="{{ $lgzoom.RelPermalink }}"></script>
+{{- end }}

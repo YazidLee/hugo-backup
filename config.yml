@@ -84,6 +84,7 @@ params:
     ShowCodeCopyButtons: true
     ShowToc: true
     comments: true
+    katex: false
     images: ["https://images.liyangjie.cn/image/SadBird.png"] # link or path of image for opengraph, twitter-cards
 
     # profileMode:

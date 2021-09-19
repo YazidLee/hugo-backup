@@ -3,19 +3,21 @@
 <a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备16007812号-1</a>
 </footer>
 
-{{- /* 加载自定义字体，字体文件较大时，使用这种延迟加载的方式 */ -}}
-{{ $webfontloaderjs := resources.Get "js/webfontloader.min.js" }}
-<script src='{{ $webfontloaderjs.RelPermalink }}'>
-</script>
-
+{{ partial "lazy-gallery.html" . }}
 <script>
-    WebFont.load({
-        custom: {
-            families: ['JetBrainsMono-Regular'],
-        },
-        classes: false,
-        active() {
-            document.querySelectorAll("code").forEach(ele => ele.style.fontFamily = 'JetBrainsMono-Regular');
-        }
-    });
+    const lazyLoadInstance = new LazyLoad({
+        // Your custom settings go here
+    }); 
+    
+    const config = {
+        selector: ".lightgallery",
+        speed: 400,
+        hideBarsDelay: 2000,
+        thumbnail: true,
+        exThumbImage: "data-thumbnail",
+        thumbWidth: 80,
+        thumbContHeight: 80,
+        actualSize: false
+    };
+    lightGallery(document.getElementsByClassName('post-content')[0], config);
 </script>

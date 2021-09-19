@@ -8,6 +8,7 @@ cover:
     alt: "Hugo"
 categories: ["Hugo"]
 tags: ["Hugo"]
+katex: false
 ---
 
 以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。
@@ -48,7 +49,7 @@ hugo new site hello-hugo
 
 进入`hello-hugo`目录，Hugo生成的内容如下图所示：
 
-![](http://images.liyangjie.cn/image/Hugo_init_directory.png#center)
+![](https://images.liyangjie.cn/image/Hugo_init_directory.png#center)
 
 这些大致作用如下：
 
@@ -80,14 +81,14 @@ git submodule update --remote --merge
 
 完成后，会在`themes`目录下会多出一个`PaperMod`目录：
 
-![](http://images.liyangjie.cn/image/Hugo_theme_directory.png#center)
+![](https://images.liyangjie.cn/image/Hugo_theme_directory.png#center)
 
 可以发现，这个目录的结构与我们自己的`hello-hugo`目录十分相似，各目录的作用也基本一致。
 
 随后，为了使用这个主题，需要在`config.toml`中激活，为了保持和PaperMod一致，这里将这个文件的后缀修改为`.yml`，在`config.yml`中配置如下：
 
 ```yaml
-baseURL: "http://example.org/"
+baseURL: "https://example.org/"
 languageCode: "en-us"
 title: "Hello Hugo"
 theme: "PaperMod"
@@ -138,7 +139,7 @@ draft: false
 hugo server
 ```
 
-![](http://images.liyangjie.cn/image/Hugo_PaperMod_init.png#center)
+![](https://images.liyangjie.cn/image/Hugo_PaperMod_init.png#center)
 
 :sob:emmmmmmm，怎么说呢，有成果出来了，但是效果好像不太好，别急，接下来我们慢慢完善。
 
@@ -146,13 +147,13 @@ hugo server
 
 基本上每个主题都会提供相应的demo，PaperMod的[demo](https://adityatelange.github.io/hugo-PaperMod/)如下：
 
-![](http://images.liyangjie.cn/image/Hugo_PaperMod_demo.png#center)
+![](https://images.liyangjie.cn/image/Hugo_PaperMod_demo.png#center)
 
 我们现在就以它为目标进行改进。
 
 学习的最快方式就是模仿，所以我们直接到[demo](https://adityatelange.github.io/hugo-PaperMod/)的github(注意是PaperMod demo的github，而不是PaperMod的github)上把`config.yml`抄过来。
 
-![](http://images.liyangjie.cn/image/Hugo_PaperMod_demo_config.png#center)
+![](https://images.liyangjie.cn/image/Hugo_PaperMod_demo_config.png#center)
 
 可以注意到前几行配置我们就新增了一条`paginate: 5`，其他保持不变，从`enableInlineShortcodes`开始都是来自demo的配置。
 
@@ -208,7 +209,7 @@ hugo server
 
 完成上述操作后，再看看效果：
 
-![](http://images.liyangjie.cn/image/Hugo_PaperMod_archives+search.png#center)
+![](https://images.liyangjie.cn/image/Hugo_PaperMod_archives+search.png#center)
 
 :smirk:像那么回事了吧！
 
@@ -241,7 +242,7 @@ hugo server
 
   结果如下：
 
-  ![](http://images.liyangjie.cn/image/Hugo_PaperMod_home_info.png#center)
+  ![](https://images.liyangjie.cn/image/Hugo_PaperMod_home_info.png#center)
   
   关于`socialIcons`参数，[PaperMod官网](https://github.com/adityatelange/hugo-PaperMod/wiki/Icons)给出了具体的参照表。
   
@@ -260,13 +261,13 @@ hugo server
 
 - `ShowShareButtons`是否显示分享博客按钮，具体按钮的设定仍可参照[PaperMod官网](https://github.com/adityatelange/hugo-PaperMod/wiki/Icons)
 
-  ![](http://images.liyangjie.cn/image/Hugo_shareicons.png#center)
+  ![](https://images.liyangjie.cn/image/Hugo_shareicons.png#center)
 
 - `ShowReadingTime`是否显示文章阅读时间
 
 - `ShowBreadCrumbs` 是否显示面包屑
 
-  ![](http://images.liyangjie.cn/image/Hugo_breadcrumbs.png#center)
+  ![](https://images.liyangjie.cn/image/Hugo_breadcrumbs.png#center)
 
 - `ShowCodeCopyButtons`是否显示代码复制按钮
 
@@ -310,11 +311,11 @@ hugo server
 
   再来看看结果，是不是有点味道了：
 
-  ![](http://images.liyangjie.cn/image/Hugo_list_with_cover.png#center)
+  ![](https://images.liyangjie.cn/image/Hugo_list_with_cover.png#center)
 
   
   
-  ![](http://images.liyangjie.cn/image/Hugo_single_with_cover.png#center)
+  ![](https://images.liyangjie.cn/image/Hugo_single_with_cover.png#center)
   
   
 
@@ -351,7 +352,7 @@ series:
 
 这时候再进入网站的`Tags`导航项，就可以看到我们的标签和数量了：
 
-![](http://images.liyangjie.cn/image/Hugo_tags.png#center)
+![](https://images.liyangjie.cn/image/Hugo_tags.png#center)
 
 ### 代码样式相关
 
@@ -393,7 +394,7 @@ public V put(K key, V value) {
 
 显示效果如图：
 
-![](http://images.liyangjie.cn/image/Hugo_code.png#center)
+![](https://images.liyangjie.cn/image/Hugo_code.png#center)
 
 ### 增加评论区
 
@@ -425,7 +426,7 @@ comments: true
 
 最后来看看效果：
 
-![](http://images.liyangjie.cn/image/Hugo_comments.png#center)
+![](https://images.liyangjie.cn/image/Hugo_comments.png#center)
 
 配置入门大致就先讲到这里，下面简单介绍下我的站点部署方式。
 
@@ -586,7 +587,7 @@ nginx
 
 客户端打开浏览器，输入你的域名(默认80端口可以不写，否则必须写)，能够成功跳转到`https`，地址栏能够显示小锁(小锁表示网站使用的证书是安全的)就表示已经成功了：
 
-![](http://images.liyangjie.cn/image/Hugo_nginx_success.png)
+![](https://images.liyangjie.cn/image/Hugo_nginx_success.png)
 
 ## 留个坑
 

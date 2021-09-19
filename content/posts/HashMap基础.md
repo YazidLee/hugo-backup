@@ -4,16 +4,17 @@ summary: "Java中的HashMap，分析其基本结构及部分源码。"
 date: 2021-08-29T04:08:04+08:00
 draft: false
 cover:
-    image: "http://images.liyangjie.cn/image/Hasmap_cover.png"
+    image: "https://images.liyangjie.cn/image/Hasmap_cover.png"
     alt: "HashMap"
 categories: ["Java"]
 tags: ["HashMap"]
+katex: false
 ---
 HashMap是Java程序员使用频率最高处理的数据结构之一，线程不安全，允许null作为键和值。HashMap对Key要求是不可变类型的，设想如果是可变类型的Key，那么在使用过程中很有可能对Key对象进行了修改，导致哈希值发生变化，最终无法定位到HashMap中的元素。
 
 Java8对HashMap进行了大修改，为了防止链表过大，影响插入和查找的效率(链表过大时，时间复杂度为*O(n)*)，当链表元素的数量超过某个值时，自动将链表转换为红黑树(时间复杂度为*O(log n)*，注意这个地方有个坑，文章最后会介绍)
 ## 基础结构
-![](http://images.liyangjie.cn/image/HashMap.png)
+![](https://images.liyangjie.cn/image/HashMap.png)
 简单来说，HashMap就是一个数组，数组中的每个位置被称做**bin**或者**bucket**(中文翻译为**桶**)，每个**桶**中都存放着一些**Node**(结点)。当一个桶中的Node数量较少的时候，使用链表对Node进行存储；当一个桶中的Node数量超过某个阈值的时候，就会将链表转换为红黑树，这个操作叫做**treeify**，即"树化"，注意树化操作还需要满足另外一个条件，就是数组的长度要超过`MIN_TREEIFY_CAPACITY = 64`，否则它的操作就不是树化，而是**resize**。同样，在resize操作的时候，也会判断一个桶中的Node数量是否会少于某个阈值，如果满足条件，则会重新将红黑树转换回链表，这个操作称为**untreeify**。
 
 首先介绍几个重要的参数：
@@ -136,7 +137,7 @@ final void treeifyBin(Node<K,V>[] tab, int hash) {
 **扩容(resize)** 就是重新计算容量、扩大数组容量以及将已有元素重新放置。若向HashMap对象里不停的添加元素，而HashMap对象内部的数组存储的元素达到一定数量时，就需要扩大数组的长度，以便能装入更多的元素。当然Java里的数组是无法自动扩容的，方法是使用一个新的、更大的数组代替已有的容量小的数组。
 
 当然，“能够装入更多的元素”这个说法不太严谨，其实就算不扩容，理论上也能不停地加入元素，因为链表和红黑树都能无限扩展：
-![](http://images.liyangjie.cn/image/HashMap_Full.png)
+![](https://images.liyangjie.cn/image/HashMap_Full.png)
 HashMap的查询和插入效率很高，理论上能达到常数级别，但当每个桶中的Node都非常多，查询效率和插入效率就会大打折扣，每次查询或者插入需要比较的次数迅速增加，链表会退化为O(n)(JDK8之前)，而红黑树也需要O(logn)。因此，当Node过多，可以通过扩容的方式，将集中在同若干个桶中的Node分散到更多的桶中，用空间换取时间
 
 #### (length - 1) & hash
@@ -176,11 +177,11 @@ if ((p = tab[i = (n - 1) & hash]) == null)
 上述代码中`i = (n - 1) & hash`很明显是在获取哈希值为`hash`的key所对应的数组索引(替代求余操作)，其中的`n`值为数组的`length`，所以这个索引实际上就是`(length - 1) & hash`。
 将两个int类型的正整数进行按位与计算，结果不会超过两个数中的最小者，所以上面的操作结果不会超过`length - 1`，即结果范围为：*[0, length - 1]*，这就将`hash`映射到了数组的索引中。如下图所示，假定容量为64：
 
-![](http://images.liyangjie.cn/image/hash_length-1.png)
+![](https://images.liyangjie.cn/image/hash_length-1.png)
 
 随之而来的一个问题是，那为什么一定要是2的整数幂呢？任意一个容量`(randomLength - 1) & hash`进行按位与不也可以得到不超过容量的索引吗？现在假设不是2的整数次幂，比如62，如下图所示。绿色位置的值为0，此时进行按位与操作，不管`hash`中的红色部分值是0还是1，计算结果中相应位置上的值都是0。这意味着，计算后的索引结果中，不能取得*[0, 61]*这个区间内的所有值，有些值是不可能得到的，比如2, 3等等(因为结果的第二位是0，所以不可能是2和3)，也即HashMap中会有许多桶始终为空，造成了链表或者红黑树的高度增加，效率降低。因此，`(length - 1)`的二进制表示需要全部为1，也即`length`必须是2的整数幂。
 
-![](http://images.liyangjie.cn/image/hash_length-3.png)
+![](https://images.liyangjie.cn/image/hash_length-3.png)
 
 #### int hash(Object)方法
 
@@ -308,7 +309,7 @@ final Node<K,V>[] resize() {
 3. 由于红黑树较为复杂 ~~(我还不会)~~ ，这里只分析链表的情况
 4. 请注意这个地方有个很显眼的 `preserve order` ，这个是JDK开发人员的注释，为什么要特别加这么一条注释呢？其实是因为这个地方在Java8之前有个不算坑的坑，这里就稍微说明一下：由于Java8之前，采用的是链表的头插法，因此在扩容过程中，有可能导致链表结点之间的顺序改变，这在一般情况下并不是什么问题，但在多线程环境下，有概率出现循环链表，从而出现死循环的情况。有人就把这个问题反馈给了JDK开发人员，但是，HashMap的说明中明确指出了，HashMap是线程不安全的，所以当时也并没有对这个问题进行解决(这纯粹就是使用者的锅)。但是到了Java8，这个问题被重写HashMap的JDK开发人员顺手给解决了，他特地在这标注了一个 `preserve order`，表示已经解决了那个坑，有兴趣的话可以访问这个链接[JAVA HASHMAP的死循环](https://coolshell.cn/articles/9606.html)
 5. 这个位置就是要开始将旧数组中的链表搬到新数组的桶中了。与Java8之前的方法不同，在这段代码中，没有对每个Node重新进行hash值的计算(为了在新的数组中确定Node的索引值)，而是使用了`(e.hash & oldCap) == 0`这么一个熟悉的条件判断进行索引位置的确定。啧，怎么又是个按位与操作？之前我们使用过`hash & (length - 1)`确定索引值，而这里的`(e.hash & oldCap) == 0`又是个什么操作？仔细分析，不难发现，`oldCap`表示扩容前的容量，是一个2的整数幂的值，所以它的二进制表示为某个特定位上的值为1，其余位置全是0，用它和结点的hash值进行按位与，就是判断结点的`hash`值在那个对应的特定位置上是否为0。那这又有什么用呢？结合下面图片进行分析：
-   ![](http://images.liyangjie.cn/image/HashMap_resize.png)
+   ![](https://images.liyangjie.cn/image/HashMap_resize.png)
    图中，上面两个二进制数表示的是扩容前的某个结的`hash`值和`oldCap - 1`；下面两个二进制数表示的是扩容后的**同一个**结点的hash值和`newCap - 1`。通过观察，由于扩容时容量加倍，使得`newCap - 1`比`oldCap - 1`多出了一位1(绿色的部分)，因此进行`hash & (length - 1)`时，`hash`中参与计算的位也多了一位(红色的部分)。这个位置`hash`的值不是0就是1，也就是说，`hash & (newCap - 1)`和`hash & (oldCap - 1)`的结果就差在这一位上(因为是计算同一个结点在新老数组中的索引位置，参与计算的`hash`值是相同的，而且容量减1的值在各个位上都是1)。所以我们就可以做出一个判断：
    - 当红色部分的值为0时，新数组中的索引值newIndex和老数组中的索引值相同，即`newIndex = oldIndex`
    - 当红色部分的值为1时，新数组中的索引值newIndex是老数组中的索引值加上老数组的容量`newIndex = oldIndex + oldCap`。

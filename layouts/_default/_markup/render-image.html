@@ -1,0 +1,6 @@
+<figure>
+    {{- dict "Src" .Destination "Title" .Text "Caption" .Title "Linked" true "Resources" .Page.Resources | partial "image.html" -}}
+    <figcaption class="image-caption">
+        {{- .Title | safeHTML -}}
+    </figcaption>
+</figure>

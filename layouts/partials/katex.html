@@ -1,0 +1,54 @@
+<!-- The loading of KaTeX is deferred to speed up page rendering -->
+{{- if not .Site.Params.assets.disableFingerprinting }}
+{{- $katex := resources.Get "js/katex.js" | minify | fingerprint }}
+<script defer crossorigin="anonymous" src="{{ $katex.RelPermalink }}" integrity="{{ $katex.Data.Integrity }}"></script>
+{{- else }}
+{{- $katex := resources.Get "js/katex.js" | minify }}
+<script defer crossorigin="anonymous" src="{{ $katex.RelPermalink }}"></script>
+{{- end }}
+
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+{{- if not .Site.Params.assets.disableFingerprinting }}
+{{- $autorender := resources.Get "js/auto-render.js" | minify | fingerprint }}
+<script defer crossorigin="anonymous" src="{{ $autorender.RelPermalink }}" integrity="{{ $autorender.Data.Integrity }}"></script>
+{{- else }}
+{{- $autorender := resources.Get "js/auto-render.js" | minify }}
+<script defer crossorigin="anonymous" src="{{ $autorender.RelPermalink }}"></script>
+{{- end }}
+
+<script>
+    // 配置允许使用 $公式$ 类型的行内公式
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          // customised options
+          // • auto-render specific keys, e.g.:
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          // • rendering keys, e.g.:
+          throwOnError : false
+        });
+    });
+
+    // 延迟加载字体
+    window.WebFontConfig = {
+        custom: {
+            families: ['KaTeX_AMS', 'KaTeX_Caligraphic:n4,n7', 'KaTeX_Fraktur:n4,n7',
+            'KaTeX_Main:n4,n7,i4,i7', 'KaTeX_Math:i4,i7', 'KaTeX_Script',
+            'KaTeX_SansSerif:n4,n7,i4', 'KaTeX_Size1', 'KaTeX_Size2', 'KaTeX_Size3',
+            'KaTeX_Size4', 'KaTeX_Typewriter'],
+        },
+    };
+</script>
+
+<!-- webfontloader-->
+{{- if not .Site.Params.assets.disableFingerprinting }}
+{{- $webfontloader := resources.Get "js/webfontloader.min.js" | minify | fingerprint }}
+<script defer crossorigin="anonymous" src="{{ $webfontloader.RelPermalink }}" integrity="{{ $webfontloader.Data.Integrity }}"></script>
+{{- else }}
+{{- $webfontloader := resources.Get "js/webfontloader.min.js" | minify }}
+<script defer crossorigin="anonymous" src="{{ $webfontloader.RelPermalink }}"></script>
+{{- end }}

@@ -1,0 +1,37 @@
+{{- /* lazysizes or vanilla-lazyload and lightgallery.js */ -}}
+{{- $src := .Src -}}
+{{- with dict "Path" .Src "Resources" .Resources | partial "resource.html" -}}
+    {{- $src = .RelPermalink -}}
+{{- end -}}
+
+{{- $small := .SrcSmall | default $src -}}
+{{- with dict "Path" .SrcSmall "Resources" .Resources | partial "resource.html" -}}
+    {{- $small = .RelPermalink -}}
+{{- end -}}
+
+{{- $large := .SrcLarge | default $src -}}
+{{- with dict "Path" .SrcLarge "Resources" .Resources | partial "resource.html" -}}
+    {{- $large = .RelPermalink -}}
+{{- end -}}
+
+{{- $alt := .Alt | default $src -}}
+{{- $loading := resources.Get "svg/loading.svg" | minify -}}
+{{- if .Linked -}}
+    <a class="lightgallery" href="{{ $large | safeURL }}" title="{{ .Title | default $alt }}" data-thumbnail="{{ $small | safeURL }}"{{ with .Caption }} data-sub-html="<h2>{{ . }}</h2>{{ with $.Title }}<p>{{ . }}</p>{{ end }}"{{ end }}{{ with .Rel }} rel="{{ . }}"{{ end }}>
+        <img
+            class="lazy"
+            src="{{ $loading.RelPermalink }}"
+            data-src="{{ .Src | safeURL }}"
+            loading="lazy"
+            title="{{ .Title | default $alt }}"
+            alt="{{ $alt }}"{{ with .Height }} height="{{ . }}"{{ end }}{{ with .Width }} width="{{ . }}"{{ end }} />
+    </a>
+{{- else -}}
+    <img
+        class="lazy"
+        src="{{ $loading.RelPermalink }}"
+        data-src="{{ .Src | safeURL }}"
+        loading="lazy"
+        alt="{{ $alt }}"
+        title="{{ .Title | default $alt }}"{{ with .Height }} height="{{ . }}"{{ end }}{{ with .Width }} width="{{ . }}"{{ end }} />
+{{- end -}}
