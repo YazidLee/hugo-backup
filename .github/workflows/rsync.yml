@@ -28,6 +28,9 @@ jobs:
         with:
           hugo-version: '0.85.0'
           # extended: true
+          
+      - name: Build
+        run: hugo
 
       - name: Depoly
         uses: burnett01/rsync-deployments@5.1
