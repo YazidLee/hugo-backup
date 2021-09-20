@@ -5,7 +5,15 @@ name: deploy
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
+    paths-ignore:
+      - 'archetypes/**'
+      - '.gitignore'
+      - '.gitmodules'
+      - 'README.md'
     branches: [ master ]
+  pull_request:
+  # Manual run
+  workflow_dispatch:
     
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -20,18 +28,22 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v2
         with:
+          ref: master
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
-
+      
+      # Prepare Hugo env
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.85.0'
+          hugo-version: 'latest'
           # extended: true
-          
-      - name: Build
-        run: hugo
 
+      # Hugo generate static site    
+      - name: Build
+        run: hugo --gc --verbose --minify
+
+      # Deploy site by using rsync
       - name: Deploy
         uses: burnett01/rsync-deployments@5.1
         with:

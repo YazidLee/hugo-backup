@@ -112,10 +112,10 @@ params:
         - name: RsS
           url: "index.xml"
 
-    # editPost:
-    #     URL: "https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content"
-    #     Text: "Suggest Changes" # edit text
-    #     appendFilePath: true # to append file path to Edit link
+    editPost:
+        URL: "https://github.com/YazidLee/hugo-backup/tree/master/content"
+        Text: "Suggest Changes" # edit text
+        appendFilePath: true # to append file path to Edit link
 
     label:
         text: "仙羡小站"
@@ -140,8 +140,8 @@ params:
             SiteVerificationTag: "9Y3NHOxbRwaLb2hkR4GpapDQFWHBjXBYI585l_bLo6g"
         # bing:
         #     SiteVerificationTag:
-        # yandex:
-        #     SiteVerificationTag:
+        yandex:
+            SiteVerificationTag: "3975215bf5f68fc0"
 
     cover:
         hidden: true # hide everywhere but not in structured data
@@ -177,6 +177,7 @@ markup:
         # 设置noClasses为false需要手动生成css，放在assets/css/extended/中
         # 生成方式为 hugo gen chromastyles --style=dracula > assets/css/extended/chroma.css，其中dracula可以更换为任意代码主题
         noClasses: false
+        # noClasses为false时，style失效，因此必须手动生成css
         style: monokai
 
 privacy:

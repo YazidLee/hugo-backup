@@ -139,7 +139,7 @@ ThreadLocal.ThreadLocalMap inheritableThreadLocals = null;
 
 现在，可以画出一个大致的关系草图如下，先以 `threadLocals` 为例， `inheritableThreadLocals` 原理与 `threadLocals` 相同：
 
-![ThreadLocal草图](https://images.liyangjie.cn/image/threadlocal-1.png)
+![](https://images.liyangjie.cn/image/threadlocal-1.png)
 
 从图上能更直观地看出 `ThreadLocal` 的“地位”，在层次结构上，它只是作为 `Thread` 中一个哈希表的Key。但它的功能可不仅仅是个Key，再回头看看 `threadLocals` 源码注释：
 
@@ -769,9 +769,9 @@ private boolean cleanSomeSlots(int i, int n) {
 }
 ```
 
-这里把源码中的所有注释都搬进来了，非常详细的一段注释，从设计思想到各参数的详细讲解，应有尽有。代码不长，核心循环的工作是以 `i` 为起点对哈希表进行扫描(注释中重点写明这个起始 `i` 位置一定**不是**stale entry)，看看是否存在stale entry。如果一直没扫描到，那么在扫描 $log_ 2 n$ 次后就结束循环，返回 `false` 。但如果扫描到存在 stale entry，那么 `cleanSomeSlots` 调用我们刚介绍过的 `expungeStaleEntry` 进行清理， `i` 的值将直接跳到被清理键簇的紧邻 `null` 位置，并且会将扫描次数扩大，进行额外的 $log_2 (table.length)-1$ 次扫描。
+这里把源码中的所有注释都搬进来了，非常详细的一段注释，从设计思想到各参数的详细讲解，应有尽有。代码不长，核心循环的工作是以 `i` 为起点对哈希表进行扫描(注释中重点写明这个起始 `i` 位置一定**不是**stale entry)，判断是否存在stale entry。如果一直没扫描到，那么在扫描 $log_2 n$ 次后就结束循环，返回 `false` 。如果扫描到存在 stale entry，那么 `cleanSomeSlots` 调用我们刚介绍过的 `expungeStaleEntry` 进行清理， `i` 的值将直接跳到被清理键簇的紧邻 `null` 位置，并且会将扫描次数扩大，进行额外的 $log_2 (table.length)-1$ 次扫描。
 
-每次发现stale entry，就会重新将扫描次数进行增加，哈希表中的stale entry越多，扫描的次数就会越多，进行的清理操作就越多，这就是一个逐步启发的过程。代码注释中说到这种方式是一种折衷的实现，在完全不进行扫描和全局扫描之间找到一个平衡点。
+每次发现stale entry，就会重新将扫描次数进行增加，哈希表中的stale entry越多，扫描的次数就会越多，进行的清理操作就越多，这就是一个逐步启发的过程。代码注释中说到这种方式是一种折中的实现，在完全不进行扫描和全局扫描之间找到一个平衡点。
 
 这个方法会在两个地方被调用，第一个是在 `set` 方法的末尾，新增元素成功后，在 `rehash` 之前进行一次启发式清理，这时候传入的两个参数分别为新增元素的位置 `i` 及新增后所有元素的个数 `sz` 。
 
@@ -850,7 +850,7 @@ private void replaceStaleEntry(ThreadLocal<?> key, Object value,
 
 这也是个非常繁琐的方法，但是注释内容较多，理解起来也很方便。
 
-1. 这个方法是在 `set` 中被调用的，在线性探测元素的插入(或修改)位置时，如果遇到了stale entry，那么就进入到了 `replaceStaleEntry` 调用，传入的参数为元素的 `key` 、 `value` 以及stale entry的位置 `i` 。
+1. 这个方法是在 `set` 中被调用的，在线性探测插入(或修改)元素时，如果遇到了stale entry，那么就进入到 `replaceStaleEntry` ，传入的参数为元素的 `key` 、 `value` 以及stale entry的位置 `i` 。
 
 ```java
 // k为null的情况，表示stale entry                                                        
@@ -860,7 +860,7 @@ if (k == null) {
 }
 ```
 
-1. `replaceStaleEntry` 中的第一个循环主要作用是找到 `i` 位置所在键簇最前端的某个stale entry位置。举例说明， `set` 方法将传入参数 `K8` ，图中 `K8` 为待探测元素，计算得它的起始位置为 `0` 。由于 `K4` 为有效entry，且 `K4 ≠ K8` ，因此 `set` 方法中的 `i` 移动至 `1` 位置。 `1` 位置上的 `K5` 是stale entry，因此，从这里开始调用 `replaceStaleEntry` ，传入的第三个参数 `staleSlot` 为 `1` 。这时候， `replaceStaleEntry` 的第一个循环就从这个 `staleSlot` 开始**向前移动**，寻找最前端的stale slot，即 `13` (虽然 `15` 也是stale slot，但它不是这个键簇的最前端)，并赋值 `slotToExpunge = 13` 。
+1. `replaceStaleEntry` 中的第一个循环主要作用是找到 `i` 位置所在键簇最前端的某个stale entry位置。举例说明， `set` 方法将传入参数 `K8` ，图中 `K8` 为待探测元素，计算得到它的起始位置为 `0` 。由于 `K4` 为有效entry，且 `K4 ≠ K8` ，因此 `set` 方法中的 `i` 移动至 `1` 位置。 `1` 位置上的 `K5` 是stale entry，因此，从这里开始调用 `replaceStaleEntry` ，传入的第三个参数 `staleSlot` 为 `1` 。这时候， `replaceStaleEntry` 的第一个循环就从这个 `staleSlot` 开始**向前移动**，寻找最前端的stale slot，即 `13` (虽然 `15` 也是stale slot，但它不是这个键簇的最前端)，并赋值 `slotToExpunge = 13` 。
 
     ![](https://images.liyangjie.cn/image/threadlocal-11.png)
 
@@ -877,7 +877,7 @@ if (k == null) {
 
     ![](https://images.liyangjie.cn/image/threadlocal-12.png)
 
-    注意这个赋值操作最多只会执行一次，第二次再进来 `slotToExpunge == staleSlot` 这个条件一定不会再满足了，这个循环的起始位置是 `staleSlot` 的 **下个位置** ，已经就不等于 `staleSlot` 了，往后的 `i` 值就更不会满足该条件了。
+    这个赋值操作最多只会执行一次，第二次再进来 `slotToExpunge == staleSlot` 这个条件一定不会再满足了，这个循环的起始位置是 `staleSlot` 的 **下个位置** ，已经就不等于 `staleSlot` 了，往后的 `i` 值就更不会满足该条件。
 
 3. 第二个循环过程中，如果找到了满足 `k == key` 条件的 `Entry` ，那么就会进入替换及清理的代码中：
 
@@ -896,7 +896,7 @@ if (k == null) {
     }
     ```
 
-    `staleSlot` 是调用 `replaceStaleEntry` 方法时传入的参数，也就是 `set` 方法调用过程中发现的第一个stale entry的位置。这里先将当前 `Entry` 的 `value` 进行了替换修改，然后将当前位置 `i`与 `staleSlot` 位置的元素进行了交换，交换过后， `i` 位置变为stale entry，而 `staleSlot` 位置成为了有效entry。
+    `staleSlot` 是调用 `replaceStaleEntry` 方法时传入的参数，也就是 `set` 方法调用过程中发现的第一个stale entry的位置。这里先将当前 `Entry` 的 `value` 进行了替换修改，然后将当前位置 `i` 与 `staleSlot` 位置的元素进行了交换，交换过后， `i` 位置变为stale entry，而 `staleSlot` 位置成为了有效entry。
 
     这段代码就是 `replaceStaleEntry` 命名的由来，它将原来 `set` 中识别出的stale entry替换为了一个新的有效entry(key是原来已经存在的，仅修改了value)。下图中， `K8 == K8'` ，当 `i == 4` 时，进入上述逻辑中，先将 `K8'` 的 `value` 进行替换修改，再将 `K5` 与 `K8'` 进行交换，得到下面的成果。
 
@@ -1006,7 +1006,7 @@ userA's data
 
 即使执行我们执行的任务是用户B的Task，但是还是获取到了A的数据。
 
-因此， `ThreadLocal` 使用中需要注意用完立即使用 `remove` 清理。
+解决方案与内存泄漏相同，`ThreadLocal` 使用完，手动调用 `remove` 进行清理。
 
 ### ThreadLocal数据向子线程传递
 

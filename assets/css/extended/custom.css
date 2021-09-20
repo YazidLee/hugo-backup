@@ -16,6 +16,8 @@ h1, h2, h3, h4, h5, h6, .toc, footer {
 }
 
 .post-content img {
+    /* 居中 */
+    margin: 1rem auto;
     border-radius: var(--radius);
     border: 1px solid var(--border);
 }
@@ -46,17 +48,17 @@ h1, h2, h3, h4, h5, h6, .toc, footer {
 }
 
 /* 代码突出显示的css，使用方式例： ```java {hl_lines=[24]}， 这个hl_lines数组可以包含多段分开的代码，如 {hl_lines=[24,"50-60"]} */
-.hl {
-    filter: invert(.9);
-    backdrop-filter: hue-rotate(120deg) opacity(.9);
+.post-content .highlight .chroma .hl {
+    background-color: rgba(27, 104, 109, .85) !important; 
 }
 
 .chroma {
     border-radius: var(--radius);
 }
 
+/* 带标题图片显示 */
 figure {
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
     text-align: center;
 }
 
