@@ -1,4 +1,4 @@
-# 将静态站点同步到自己的服务器
+# deploy hugo site to my own server
 name: deploy
 
 # Controls when the workflow will run
@@ -10,7 +10,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "rsync"
-  rsync:
+  deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-20.04
 
@@ -32,7 +32,7 @@ jobs:
       - name: Build
         run: hugo
 
-      - name: Depoly
+      - name: Deploy
         uses: burnett01/rsync-deployments@5.1
         with:
           switches: -avzr --delete
