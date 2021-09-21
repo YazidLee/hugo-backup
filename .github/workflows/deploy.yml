@@ -13,6 +13,12 @@ on:
       - 'README.md'
     branches: [ master ]
   pull_request:
+    paths-ignore:
+      - '.forestry/**'
+      - 'archetypes/**'
+      - '.gitignore'
+      - '.gitmodules'
+      - 'README.md'
   # Manual run
   workflow_dispatch:
     

@@ -548,7 +548,7 @@ private void resize() {
     ![](https://images.liyangjie.cn/image/threadlocal-4.png)
 
 2.  `set` 方法的主要作用是新增和修改哈希表中的元素，处理冲突的方式也是常用的线性探测法，即如果使用Key( `ThreadLocal` 类型)的 `threadLocalHashCode` 计算出的位置已经存在 `Entry` (这个 `Entry` 有可能是有效的元素，也有可能是Key已经被回收的 `stale entry` )，就进入循环，判断是否是修改操作。注意循环中还有个 `replaceStaleEntry` ，它会执行一些清理工作，然后将 `key` 、 `value` 放到合适的 `Entry` 中，后面会详细介绍。一直探测到某个位置的 `Entry` 为 `null` ，就用 `key` 、 `value` 新建 `Entry` 并放在该位置。
-3. `rehash` 操作前，会先进行一次 `cleanSomeSlots` 清理操作，这个方法在源码注释中使用了*Heuristically(启发式地)*进行描述，因此这里简称它为 `启发式清理` 。而在 `rehash` 方法中，在调用 `resize` 方法扩容前，还会调用另外一个 `expungeStaleEntries` 清理操作，熟悉的词汇，在源码注释中描述为*Expunge all stale entries in the table(清理所有stale entry)*，它本质上是调用了 `expungeStaleEntry` 方法，而这个方法是对哈希表中的stale entry进行部分清理，后面就简称它为 `分段式清理` 。
+3. `rehash` 操作前，会先进行一次 `cleanSomeSlots` 清理操作，这个方法在源码注释中使用了 *Heuristically(启发式地)* 进行描述，因此这里简称它为 `启发式清理` 。而在 `rehash` 方法中，在调用 `resize` 方法扩容前，还会调用另外一个 `expungeStaleEntries` 清理操作，熟悉的词汇，在源码注释中描述为 *Expunge all stale entries in the table(清理所有stale entry)* ，它本质上是调用了 `expungeStaleEntry` 方法，而 `expungeStaleEntry` 方法是对哈希表中的stale entry进行部分清理，后面就简称它为 `分段式清理` 。
 4. 两个清理工作完成后，才开始正式的 `resize` 扩容流程，新建一个两倍容量的数组，将旧表中的元素转移到新表，同时清理一些stale entry。
 
 ### getEntry

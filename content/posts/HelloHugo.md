@@ -442,7 +442,7 @@ Hugo与Hexo类似，提供了直接部署为Github Pages的方式，比较简单
 
 - 云主机的操作系统为`Debian 4.19.37-5+deb10u2 (2019-08-08) x86_64 GNU/Linux`，其他发行版也都可以
 - 静态资源服务器`nginx/1.20.1`
-- `git/2.20.1`
+- `git/2.27.0`
 
 #### 域名、证书准备
 
@@ -472,7 +472,12 @@ git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
 
 ```shell
 git init --bare hello-hugo.git
+cd hello-hugo.git
+# 仅checkout public文件夹
+git sparse-checkout init --cone
+git sparse-checkout set public
 ```
+需要注意：[sparse-checkout](https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/)是Git 2.25.0推出的新特性。
 
 将该目录授权给刚创建好的git用户
 

@@ -1,4 +1,7 @@
 <!-- 百度统计 -->
+{{- if .Site.Params.analytics.baidu.SiteVerificationTag }}
+<meta name="baidu-site-verification" content="{{ .Site.Params.analytics.baidu.SiteVerificationTag }}" />
+{{- end }}
 <script>
     var _hmt = _hmt || [];
     (function() {
