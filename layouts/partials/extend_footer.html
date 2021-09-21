@@ -5,6 +5,13 @@
 
 {{ partial "lazy-gallery.html" . }}
 <script>
+    {{- /* cover lazy load */}}
+    {{ if .IsPage }}
+    const coverImg = document.querySelector(".entry-cover img");
+    if (coverImg) {
+        coverImg.classList.add("lazy");
+    }
+    {{ end }}
     const lazyLoadInstance = new LazyLoad({
         // Your custom settings go here
     }); 
@@ -19,5 +26,6 @@
         thumbContHeight: 80,
         actualSize: false
     };
+
     lightGallery(document.getElementsByClassName('post-content')[0], config);
 </script>
