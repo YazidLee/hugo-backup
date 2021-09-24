@@ -79,6 +79,13 @@ figure img {
     overflow: hidden;
 }
 
+/* 封面图样式修改 */
+.entry-cover img {
+    margin: 0 auto;
+    width: auto;
+}
+
+/* 评论区样式 */
 #vcomments {
     margin-top: 15px;
 }

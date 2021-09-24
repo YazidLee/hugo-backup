@@ -4,7 +4,7 @@ summary: "Github Actions简介，并用其实现Hugo的部署。"
 date: 2021-09-21T00:46:39+08:00
 draft: false
 cover:
-    image: "https://images.liyangjie.cn/image/hugo-github-action-cover.png"
+    image: "https://i.loli.net/2021/09/24/COFQ9BImX2ajTVU.png"
     alt: ""
 categories: ["Hugo"]
 tags: ["Hugo", "Github Actions", "rsync"]
@@ -34,7 +34,7 @@ GitHub Actions中的几个重要概念如下：
 
 下图由[GitHub官方](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions)提供，表示GitHub Actions的整体结构：
 
-![](https://images.liyangjie.cn/image/overview-actions-design.png#center)
+![](https://i.loli.net/2021/09/24/Lu1MjwvToWkdxC9.png#center)
 
 ### 简单示例
 
@@ -79,7 +79,7 @@ jobs:
 
 该action的执行流程如下图所示：
 
-![](https://images.liyangjie.cn/image/overview-actions-event.png#center)
+![](https://i.loli.net/2021/09/24/MflcjixQ5VWZwSa.png)
 
 为了使GitHub Actions能得到复用，GitHub提供了发布的机制，可以将自己写好的action分享给其他用户使用，详细步骤可以参考[官方文档](https://docs.github.com/en/actions/creating-actions/publishing-actions-in-github-marketplace)。
 上面示例所示，`actions/setup-node` 就是一个在社区中分享的action，它表示 github.com/actions/setup-node 这个仓库，同时也是一个action，作用是安装 `Node.js`，而 `v2` 就表示了使用的 `actions/setup-node` 的版本为 `v2` 。
@@ -144,7 +144,7 @@ jobs:
   
   进入Hugo博客仓库，点击 `Settings` ，左侧找到 `Secrets` ，进入Secrets配置:
 
-  ![](https://images.liyangjie.cn/image/github-settings-secrets.png#center)
+  ![](https://i.loli.net/2021/09/24/zoHPdwagGpcxWO7.png)
 
   如图所示，点击右上角的 `New repository secret` 创建新变量：这里先创建私钥变量 `REMOTE_KEY` ，在变量 `Name` 中输入 `REMOTE_KEY` 。从服务器上拷贝私钥文件 `rsync` 的全部内容到 `Value` 中，点击 `Add secret` 保存：
 
@@ -155,7 +155,7 @@ jobs:
   ...
   -----END OPENSSH PRIVATE KEY-----
   ```
-  ![](https://images.liyangjie.cn/image/github-add-secret.png#center)
+  ![](https://i.loli.net/2021/09/24/Omepn6wQSu8RK7U.png)
 
   使用同样的方式创建剩余Secrets：
   - `REMOTE_HOST`：远程主机地址。
@@ -254,11 +254,11 @@ action的3个 `step` 工作内容分别如下：
 
 将新创建好的action push到GitHub仓库，在Actions标签下就可以看到所有的action了。
 
-![](https://images.liyangjie.cn/image/github-action.png#center)
+![](https://i.loli.net/2021/09/24/6ErZavgHNf3hFXM.png)
 
 本地修改一些代码，提交并push后，可以看到 `deploy` 这个action的执行过程，包括执行结果(成功或者失败)、执行时间、输出等信息。
 
-![](https://images.liyangjie.cn/image/github-action-deploy.png#center)
+![](https://i.loli.net/2021/09/24/UdNvXwi9aHCYItS.png)
 
 访问自己的站点，看看是否运行成功。若一切正常，这次的部署转移计划算是顺利完成了。
 
