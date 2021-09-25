@@ -49,7 +49,7 @@ hugo new site hello-hugo
 
 进入`hello-hugo`目录，Hugo生成的内容如下图所示：
 
-![](https://images.liyangjie.cn/image/Hugo_init_directory.png#center)
+![](https://i.loli.net/2021/09/25/kINfz1TcXSOweRG.png)
 
 这些大致作用如下：
 
@@ -81,7 +81,7 @@ git submodule update --remote --merge
 
 完成后，会在`themes`目录下会多出一个`PaperMod`目录：
 
-![](https://images.liyangjie.cn/image/Hugo_theme_directory.png#center)
+![](https://i.loli.net/2021/09/25/36qkXZ8UFBHuLb4.png)
 
 可以发现，这个目录的结构与我们自己的`hello-hugo`目录十分相似，各目录的作用也基本一致。
 
@@ -139,7 +139,7 @@ draft: false
 hugo server
 ```
 
-![](https://images.liyangjie.cn/image/Hugo_PaperMod_init.png#center)
+![](https://i.loli.net/2021/09/25/Fi2SjNc3DB65sPf.png)
 
 :sob:emmmmmmm，怎么说呢，有成果出来了，但是效果好像不太好，别急，接下来我们慢慢完善。
 
@@ -147,13 +147,13 @@ hugo server
 
 基本上每个主题都会提供相应的demo，PaperMod的[demo](https://adityatelange.github.io/hugo-PaperMod/)如下：
 
-![](https://images.liyangjie.cn/image/Hugo_PaperMod_demo.png#center)
+![](https://i.loli.net/2021/09/25/SYBm6d2hvnpNPsl.png)
 
 我们现在就以它为目标进行改进。
 
 学习的最快方式就是模仿，所以我们直接到[demo](https://adityatelange.github.io/hugo-PaperMod/)的github(注意是PaperMod demo的github，而不是PaperMod的github)上把`config.yml`抄过来。
 
-![](https://images.liyangjie.cn/image/Hugo_PaperMod_demo_config.png#center)
+![](https://i.loli.net/2021/09/25/89J1xSA6d7kWutU.png)
 
 可以注意到前几行配置我们就新增了一条`paginate: 5`，其他保持不变，从`enableInlineShortcodes`开始都是来自demo的配置。
 
@@ -209,7 +209,7 @@ hugo server
 
 完成上述操作后，再看看效果：
 
-![](https://images.liyangjie.cn/image/Hugo_PaperMod_archives+search.png#center)
+![](https://i.loli.net/2021/09/25/gem9KWfEGqnp2sY.png)
 
 :smirk:像那么回事了吧！
 
@@ -242,7 +242,7 @@ hugo server
 
   结果如下：
 
-  ![](https://images.liyangjie.cn/image/Hugo_PaperMod_home_info.png#center)
+ ![](https://i.loli.net/2021/09/25/xpYU7TqcIyGVR6Z.png)
   
   关于`socialIcons`参数，[PaperMod官网](https://github.com/adityatelange/hugo-PaperMod/wiki/Icons)给出了具体的参照表。
   
@@ -261,13 +261,13 @@ hugo server
 
 - `ShowShareButtons`是否显示分享博客按钮，具体按钮的设定仍可参照[PaperMod官网](https://github.com/adityatelange/hugo-PaperMod/wiki/Icons)
 
-  ![](https://images.liyangjie.cn/image/Hugo_shareicons.png#center)
+  ![](https://i.loli.net/2021/09/25/LvTnSraM1fWI5zP.png)
 
 - `ShowReadingTime`是否显示文章阅读时间
 
 - `ShowBreadCrumbs` 是否显示面包屑
 
-  ![](https://images.liyangjie.cn/image/Hugo_breadcrumbs.png#center)
+  ![](https://i.loli.net/2021/09/25/BhbN3KgVlT2ZMyr.png)
 
 - `ShowCodeCopyButtons`是否显示代码复制按钮
 
@@ -311,11 +311,11 @@ hugo server
 
   再来看看结果，是不是有点味道了：
 
-  ![](https://images.liyangjie.cn/image/Hugo_list_with_cover.png#center)
+  ![](https://i.loli.net/2021/09/25/r5o4qg8te1kYTVL.png)
 
   
   
-  ![](https://images.liyangjie.cn/image/Hugo_single_with_cover.png#center)
+  ![](https://i.loli.net/2021/09/25/rWwZmkPN83AYS6i.png)
   
   
 
@@ -352,7 +352,7 @@ series:
 
 这时候再进入网站的`Tags`导航项，就可以看到我们的标签和数量了：
 
-![](https://images.liyangjie.cn/image/Hugo_tags.png#center)
+![](https://i.loli.net/2021/09/25/yInRS3oc9KWQrBs.png)
 
 ### 代码样式相关
 
@@ -394,7 +394,7 @@ public V put(K key, V value) {
 
 显示效果如图：
 
-![](https://images.liyangjie.cn/image/Hugo_code.png#center)
+![](https://i.loli.net/2021/09/25/wF3muHqsGAncCz6.png)
 
 ### 增加评论区
 
@@ -426,7 +426,7 @@ comments: true
 
 最后来看看效果：
 
-![](https://images.liyangjie.cn/image/Hugo_comments.png#center)
+![](https://i.loli.net/2021/09/25/Wkd3A7vbXstCG81.png)
 
 配置入门大致就先讲到这里，下面简单介绍下我的站点部署方式。
 
@@ -592,7 +592,7 @@ nginx
 
 客户端打开浏览器，输入你的域名(默认80端口可以不写，否则必须写)，能够成功跳转到`https`，地址栏能够显示小锁(小锁表示网站使用的证书是安全的)就表示已经成功了：
 
-![](https://images.liyangjie.cn/image/Hugo_nginx_success.png)
+![](https://i.loli.net/2021/09/25/vu12beN6YnJIdV5.png)
 
 ## 留个坑
 

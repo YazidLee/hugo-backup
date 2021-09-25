@@ -4,7 +4,7 @@ summary: "ThreadLocal的使用、注意事项及源码分析。"
 date: 2021-09-19T02:44:58+08:00
 draft: false
 cover:
-    image: "https://images.liyangjie.cn/image/ThreadLocal.jpg"
+    image: "https://i.loli.net/2021/09/25/HTBpP15DImOXl7A.jpg"
     alt: ""
 categories: ["Java"]
 tags: ["Java", "ThreadLocal", "Reference"]
@@ -139,7 +139,7 @@ ThreadLocal.ThreadLocalMap inheritableThreadLocals = null;
 
 现在，可以画出一个大致的关系草图如下，先以 `threadLocals` 为例， `inheritableThreadLocals` 原理与 `threadLocals` 相同：
 
-![](https://images.liyangjie.cn/image/threadlocal-1.png)
+![](https://i.loli.net/2021/09/25/NeXLKPmW4vCJbcM.png)
 
 从图上能更直观地看出 `ThreadLocal` 的“地位”，在层次结构上，它只是作为 `Thread` 中一个哈希表的Key。但它的功能可不仅仅是个Key，再回头看看 `threadLocals` 源码注释：
 
@@ -372,7 +372,7 @@ OK，至此， `ThreadLocal` 表面上的东西已经介绍得差不多了，代
 
 初步先看看 `ThreadLocalMap` 的字段：
 
-![](https://images.liyangjie.cn/image/threadlocal-2.png)
+![](https://i.loli.net/2021/09/25/q8mJRXyKC2hwM4S.png)
 
 阅读过 `HashMap` 源码的话其实这些字段都不需要再解释了，非常简单，从上到下依次为：初始容量(最大桶数量)、实际的哈希表( `Entry` 数组，它的长度一定为2^n)、当前哈希表中元素的数量、下次扩容的阈值。
 
@@ -417,7 +417,7 @@ static class ThreadLocalMap {
 
 现在可以将第一个草图进行修改了，哈希表 `ThreaedLoclaMap` 中 `Entry` 的Key实际上是一个 `WeakReference` 对象，这个对象中的 `referent` 弱指向了实际的 `ThreadLocal` 对象，虚线表示弱引用：
 
-![](https://images.liyangjie.cn/image/threadlocal-3.png)
+![](https://i.loli.net/2021/09/25/f1TJCLbvGpXl6nF.png)
 
 接下来看看 `ThreadLocalMap` 的构造函数(在 `ThreadLocal` 的 `createMap` 方法中使用到，忘记的话可以退回到上一节的 `set` 方法中查看)：
 
@@ -545,7 +545,7 @@ private void resize() {
 
 1. 首先介绍一下 `nextIndex` 和 `preIndex` 方法，它们分别计算当前位置 `i` 的下一个位置和上一个位置，这种计算方式使得数组的位置得到了循环利用，逻辑上构成了一个环形数组， `next` 表示顺时针，而 `pre` 表示逆时针，如下图所示：
 
-    ![](https://images.liyangjie.cn/image/threadlocal-4.png)
+    ![](https://i.loli.net/2021/09/25/EcMjfxBbpv8LrSt.png)
 
 2.  `set` 方法的主要作用是新增和修改哈希表中的元素，处理冲突的方式也是常用的线性探测法，即如果使用Key( `ThreadLocal` 类型)的 `threadLocalHashCode` 计算出的位置已经存在 `Entry` (这个 `Entry` 有可能是有效的元素，也有可能是Key已经被回收的 `stale entry` )，就进入循环，判断是否是修改操作。注意循环中还有个 `replaceStaleEntry` ，它会执行一些清理工作，然后将 `key` 、 `value` 放到合适的 `Entry` 中，后面会详细介绍。一直探测到某个位置的 `Entry` 为 `null` ，就用 `key` 、 `value` 新建 `Entry` 并放在该位置。
 3. `rehash` 操作前，会先进行一次 `cleanSomeSlots` 清理操作，这个方法在源码注释中使用了 *Heuristically(启发式地)* 进行描述，因此这里简称它为 `启发式清理` 。而在 `rehash` 方法中，在调用 `resize` 方法扩容前，还会调用另外一个 `expungeStaleEntries` 清理操作，熟悉的词汇，在源码注释中描述为 *Expunge all stale entries in the table(清理所有stale entry)* ，它本质上是调用了 `expungeStaleEntry` 方法，而 `expungeStaleEntry` 方法是对哈希表中的stale entry进行部分清理，后面就简称它为 `分段式清理` 。
@@ -682,27 +682,27 @@ private int expungeStaleEntry(int staleSlot) {
 
 1. 初始状态： `K1~K7` 代表一个键簇，假定 `K1~K7` 计算后得到的位置均为 `13` 。图中绿色表示有效entry，灰色表示stale entry，而白色为 `null` 。现在开始执行 `expungeStaleEntry(13)` ，即传入的参数 `staleSlot = 13` 。
 
-    ![](https://images.liyangjie.cn/image/threadlocal-5.png)
+    ![](https://i.loli.net/2021/09/25/Vo8XRde32W6vCAn.png)
 
 2. 根据步骤，首先删除 `K1` 的 `Entry` ，并将 `i` 移动到 `K1` 的下个位置 `14` ：
 
-    ![](https://images.liyangjie.cn/image/threadlocal-6.png)
+    ![](https://i.loli.net/2021/09/25/UbnYR2vdl7FVTZ3.png)
 
 3. 随后， `K2` 位置为 stale entry，进入 `k == null` 分支，删除 `K2` ，进入下次循环， `i` 到达 `15` ， `K3` 为有效entry，进行rehash操作，将 `h` 进行计算 `h = 13` (1中的假设)。
 
-    ![](https://images.liyangjie.cn/image/threadlocal-7.png)
+    ![](https://i.loli.net/2021/09/25/Yxi7F5KkSvDQjaL.png)
 
 4.  先清空 `i` 位置，随后开始判断 `h` 位置，刚好 `h` 位置为空，则直接将 `K3` 代表的 `Entry` 放入 `13` 位置， `i` 移动到 `0` 位置。
 
-    ![](https://images.liyangjie.cn/image/threadlocal-8.png)
+    ![](https://i.loli.net/2021/09/25/7lcorFteNGsDApC.png)
 
 5. 与步骤3类似，清空 `K4` ， `i` 移动至 `1` 位置。
 
-    ![](https://images.liyangjie.cn/image/threadlocal-9.png)
+    ![](https://i.loli.net/2021/09/25/SveMP48UqOtGFBc.png)
 
 6.  `K5~K7` 均为有效entry，因此进行rehash操作， `K5` 的 `h = 13` ，此时 `13` 位置不为空，则 `h` 移动到 `14` ， `14` 位置为空，则将 `K5` 的 `Entry` 移动到 `14` 。同理，将 `K6` 和 `K7` 移动到 `15` 和 `0` 位置。最后， `i` 移动到  `4` 的位置(**原**键簇末尾紧邻的null位置)，返回 `i` (马上会用到)，本次 `分段式清理` 结束。
 
-    ![](https://images.liyangjie.cn/image/threadlocal-10.png)
+    ![](https://i.loli.net/2021/09/25/bvNpCDqBdocyRhi.png)
 
 了解过 `expungeStaleEntry` 基本原理后， 回头看看 `rehash` 代码中调用的 `expungeStaleEntries` 方法：
 
@@ -862,7 +862,7 @@ if (k == null) {
 
 1. `replaceStaleEntry` 中的第一个循环主要作用是找到 `i` 位置所在键簇最前端的某个stale entry位置。举例说明， `set` 方法将传入参数 `K8` ，图中 `K8` 为待探测元素，计算得到它的起始位置为 `0` 。由于 `K4` 为有效entry，且 `K4 ≠ K8` ，因此 `set` 方法中的 `i` 移动至 `1` 位置。 `1` 位置上的 `K5` 是stale entry，因此，从这里开始调用 `replaceStaleEntry` ，传入的第三个参数 `staleSlot` 为 `1` 。这时候， `replaceStaleEntry` 的第一个循环就从这个 `staleSlot` 开始**向前移动**，寻找最前端的stale slot，即 `13` (虽然 `15` 也是stale slot，但它不是这个键簇的最前端)，并赋值 `slotToExpunge = 13` 。
 
-    ![](https://images.liyangjie.cn/image/threadlocal-11.png)
+    ![](https://i.loli.net/2021/09/25/rmgx6PUztFLnW8R.png)
 
 2. 第二个循环从 `staleSlot` 的下个位置开始，**往后移动**，在键簇中寻找 `k == key` 的 `Entry` ，直到键簇末尾。注意循环末尾的一小段代码：
 
@@ -875,7 +875,7 @@ if (k == null) {
 
     进入第二个循环后，向后寻找到 `2` 位置，发现 `K6` 是stale slot，即 `k == null`，且这时候满足第二个条件，因此 `slotToExpunge = 2` 。
 
-    ![](https://images.liyangjie.cn/image/threadlocal-12.png)
+    ![](https://i.loli.net/2021/09/25/YftE2wO5p4bFIR8.png)
 
     这个赋值操作最多只会执行一次，第二次再进来 `slotToExpunge == staleSlot` 这个条件一定不会再满足了，这个循环的起始位置是 `staleSlot` 的 **下个位置** ，已经就不等于 `staleSlot` 了，往后的 `i` 值就更不会满足该条件。
 
@@ -900,9 +900,9 @@ if (k == null) {
 
     这段代码就是 `replaceStaleEntry` 命名的由来，它将原来 `set` 中识别出的stale entry替换为了一个新的有效entry(key是原来已经存在的，仅修改了value)。下图中， `K8 == K8'` ，当 `i == 4` 时，进入上述逻辑中，先将 `K8'` 的 `value` 进行替换修改，再将 `K5` 与 `K8'` 进行交换，得到下面的成果。
 
-    ![](https://images.liyangjie.cn/image/threadlocal-13.png)
+    ![](https://i.loli.net/2021/09/25/RnS1LPQ6hMsr3oZ.png)
 
-    ![](https://images.liyangjie.cn/image/threadlocal-14.png)
+    ![](https://i.loli.net/2021/09/25/yRc5FGDdluv3hE8.png)
 
     替换成功后，随后条件判断与步骤3逻辑相同，都是确定 `slotToExpunge` 的位置，此时的 `i` 位置已经是stale entry了，因此可以作为 `expungeStaleEntry`  `分段式清理` 的起点。
 
@@ -926,7 +926,7 @@ if (k == null) {
 
 ### 内存泄漏
 
-![](https://images.liyangjie.cn/image/threadlocal-15.png)
+![](https://i.loli.net/2021/09/25/td1sG2VzF9WQwTN.png)
 
 根据官方文档的推荐，我们平时使用 `ThreadLocal` 往往都会将它声名为 `private static` ，那么，上图中红色部分的强引用将会一直存在(metaspace中)，该 `ThreadLocal` 在一个长期执行线程的 `Thread.threadLocals` 哈希表中对应的一个 `Entry e` ，由于强引用的存在， `e.get()` 返回的**不会**是 `null` ，那么指望上面的各种自动清理方法回收 `value` 内存就不太现实，需要开发人员手动调用 `remove` 方法回收不再使用的 `ThreadLocal` 。
 

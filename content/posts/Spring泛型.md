@@ -24,7 +24,7 @@ public interface Type {
 
 JDK中的 `Type` 是一种高级抽象，其类图关系如下，它代表了Java中所有与**类型**相关的概念，此处的**类型**与我们常用的**基础数据类型**和**引用数据类型**的概念不同，它的抽象层级更高，概念更加宽泛，主要用于支持泛型中的类型处理。
 
-![](https://images.liyangjie.cn/image/Type.png#center)
+![](https://i.loli.net/2021/09/25/6qcd8TzKnCu1NB3.png)
 
 除了我们熟悉的 `Class` 之外，还有如下子接口：
 
@@ -50,7 +50,7 @@ public interface ParameterizedType extends Type {
 
 `ParameterizedType` 形如 `List<String>` ，即原生类型加上泛型参数的形式，其中，泛型参数可以有多个，并且既可以是实际具体类型(如 `String` )，也可以是参数形式(如 `T,K,E` )，还可以是通配符形式(如 `? extends Number` )。各方法返回结果示例如下：
 
-![](https://images.liyangjie.cn/image/ParameterizedType.png#center)
+![](https://i.loli.net/2021/09/25/l13gCTuvsIMOxRw.png)
 
 以下代码使用反射的方式进行实验，其中 `getGenericType()` 方法可以获取字段的泛型，对 `getActualTypeArguments()` 方法获取到的类型数组进行进一步的分析，可以发现它支持所有的 `Type` 子类型，代码有些部分暂时看不懂可以先放放，等后续章节看完再回头来看
 
@@ -171,7 +171,7 @@ public interface List<E> extends Collection<E>...
 
 再次观察 `TypeVariable` 接口可以发现其自身含有一个上界为 `GenericDeclaration` 的类型参数，其类图如下：
 
-![](https://images.liyangjie.cn/image/GenericDeclartion.png#center)
+![](https://i.loli.net/2021/09/25/vtgrSHYycdLikDb.png)
 
 字面意义上，它表示的是**泛型声明**，Java规范中，泛型的定义可以出现在**类**和**方法**上(构造器也可归属于方法)，正好对应了该上图中的3个实现类。因此 `getGenericDeclaration()` 方法是为了获取该参数所定义的“位置”。以下代码分别定义了4个 `TypeVariable` ，分别展示了3种不同位置及Java 8后引入的 `TypeAnnotation` 。
 

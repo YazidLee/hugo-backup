@@ -4,7 +4,7 @@ summary: "Java中几种引用类型(强软弱虚)，理解Reference的本质，�
 date: 2021-09-15T03:07:15+08:00
 draft: false
 cover:
-    image: "https://images.liyangjie.cn/image/ThreadLocal.jpg"
+    image: "https://i.loli.net/2021/09/25/HTBpP15DImOXl7A.jpg"
     alt: ""
 categories: ["Java"]
 tags: ["Java", "ThreadLocal", "Reference"]
@@ -14,7 +14,7 @@ katex: false
 
 在介绍 `ThreadLocal`  之前，首先要大致了解Java的几种引用类型。如下图所示，JDK 1.2之后新增了 `Reference` 的概念，给开发人员提供了与GC交互的一种渠道。
 
-![](https://images.liyangjie.cn/image/reference.png#center)
+![](https://i.loli.net/2021/09/25/UGOFN3m2PSzrjk6.png)
 
 《深入理解Java虚拟机》中对于几种引用类型做了简要的描述：
 
@@ -51,7 +51,7 @@ public void softReference() {
 }
 ```
 
-![](https://images.liyangjie.cn/image/reference-basic.png#center)
+![](https://i.loli.net/2021/09/25/HBFQivb93jzWmhg.png)
 
 图中，彩色部分为GC Roots，其中 `local variables` 为虚拟机栈中的**局部变量表**，而 `metaspace` 为**元空间**。实线表示强引用，虚线表示弱引用。局部变量表中的 `soft` **强引用**指向了堆中的 `SoftReference` 实例对象， `ojb` **强引用**指向了 `Object` 实例对象。而元空间中有个名为 `queue` 的**强引用**指向了堆中的 `ReferenceQueue` 对象。
 
@@ -70,7 +70,7 @@ public void softReference() {
 }
 ```
 
-![](https://images.liyangjie.cn/image/reference-queue.png#center)
+![](https://i.loli.net/2021/09/25/s7MIR3DnQeEhB4r.png)
 
 此时，对于堆中的 `Ojbect` 实例对象来说，仅仅剩下了一个 `referent` **软引用**指向它，某些文章中称之为**软可达对象**(*softly reachable object*)，这个对象就满足了GC的特殊对待要求，当内存溢出时，会将其占用的堆空间回收，并将 `soft` 指向的 `SoftReference` 实例对象放入其 `queue` 关联的 `ReferenceQueue` 实例对象中。
 
@@ -410,13 +410,13 @@ public void  weakHashMapTest() {
 
 按上述分析，此时没有调用 `size` 方法及其他附带清理效果的方法， `weakHashMap` 的 `size` 应该为2，但看下面的截图：
 
-![](https://images.liyangjie.cn/image/reference-debug.png#center)
+![](https://i.loli.net/2021/09/25/nfioMISKwR84jhH.png)
 
 `size` 的值为1？折腾了好久，在 `WeakHashMap` 的 `expungeStaleEntries` 方法中加了断点也找不到所以然。后来想了想以前在调试Spring源码时也遇到过类似的情况，结果是idea的调试过程自动帮我们调用一些方法以获取属性，如 `size` 、 `toString` 等。
 
 为了确认该结论，先取消断点，在代码最后添加一个阻塞方法 `System.in.read();`，使用VisualVM查看内存：
 
-![](https://images.liyangjie.cn/image/reference-visualvm.png#center)
+![](https://i.loli.net/2021/09/25/EIutlU4LiAQyNpb.png)
 
 果然，此时的 `size` 为2，且关联队列中的 `queueLength` 为1，表示队列中有元素待清理。
 
@@ -686,7 +686,7 @@ private static class Deallocator
 3.  `clean` 方法最终执行 `Cleaner` 的 `thunk.run()` 进行清理；
 4. `DirectByteBuffer` 在创建的同时关联了一个 `Cleaner` ，该 `Cleaner` 中的 `thunk` 为 `Deallocator` ，`Deallocator` 使用 `Unsafe` 完成了堆外内存的清理释放。
 
-![](https://images.liyangjie.cn/image/reference-phantom.png)
+![](https://i.loli.net/2021/09/25/sCtE4jeSyIlf7A5.png)
 
 再从 `DirectByteBuffer` 的角度来看看清理的过程：
 
