@@ -11,6 +11,7 @@ on:
       - '.gitignore'
       - '.gitmodules'
       - 'README.md'
+      - 'LICENSE'
     branches: [ master ]
   pull_request:
     paths-ignore:
@@ -19,6 +20,7 @@ on:
       - '.gitignore'
       - '.gitmodules'
       - 'README.md'
+      - 'LICENSE'
   # Manual run
   workflow_dispatch:
     
