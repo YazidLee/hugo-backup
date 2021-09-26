@@ -291,7 +291,7 @@ hugo server
   date: 2021-08-29T21:13:55+08:00
   draft: 
   cover:
-      image: "https://images.liyangjie.cn/Sekiro_01.jpg"
+      image: "https://i.loli.net/2021/09/26/wBJrVXF9cefvtLZ.jpg"
       alt: "替换文本"
       caption: "封面标题"
   ---
@@ -303,7 +303,7 @@ hugo server
   date: 2021-08-29T21:18:38+08:00
   draft: 
   cover:
-      image: "https://images.liyangjie.cn/Sekiro_02.jpg"
+      image: "https://i.loli.net/2021/09/26/pi3RYQSP12cJmWo.jpg"
       alt: "替换文本"
       caption: "封面标题"
   ---
@@ -338,7 +338,7 @@ title: "HelloHugo1"
 date: 2021-08-29T21:13:55+08:00
 draft: 
 cover:
-    image: "https://images.liyangjie.cn/Sekiro_01.jpg"
+    image: "https://i.loli.net/2021/09/26/wBJrVXF9cefvtLZ.jpg"
     alt: "替换文本"
     caption: "封面标题"
 categories:

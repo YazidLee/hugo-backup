@@ -4,7 +4,7 @@ summary: "Java中的Type家族，Spring针对Tyep的封装--ResolvableType及其
 date: 2021-09-13T21:56:33+08:00
 draft: false
 cover:
-    image: "https://images.liyangjie.cn/image/spring-logo.svg"
+    image: "https://spring.io/images/spring-logo-9146a4d3298760c2e7e49595184e1975.svg"
     alt: "Spring泛型"
 categories: ["Java", "Spring"]
 tags: ["Java", "Spring", "Generic"]
