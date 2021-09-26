@@ -1,17 +1,25 @@
-<!-- 增加自定义footer，备案信息 -->
+<!-- 自定义footer，增加备案信息 -->
+{{- $loading := resources.Get "svg/loading.svg" | minify -}}
 <footer class="footer">
-<a href="https://beian.miit.gov.cn/" target="_blank">鄂ICP备16007812号-1</a>
+    {{- if .Site.Copyright }}
+    <span>{{ .Site.Copyright | markdownify }}</span>
+    {{- else }}
+    <span>&copy; {{ now.Year }} <a href="{{ "" | absLangURL }}">{{ .Site.Title }}</a></span>
+    {{- end }}
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+    <span>
+        ICP证: &nbsp;
+        <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备16007812号-1</a>
+    </span>
 </footer>
 
+{{- /* img lazy load & gallery */}}
 {{ partial "lazy-gallery.html" . }}
 <script>
-    {{- /* cover lazy load */}}
-    {{ if .IsPage }}
-    const coverImg = document.querySelector(".entry-cover img");
-    if (coverImg) {
-        coverImg.classList.add("lazy");
-    }
-    {{ end }}
     const lazyLoadInstance = new LazyLoad({
         // Your custom settings go here
     }); 

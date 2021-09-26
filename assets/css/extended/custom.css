@@ -85,6 +85,14 @@ figure img {
     width: auto;
 }
 
+/* 备案图标 */
+/* .beian {
+    display: inline;
+    position: relative;
+    vertical-align: baseline;
+    top: 5px;
+} */
+
 /* 评论区样式 */
 #vcomments {
     margin-top: 15px;

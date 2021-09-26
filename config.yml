@@ -84,6 +84,7 @@ params:
     ShowCodeCopyButtons: true
     ShowToc: true
     comments: true
+    hideFooter: true # 使用自定义footer(新增备案号)，隐藏原footer
     katex: false
     images: ["https://images.liyangjie.cn/image/SadBird.png"] # link or path of image for opengraph, twitter-cards
 
