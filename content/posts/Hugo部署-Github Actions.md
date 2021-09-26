@@ -34,7 +34,7 @@ GitHub Actions中的几个重要概念如下：
 
 下图由[GitHub官方](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions)提供，表示GitHub Actions的整体结构：
 
-![](https://i.loli.net/2021/09/24/Lu1MjwvToWkdxC9.png#center)
+![](https://i.loli.net/2021/09/24/Lu1MjwvToWkdxC9.png)
 
 ### 简单示例
 

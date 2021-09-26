@@ -14,7 +14,7 @@
     {{- $large = .RelPermalink -}}
 {{- end -}}
 
-{{- $alt := .Alt | default $src -}}
+{{- $alt := .Text | default $src -}}
 {{- $loading := resources.Get "svg/loading.svg" | minify -}}
 {{- if .Linked -}}
     <a class="lightgallery" href="{{ $large | safeURL }}" title="{{ .Title | default $alt }}" data-thumbnail="{{ $small | safeURL }}"{{ with .Caption }} data-sub-html="<h2>{{ . }}</h2>{{ with $.Title }}<p>{{ . }}</p>{{ end }}"{{ end }}{{ with .Rel }} rel="{{ . }}"{{ end }}>
