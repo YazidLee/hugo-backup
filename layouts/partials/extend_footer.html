@@ -26,17 +26,16 @@
     
     const config = {
         selector: ".lightgallery",
+        mode: "lg-slide",
         plugins: [lgZoom, lgThumbnail],
         speed: 400,
         hideBarsDelay: 2000,
-        animateThumb: false,
-        // allowMediaOverlap: true,
+        mousewheel: true,
         thumbnail: true,
-        toggleThumb: true,
         exThumbImage: "data-thumbnail",
-        // thumbWidth: 80,
-        // thumbContHeight: 80,
-        // actualSize: false
+        thumbWidth: 80,
+        thumbContHeight: 80,
+        mobileSettings: { controls: true, showCloseIcon: true, download: true, }
     };
 
     lightGallery(document.getElementsByClassName('post-content')[0], config);
