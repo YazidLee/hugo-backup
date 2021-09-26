@@ -10,6 +10,11 @@ h1, h2, h3, h4, h5, h6, .toc, footer {
     font-family: -apple-system,"Lato",system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
 }
 
+ol {
+    padding: 0;
+    margin: 0;
+}
+
 .post-content {
     font-size: 16px;
     /* text-align: justify; */
@@ -92,12 +97,3 @@ figure img {
     vertical-align: baseline;
     top: 5px;
 } */
-
-/* 评论区样式 */
-#vcomments {
-    margin-top: 15px;
-}
-
-.v[data-class=v] .vwrap {
-    border-radius: var(--radius) !important;
-}

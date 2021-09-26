@@ -1,0 +1,55 @@
+/* 评论区样式 */
+.tc-container {
+    margin-top: 15px;
+    background-color: var(--code-bg);
+    border-radius: var(--radius);
+}
+
+.twikoo {
+    font-size: .875em;
+    padding: 1rem 2.5rem 1rem 2.5rem;
+}
+
+.twikoo ol, .twikoo ul {
+    padding-inline-start: 20px;
+}
+
+.tc-title {
+    display: block;
+    text-align: center;
+}
+
+.c-title {
+    display: block;
+    font-family: -apple-system,"Merriweather",system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
+    font-size: 1.25em;
+    font-weight: bold;
+    padding: 1.5rem 0 .5rem 0;
+}
+
+.tk-comments-title {
+    font-size: 1em;
+} 
+
+.tk-owo-emotion {
+    max-width: 25px !important;
+    vertical-align: middle !important;
+    margin: 0 1px !important;
+    display: inline-block !important;
+}
+
+.OwO .OwO-body {
+    color: var(--content) !important;
+    background-color: var(--theme) !important;
+}
+
+.el-input__inner {
+    color: var(--content) !important;
+    background-color: var(--theme) !important;
+}
+
+
+.el-textarea__inner {
+    color: var(--content) !important;
+    background-color: var(--theme) !important;
+}
