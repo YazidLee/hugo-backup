@@ -1,7 +1,8 @@
 /* 评论区样式 */
 .tc-container {
+    font-family: -apple-system,"Merriweather",system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
     margin-top: 15px;
-    background-color: var(--code-bg);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
 }
 
@@ -21,7 +22,6 @@
 
 .c-title {
     display: block;
-    font-family: -apple-system,"Merriweather",system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
     font-size: 1.25em;
     font-weight: bold;
     padding: 1.5rem 0 .5rem 0;
@@ -39,17 +39,6 @@
 }
 
 .OwO .OwO-body {
-    color: var(--content) !important;
-    background-color: var(--theme) !important;
-}
-
-.el-input__inner {
-    color: var(--content) !important;
-    background-color: var(--theme) !important;
-}
-
-
-.el-textarea__inner {
     color: var(--content) !important;
     background-color: var(--theme) !important;
 }
