@@ -8,7 +8,13 @@
 
 .twikoo {
     font-size: .875em;
-    padding: 1rem 1.5rem 1rem 1.5rem;
+    max-width: 740px;
+    margin: 0 auto 15px;
+    padding: 0 14px;
+}
+
+.twikoo h1, .twikoo h2, .twikoo h3, .twikoo h4, .twikoo h5, .twikoo h6 {
+    font-family: -apple-system,"Lato",system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
 }
 
 .twikoo ol, .twikoo ul {
@@ -24,13 +30,37 @@
     display: block;
     font-size: 1.25em;
     font-weight: bold;
-    padding: 1.5rem 0 .5rem 0;
+    padding: 1.5rem 0 1.5rem 0;
 }
 
 .tk-comments-title {
     font-size: 1em;
 } 
 
+.twikoo code {
+    font-family: -apple-system, "JetBrains Mono", system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
+    font-size: .8em !important;
+    font-weight: normal;
+    margin: auto 4px;
+    padding: 4px 6px;
+    line-height: 1.5;
+    background: var(--code-bg);
+    border-radius: 2px;
+}
+
+.twikoo code[class*="language-"] {
+    margin: 0;
+    padding: 0;
+}
+
+.twikoo pre[class*="language-"] {
+    border-radius: var(--radius);
+}
+
+.twikoo :not(pre) > code[class*="language-"], pre[class*="language-"] {
+    background: rgb(40,42,53) !important;
+}
+    
 .tk-owo-emotion {
     max-width: 25px !important;
     vertical-align: middle !important;
