@@ -103,3 +103,9 @@ figure img {
     vertical-align: baseline;
     top: 5px;
 } */
+
+/* 跳转到评论区按钮 */
+.bottom-comment {
+    bottom: 120px;
+    right: 30px;
+}
