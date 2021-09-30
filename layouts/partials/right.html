@@ -1,0 +1,14 @@
+<div id="post-right" class="admonition warning">
+    <div class="details-summary admonition-title">
+        <i class="icon fas fa-balance-scale-right"></i>版权声明<i class="details-icon fas fa-closed-captioning"></i>
+    </div>
+    <div class="details-content">
+        <div class="admonition-content">
+            <ul>
+                <li>本文作者：{{ delimit ($.Param "author") ", " }}。</li>
+                <li>本文链接：{{- .Permalink -}}。</li>
+                <li>版权说明：本站所有文章除特殊声明外，均使用 <a href="https://creativecommons.org/licenses/by-nc/4.0/" rel="noopener noreferrer" target="_blank">CC BY-NC 4.0</a> 许可协议，转载请注明出处。</li>
+            </ul>
+        </div>
+    </div>
+</div>

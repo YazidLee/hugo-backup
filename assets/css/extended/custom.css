@@ -96,6 +96,36 @@ figure img {
     width: auto;
 }
 
+/* 版权说明区 */
+#post-right {
+    border-left: 0;
+    margin: 10px 0 15px;
+    font-family: -apple-system,"Lato",system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
+    background-color: var(--code-bg);
+}
+
+#post-right .admonition-title {
+    border-bottom-color: var(--border);
+    background-color: var(--border);
+}
+
+#post-right.warning i.icon {
+    color: rgb(236, 161, 96);
+}
+
+#post-right .details-content {
+    font-size: 0.825em;
+}
+
+#post-right .details-content ul, #post-right .details-content ol {
+    padding-inline-start: 20px;
+}
+
+#post-right a {
+    text-decoration: underline;
+}
+
+
 /* 备案图标 */
 /* .beian {
     display: inline;

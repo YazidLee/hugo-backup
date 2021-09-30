@@ -1,6 +1,7 @@
 ---
 title: "ThreadLocal分析(下)--使用和源码"
 summary: "ThreadLocal的使用、注意事项及源码分析。"
+author: ["SadBird"]
 date: 2021-09-19T02:44:58+08:00
 draft: false
 cover:

@@ -1,6 +1,7 @@
 ---
 title: "Hugo部署--Github Actions"
 summary: "Github Actions简介，并用其实现Hugo的部署。"
+author: ["SadBird"]
 date: 2021-09-21T00:46:39+08:00
 draft: false
 cover:
@@ -86,6 +87,12 @@ jobs:
 
 为了使GitHub Actions能得到复用，GitHub提供了发布的机制，可以将自己写好的action分享给其他用户使用，详细步骤可以参考[官方文档](https://docs.github.com/en/actions/creating-actions/publishing-actions-in-github-marketplace)。
 上面示例所示，`actions/setup-node` 就是一个在社区中分享的action，它表示 github.com/actions/setup-node 这个仓库，同时也是一个action，作用是安装 `Node.js`，而 `v2` 就表示了使用的 `actions/setup-node` 的版本为 `v2` 。
+
+{{< admonition type=tip title="GitHub Actions费用相关" open=true >}}
+- 所有的公有仓库免费。
+- 用户使用自己提供的 `runner` 也是免费。
+- 私有仓库，且使用的是GitHub提供的 `runner` ，收费标准见[官网](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions)。
+{{< /admonition >}}
 
 ## Hugo部署
 
@@ -264,9 +271,3 @@ action的3个 `step` 工作内容分别如下：
 ![](https://i.loli.net/2021/09/24/UdNvXwi9aHCYItS.png)
 
 访问自己的站点，看看是否运行成功。若一切正常，这次的部署转移计划算是顺利完成了。
-
-{{< admonition type=tip title="GitHub Actions的收费问题" open=true >}}
-- 所有的公有仓库免费。
-- 用户使用自己提供的 `runner` 也是免费。
-- 私有仓库，且使用的是GitHub提供的 `runner` ，收费标准见[官网](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions)。
-{{< /admonition >}}

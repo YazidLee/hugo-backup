@@ -4,6 +4,7 @@
     padding: 0 0.75rem;
     background-color: rgba(68, 138, 255, 0.1);
     border-left: 0.25rem solid #448aff;
+    border-radius: var(--radius);
     overflow: auto;
   }
   .admonition .admonition-title {

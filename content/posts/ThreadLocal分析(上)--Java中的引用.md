@@ -1,6 +1,7 @@
 ---
 title: "ThreadLocal分析(上)--Java中的引用"
 summary: "Java中几种引用类型(强软弱虚)，理解Reference的本质，结合示例加深理解。"
+author: ["SadBird"]
 date: 2021-09-15T03:07:15+08:00
 draft: false
 cover:
