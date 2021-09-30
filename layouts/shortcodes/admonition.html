@@ -1,4 +1,4 @@
-{{- /* 使用方法 {{< admonition type=tip title="小标题" open=false >}}内容{{< /admonition >}}，其中type支持note, abstract, info, tip, success, question, warning, failure, danger, bug, example, quote， open表示默认是否为展开状态 */ }}
+{{- /* 重点参数：type=tip title="小标题" open=false，其中type支持note, abstract, info, tip, success, question, warning, failure, danger, bug, example, quote， open表示默认是否为展开状态 */ }}
 {{- $inner := .Inner | .Page.RenderString -}}
 
 {{- $iconMap := dict "note" "fas fa-pencil-alt fa-fw" -}}
