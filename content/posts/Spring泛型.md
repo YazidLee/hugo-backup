@@ -325,14 +325,14 @@ public class GenericArrayTypeDemo<T> {
 
 为了提升理解，这里留下一个问题：上述输出结果中， `T, T[], List<T>, List<? extends T>`  分别是什么类型?
 
-- **答案**
-
-    ```java
-    [Field: tA's component type] is TypeVariable
-    [Field: tAA's component type] is GenericArrayType
-    [Field: listA's component type] is ParameterizedType
-    [Field: wildcardListA's component type] is ParameterizedType
-    ```
+{{< admonition type=tip title="答案" open=true >}}
+```shell
+[Field: tA's component type] is TypeVariable
+[Field: tAA's component type] is GenericArrayType
+[Field: listA's component type] is ParameterizedType
+[Field: wildcardListA's component type] is ParameterizedType
+```
+{{< /admonition >}}
 
 ## WildcardType
 

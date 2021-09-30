@@ -428,6 +428,9 @@ final TreeNode<K,V> putTreeVal(HashMap<K,V> map, Node<K,V>[] tab,
 能够发现，在红黑树中插入数据时，先判断`hash`值，当`hash`值相等，且`equals`判断也相等，则会判断是否为`Comparable`；若Key实现了`Comparable`，则直接使用`compareTo`方法进行大小判断；若连`Comparable`都没实现(或者`compareTo`方法判断为相等时)，则会调用`tieBreakOrder`方法，这个方法中使用`System.identityHashCode`进一步分析。对于50w个数据来说，`System.identityHashCode`调用相当耗时，从上面的例子中可以看到，花了1个多小时。
 
 因此，虽然Java8对HashMap进行了优化，使过长的链表优化成红黑树，但如果Key的`hashCode`算法不佳，且Key没有实现`Comparable`接口，那么仍然有可能引发很糟糕的后果。在HashMap源码中，编写者有这么一段话：
-> If neither of these apply, we may waste about a factor of two in time and space compared to taking no precautions. But the only known cases stem from poor user programming practices that are already so slow that this makes little difference.
+
+{{< admonition type=quote title="HashMap" open=true >}}
+If neither of these apply, we may waste about a factor of two in time and space compared to taking no precautions. But the only known cases stem from poor user programming practices that are already so slow that this makes little difference.
+{{< /admonition >}}
 
 大概意思是：如果两者都不满足(指良好的`hashCode`方法和实现`Comparable`接口)，那么HashMap的新实现(红黑树)会**浪费两倍的空间和时间**。但是这种极端的情况是由开发者不良的编程实现引起的，其实用什么实现(链表或者红黑树)已经没区别了。

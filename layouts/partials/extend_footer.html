@@ -1,4 +1,4 @@
-{{- /* 跳转到评论区 */}}
+{{- /* Scroll To Comment */}}
 {{- if (and (.IsPage) (ne .Layout "archives") (ne .Layout "search")) }}
 <a href="#comment" aria-label="go to comment" title="Go to Comment (Alt + C)" class="top-link bottom-comment" id="bottom-comment" accesskey="c" style="visibility: visible; opacity: 1;">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.338 29.338" fill="currentcolor">
@@ -73,4 +73,19 @@
     };
 
     lightGallery(document.getElementsByClassName('post-content')[0], config);
+</script>
+
+{{- /* admonition toggle */}}
+<script>
+    let details = document.getElementsByClassName('details')
+    details = details || [];
+    for (let i = 0; i < details.length; i++) {
+        let element = details[i]
+        const summary = element.getElementsByClassName('details-summary')[0];
+        if (summary) {
+            summary.addEventListener('click', () => {
+                element.classList.toggle('open');
+            }, false);
+        }
+    }
 </script>

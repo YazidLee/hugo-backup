@@ -1,0 +1,35 @@
+.details .details-summary:hover {
+    cursor: pointer;
+  }
+.details i.details-icon {
+color: var(--content);
+-webkit-transition: transform 0.2s ease;
+-moz-transition: transform 0.2s ease;
+-o-transition: transform 0.2s ease;
+transition: transform 0.2s ease;
+}
+[class=dark] .details i.details-icon {
+color: var(--content);
+}
+.details .details-content {
+max-height: 0;
+overflow-y: hidden;
+-webkit-transition: max-height 0.8s cubic-bezier(0, 1, 0, 1) -0.1s;
+-moz-transition: max-height 0.8s cubic-bezier(0, 1, 0, 1) -0.1s;
+-o-transition: max-height 0.8s cubic-bezier(0, 1, 0, 1) -0.1s;
+transition: max-height 0.8s cubic-bezier(0, 1, 0, 1) -0.1s;
+}
+.details.open i.details-icon {
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
+-ms-transform: rotate(90deg);
+-o-transform: rotate(90deg);
+transform: rotate(90deg);
+}
+.details.open .details-content {
+max-height: 12000px;
+-webkit-transition: max-height 0.8s cubic-bezier(0.5, 0, 1, 0) 0s;
+-moz-transition: max-height 0.8s cubic-bezier(0.5, 0, 1, 0) 0s;
+-o-transition: max-height 0.8s cubic-bezier(0.5, 0, 1, 0) 0s;
+transition: max-height 0.8s cubic-bezier(0.5, 0, 1, 0) 0s;
+}

@@ -17,8 +17,11 @@ Hugo官方提供了多种部署方式，其中，[Host on GitHub](https://gohugo
 ## GitHub Actions
 
 ### 概念
+
 官方文档给出的定义如下：
-> Automate, customize, and execute your software development workflows right in your repository with GitHub Actions. You can discover, create, and share actions to perform any job you'd like, including CI/CD, and combine actions in a completely customized workflow.
+{{< admonition type=quote title="GitHub Actions" open=true >}}
+Automate, customize, and execute your software development workflows right in your repository with GitHub Actions. You can discover, create, and share actions to perform any job you'd like, including CI/CD, and combine actions in a completely customized workflow.
+{{< /admonition >}}
 
 GitHub Actions是GitHub官方提供的一种自动化、定制化的工作流，包括了CI/CD。关于CI/CD的简单理解：
 - CI：持续集成(*Continuous Integration*)，使用Git向代码仓库推送代码后，后台将会自动进行构建、测试等工作。
@@ -262,7 +265,8 @@ action的3个 `step` 工作内容分别如下：
 
 访问自己的站点，看看是否运行成功。若一切正常，这次的部署转移计划算是顺利完成了。
 
-最后提一下GitHub Actions的收费问题：
+{{< admonition type=tip title="GitHub Actions的收费问题" open=true >}}
 - 所有的公有仓库免费。
 - 用户使用自己提供的 `runner` 也是免费。
 - 私有仓库，且使用的是GitHub提供的 `runner` ，收费标准见[官网](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions)。
+{{< /admonition >}}

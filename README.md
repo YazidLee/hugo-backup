@@ -4,7 +4,8 @@
 
 在原版主题[PaperMod](https://github.com/adityatelange/hugo-PaperMod/)的基础上，增加了：
 
-- [lightGallery](https://github.com/sachinchoolur/lightGallery)：图片浏览
-- [LazyLoad](https://github.com/verlok/vanilla-lazyload): 图片懒加载
-- [KaTeX](https://github.com/KaTeX/KaTeX): 公式
-- [twikoo](https://github.com/imaegoo/twikoo): 评论区
+- [lightGallery](https://github.com/sachinchoolur/lightGallery)：图片浏览。
+- [LazyLoad](https://github.com/verlok/vanilla-lazyload): 图片懒加载。
+- [KaTeX](https://github.com/KaTeX/KaTeX): 公式。
+- [twikoo](https://github.com/imaegoo/twikoo): 评论区。
+- [admonition shortcodes](https://github.com/dillonzq/LoveIt)：重点提示框，直接搬运[LoveIt主题](https://github.com/dillonzq/LoveIt)的shortcode，非常漂亮的主题，不过好像暂时停更了。
