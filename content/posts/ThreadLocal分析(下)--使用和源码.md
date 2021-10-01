@@ -97,7 +97,7 @@ class Service2 {
 }
 ```
 
-以上就是 `ThreadLocal` 最基本的使用场景，通过 `ThreadLocal` 来透传全局的某些上下文信息，以便后续的分析和追踪（`logback` 中实现 `MDC` 正是使用了 `ThreadLocal`）。 
+以上就是 `ThreadLocal` 最基本的使用场景，通过 `ThreadLocal` 来透传全局的某些上下文信息，以便后续的分析和追踪（`logback` 中实现 `MDC` 正是使用了 `ThreadLocal`）。
 
 ## ThreadLocal 源码分析
 
@@ -243,125 +243,122 @@ hash seq for 16 size table: 0  7  14  5  12  3  10  1  8  15  6  13  4  11  2  9
 
 ### 管理 threadLocals
 
-- 增、改：`set` 方法源码如下，关于 `ThreadLocalMap` 放在后面探讨，这里先简单理解为一个普通的哈希表：
+* 增、改：`set` 方法源码如下，关于 `ThreadLocalMap` 放在后面探讨，这里先简单理解为一个普通的哈希表：
 
-    ```java
-    public void set(T value) {  
-        // 获取当前线程          
-        Thread t = Thread.currentThread();
-        // 获取线程中的threadLocals
-        ThreadLocalMap map = getMap(t);   
-        if (map != null)
-            // 不为空直接set，set方法其实是有“副作用”的，但这里暂时理解为简单的取值   
-            // 这里this就是当前的ThreadLocal对象，作为Key               
-            map.set(this, value);         
-        else    
-            // 为空就new Map                          
-            createMap(t, value);          
-    }
+  ```java
+  public void set(T value) {  
+      // 获取当前线程          
+      Thread t = Thread.currentThread();
+      // 获取线程中的threadLocals
+      ThreadLocalMap map = getMap(t);   
+      if (map != null)
+          // 不为空直接set，set方法其实是有“副作用”的，但这里暂时理解为简单的取值   
+          // 这里this就是当前的ThreadLocal对象，作为Key               
+          map.set(this, value);         
+      else    
+          // 为空就new Map                          
+          createMap(t, value);          
+  }
+  
+  ThreadLocalMap getMap(Thread t) {
+      return t.threadLocals;       
+  }
+  
+  void createMap(Thread t, T firstValue) {                       
+      t.threadLocals = new ThreadLocalMap(this, firstValue);     
+  }
+  ```
+* 查：`get` 方法源码如下：
 
-    ThreadLocalMap getMap(Thread t) {
-        return t.threadLocals;       
-    }
+  ```java
+  public T get() {       
+      // 这两行和set一模一样                               
+      Thread t = Thread.currentThread();                
+      ThreadLocalMap map = getMap(t);                   
+      if (map != null) {
+          // map不为空，直接从map中取值，getEntry其实是有“副作用”的，但这里暂时理解为简单的取值                                
+          ThreadLocalMap.Entry e = map.getEntry(this);  
+          if (e != null) {                              
+              @SuppressWarnings("unchecked")            
+              T result = (T)e.value;                    
+              return result;                            
+          }                                             
+      } 
+      // map为空，则需要初始化map                                                
+      return setInitialValue();                         
+  }
+  
+  // 这个方法和set基本一模一样
+  private T setInitialValue() { 
+      // 获取初始值        
+      T value = initialValue();         
+      Thread t = Thread.currentThread();
+      ThreadLocalMap map = getMap(t);  
+      // 将初始值设置到map中 
+      if (map != null)   
+          // set方法其实是有“副作用”的，但这里暂时理解为简单的取值 
+          // 这里this就是当前的ThreadLocal对象，作为Key                 
+          map.set(this, value);         
+      else                              
+          createMap(t, value);          
+      return value;                     
+  }
+  
+  // 待子类重写，返回初始value
+  protected T initialValue() {
+      return null;            
+  }
+  ```
+* 删：`remove` 方法源码如下：
 
-    void createMap(Thread t, T firstValue) {                       
-        t.threadLocals = new ThreadLocalMap(this, firstValue);     
-    }
-    ```
+  ```java
+  public void remove() {                                
+      ThreadLocalMap m = getMap(Thread.currentThread());
+      if (m != null)   
+          // 这里this就是当前的ThreadLocal对象，作为Key传入，最终从map中删除Key为当前ThreadLocal的元素 
+          // 这里是线性探测法的remove，需要特别注意
+          // 与get、set类似，这里的remove也会有特殊的操作，这里暂时理解为简单的删除                               
+          m.remove(this);                               
+  }
+  ```
+* Java8 新增静态方法 `withInitial` ：
 
-- 查：`get` 方法源码如下：
+  ```java
+  public static <S> ThreadLocal<S> withInitial(Supplier<? extends S> supplier) {
+      return new SuppliedThreadLocal<>(supplier);                               
+  }
+  
+  static final class SuppliedThreadLocal<T> extends ThreadLocal<T> {
+                                                                    
+      private final Supplier<? extends T> supplier;                 
+                                                                    
+      SuppliedThreadLocal(Supplier<? extends T> supplier) {         
+          this.supplier = Objects.requireNonNull(supplier);         
+      }                                                             
+                                                                    
+      @Override                                                     
+      protected T initialValue() {                                  
+          return supplier.get();                                    
+      }                                                             
+  }
+  ```
 
-    ```java
-    public T get() {       
-        // 这两行和set一模一样                               
-        Thread t = Thread.currentThread();                
-        ThreadLocalMap map = getMap(t);                   
-        if (map != null) {
-            // map不为空，直接从map中取值，getEntry其实是有“副作用”的，但这里暂时理解为简单的取值                                
-            ThreadLocalMap.Entry e = map.getEntry(this);  
-            if (e != null) {                              
-                @SuppressWarnings("unchecked")            
-                T result = (T)e.value;                    
-                return result;                            
-            }                                             
-        } 
-        // map为空，则需要初始化map                                                
-        return setInitialValue();                         
-    }
+  也比较容易理解，原来的写法是：
 
-    // 这个方法和set基本一模一样
-    private T setInitialValue() { 
-        // 获取初始值        
-        T value = initialValue();         
-        Thread t = Thread.currentThread();
-        ThreadLocalMap map = getMap(t);  
-        // 将初始值设置到map中 
-        if (map != null)   
-            // set方法其实是有“副作用”的，但这里暂时理解为简单的取值 
-            // 这里this就是当前的ThreadLocal对象，作为Key                 
-            map.set(this, value);         
-        else                              
-            createMap(t, value);          
-        return value;                     
-    }
+  ```java
+  ThreadLocal<Object> tl = new ThreadLocal<>() {
+      @Override
+      protected Object initialValue() {
+          return new Object();
+      }
+  }
+  ```
 
-    // 待子类重写，返回初始value
-    protected T initialValue() {
-        return null;            
-    }
-    ```
+  现在可以写成这样，比较省事：
 
-- 删：`remove` 方法源码如下：
-
-    ```java
-    public void remove() {                                
-        ThreadLocalMap m = getMap(Thread.currentThread());
-        if (m != null)   
-            // 这里this就是当前的ThreadLocal对象，作为Key传入，最终从map中删除Key为当前ThreadLocal的元素 
-            // 这里是线性探测法的remove，需要特别注意
-            // 与get、set类似，这里的remove也会有特殊的操作，这里暂时理解为简单的删除                               
-            m.remove(this);                               
-    }
-    ```
-
-- Java8 新增静态方法 `withInitial` ：
-
-    ```java
-    public static <S> ThreadLocal<S> withInitial(Supplier<? extends S> supplier) {
-        return new SuppliedThreadLocal<>(supplier);                               
-    }
-    
-    static final class SuppliedThreadLocal<T> extends ThreadLocal<T> {
-                                                                      
-        private final Supplier<? extends T> supplier;                 
-                                                                      
-        SuppliedThreadLocal(Supplier<? extends T> supplier) {         
-            this.supplier = Objects.requireNonNull(supplier);         
-        }                                                             
-                                                                      
-        @Override                                                     
-        protected T initialValue() {                                  
-            return supplier.get();                                    
-        }                                                             
-    }
-    ```
-
-    也比较容易理解，原来的写法是：
-
-    ```java
-    ThreadLocal<Object> tl = new ThreadLocal<>() {
-        @Override
-        protected Object initialValue() {
-            return new Object();
-        }
-    }
-    ```
-
-    现在可以写成这样，比较省事：
-
-    ```java
-    ThreadLocal<Object> tl = ThreadLocal.withInitial(Object::new);
-    ```
+  ```java
+  ThreadLocal<Object> tl = ThreadLocal.withInitial(Object::new);
+  ```
 
 OK，至此，`ThreadLocal` 表面上的东西已经介绍得差不多了，代码都比较简单，结合上面那个草图理解起来应该没什么问题。然而， `ThreadLocal` 最为复杂的部分其实是它的内部类 `ThreadLocalMap`，下面的内容就是把这块硬骨头一点一点啃下来。
 
@@ -373,7 +370,7 @@ OK，至此，`ThreadLocal` 表面上的东西已经介绍得差不多了，代�
 
 {{< bilibili BV1MC4y1p7rP >}}
 
-2. 对Java的弱引用有所了解，不知道的可以看看之前的这篇文章 [ThreadLocal分析(上)—Java中的引用](https://www.liyangjie.cn/posts/threadlocal%E5%88%86%E6%9E%90%E4%B8%8A-java%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/)。
+1. 对Java的弱引用有所了解，不知道的可以看看之前的这篇文章 [ThreadLocal分析(上)—Java中的引用](https://www.liyangjie.cn/posts/threadlocal%E5%88%86%E6%9E%90%E4%B8%8A-java%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/)。
 
 ### ThreadMap 字段
 
@@ -552,10 +549,9 @@ private void resize() {
 
 1. 首先介绍一下 `nextIndex` 和 `preIndex` 方法，它们分别计算当前位置 `i` 的下一个位置和上一个位置，这种计算方式使得数组的位置得到了循环利用，逻辑上构成了一个环形数组，`next` 表示顺时针，而 `pre` 表示逆时针，如下图所示：
 
-    ![](https://i.loli.net/2021/09/25/EcMjfxBbpv8LrSt.png)
-
+   ![](https://i.loli.net/2021/09/25/EcMjfxBbpv8LrSt.png)
 2. `set` 方法的主要作用是新增和修改哈希表中的元素，处理冲突的方式也是常用的线性探测法，即如果使用 Key（`ThreadLocal` 类型）的 `threadLocalHashCode` 计算出的位置已经存在 `Entry`（这个 `Entry` 有可能是有效的元素，也有可能是 Key 已经被回收的 `stale entry`），就进入循环，判断是否是修改操作。注意循环中还有个 `replaceStaleEntry`，它会执行一些清理工作，然后将 `key`、`value` 放到合适的 `Entry` 中，后面会详细介绍。一直探测到某个位置的 `Entry` 为 `null`，就用 `key` 、 `value` 新建 `Entry` 并放在该位置。
-3. `rehash` 操作前，会先进行一次 `cleanSomeSlots` 清理操作，这个方法在源码注释中使用了 *Heuristically（启发式地）* 进行描述，因此这里简称它为 `启发式清理`。而在 `rehash` 方法中，在调用 `resize` 方法扩容前，还会调用另外一个 `expungeStaleEntries` 清理操作，熟悉的词汇，在源码注释中描述为 *Expunge all stale entries in the table（清理所有stale entry）*，它本质上是调用了 `expungeStaleEntry` 方法，而 `expungeStaleEntry` 方法是对哈希表中的 stale entry 进行部分清理，后面就简称它为 `分段式清理`。
+3. `rehash` 操作前，会先进行一次 `cleanSomeSlots` 清理操作，这个方法在源码注释中使用了 _Heuristically（启发式地）_ 进行描述，因此这里简称它为 `启发式清理`。而在 `rehash` 方法中，在调用 `resize` 方法扩容前，还会调用另外一个 `expungeStaleEntries` 清理操作，熟悉的词汇，在源码注释中描述为 _Expunge all stale entries in the table（清理所有stale entry）_，它本质上是调用了 `expungeStaleEntry` 方法，而 `expungeStaleEntry` 方法是对哈希表中的 stale entry 进行部分清理，后面就简称它为 `分段式清理`。
 4. 两个清理工作完成后，才开始正式的 `resize` 扩容流程，新建一个两倍容量的数组，将旧表中的元素转移到新表，同时清理一些 stale entry。
 
 ### getEntry
@@ -629,7 +625,7 @@ private void remove(ThreadLocal<?> key) {
 
 从上面对几个增删改查操作的源码，不难发现，大多数方法除了完成自身的本职工作外，都会附带地在某些条件下对哈希表进行一些清理工作，包括 `分段式清理` 和 `启发式清理`，下面将分别进行分析。
 
-- 分段式清理
+* 分段式清理
 
 ```java
 private int expungeStaleEntry(int staleSlot) {                            
@@ -689,27 +685,22 @@ private int expungeStaleEntry(int staleSlot) {
 
 1. 初始状态： `K1~K7` 代表一个键簇，假定 `K1~K7` 计算后得到的位置均为 `13`。图中绿色表示有效 entry，灰色表示 stale entry，而白色为 `null`。现在开始执行 `expungeStaleEntry(13)`，即传入的参数 `staleSlot = 13`。
 
-    ![](https://i.loli.net/2021/09/25/Vo8XRde32W6vCAn.png)
-
+   ![](https://i.loli.net/2021/09/25/Vo8XRde32W6vCAn.png)
 2. 根据步骤，首先删除 `K1` 的 `Entry`，并将 `i` 移动到 `K1` 的下个位置 `14`：
 
-    ![](https://i.loli.net/2021/09/25/UbnYR2vdl7FVTZ3.png)
-
+   ![](https://i.loli.net/2021/09/25/UbnYR2vdl7FVTZ3.png)
 3. 随后， `K2` 位置为 stale entry，进入 `k == null` 分支，删除 `K2`，进入下次循环，`i` 到达 `15`，`K3` 为有效 entry，进行 rehash 操作，将 `h` 进行计算 `h = 13`（1 中的假设）。
 
-    ![](https://i.loli.net/2021/09/25/Yxi7F5KkSvDQjaL.png)
+   ![](https://i.loli.net/2021/09/25/Yxi7F5KkSvDQjaL.png)
+4. 先清空 `i` 位置，随后开始判断 `h` 位置，刚好 `h` 位置为空，则直接将 `K3` 代表的 `Entry` 放入 `13` 位置，`i` 移动到 `0` 位置。
 
-4.  先清空 `i` 位置，随后开始判断 `h` 位置，刚好 `h` 位置为空，则直接将 `K3` 代表的 `Entry` 放入 `13` 位置，`i` 移动到 `0` 位置。
-
-    ![](https://i.loli.net/2021/09/25/7lcorFteNGsDApC.png)
-
+   ![](https://i.loli.net/2021/09/25/7lcorFteNGsDApC.png)
 5. 与步骤 3 类似，清空 `K4`，`i` 移动至 `1` 位置。
 
-    ![](https://i.loli.net/2021/09/25/SveMP48UqOtGFBc.png)
-
+   ![](https://i.loli.net/2021/09/25/SveMP48UqOtGFBc.png)
 6. `K5~K7` 均为有效 entry，因此进行 rehash 操作，`K5` 的 `h = 13`，此时 `13` 位置不为空，则 `h` 移动到 `14`， `14` 位置为空，则将 `K5` 的 `Entry` 移动到 `14`。同理，将 `K6` 和 `K7` 移动到 `15` 和 `0` 位置。最后，`i` 移动到  `4` 的位置（**原** 键簇末尾紧邻的 null 位置），返回 `i`（马上会用到），本次 `分段式清理` 结束。
 
-    ![](https://i.loli.net/2021/09/25/bvNpCDqBdocyRhi.png)
+   ![](https://i.loli.net/2021/09/25/bvNpCDqBdocyRhi.png)
 
 了解过 `expungeStaleEntry` 基本原理后， 回头看看 `rehash` 代码中调用的 `expungeStaleEntries` 方法：
 
@@ -731,7 +722,7 @@ private void expungeStaleEntries() {
 
 是不是就毫无难度了，这就是一个简单粗暴的全局大清理工作。
 
-- 启发式清理
+* 启发式清理
 
 ```java
 
@@ -793,7 +784,7 @@ if (!cleanSomeSlots(i, sz) && sz >= threshold)
 
 第二个被调用的地方就是我们之前一笔带过的 `replaceStaleEntry`，这个方法逻辑比较复杂，涉及的内容比较多，因此我放到了最后再来补上。
 
-- replaceStaleEntry
+* replaceStaleEntry
 
 ```java
 private void replaceStaleEntry(ThreadLocal<?> key, Object value,           
@@ -869,65 +860,62 @@ if (k == null) {
 
 1. `replaceStaleEntry` 中的第一个循环主要作用是找到 `i` 位置所在键簇最前端的某个 stale entry 位置。举例说明， `set` 方法将传入参数 `K8`，图中 `K8` 为待探测元素，计算得到它的起始位置为 `0`。由于 `K4` 为有效 entry，且 `K4 ≠ K8`，因此 `set` 方法中的 `i` 移动至 `1` 位置。`1` 位置上的 `K5` 是 stale entry，因此，从这里开始调用 `replaceStaleEntry`，传入的第三个参数 `staleSlot` 为 `1`。这时候，`replaceStaleEntry` 的第一个循环就从这个 `staleSlot` 开始 **向前移动**，寻找最前端的 stale slot，即 `13`（虽然 `15` 也是 stale slot，但它不是这个键簇的最前端），并赋值 `slotToExpunge = 13`。
 
-    ![](https://i.loli.net/2021/09/25/rmgx6PUztFLnW8R.png)
-
+   ![](https://i.loli.net/2021/09/25/rmgx6PUztFLnW8R.png)
 2. 第二个循环从 `staleSlot` 的下个位置开始，**往后移动**，在键簇中寻找 `k == key` 的 `Entry`，直到键簇末尾。注意循环末尾的一小段代码：
 
-    ```java
-    if (k == null && slotToExpunge == staleSlot)                       
-        slotToExpunge = i; 
-    ```
+   ```java
+   if (k == null && slotToExpunge == staleSlot)                       
+       slotToExpunge = i; 
+   ```
 
-    它表示如果在 **往后**（区别步骤 2 中的往前）寻找的过程中遇到了 stale entry，且刚才步骤 2 中没找到 stale entry，那么就将 `slotToExpunge` 赋值为这个 stale entry的位置 `i`。再用一个例子来说明，如下图所示，同样从 `set` `K8` 元素开始，到 `1` 位置进入 `replaceStaleEntry`，此时往前寻找不到 stale entry，那么进入第二个循环前，`slotToExpunge == staleSlot`。
+   它表示如果在 **往后**（区别步骤 2 中的往前）寻找的过程中遇到了 stale entry，且刚才步骤 2 中没找到 stale entry，那么就将 `slotToExpunge` 赋值为这个 stale entry 的位置 `i`。再用一个例子来说明，如下图所示，同样从 `set` `K8` 元素开始，到 `1` 位置进入 `replaceStaleEntry`，此时往前寻找不到 stale entry，那么进入第二个循环前，`slotToExpunge == staleSlot`。
 
-    进入第二个循环后，向后寻找到 `2` 位置，发现 `K6` 是 stale slot，即 `k == null`，且这时候满足第二个条件，因此 `slotToExpunge = 2`。
+   进入第二个循环后，向后寻找到 `2` 位置，发现 `K6` 是 stale slot，即 `k == null`，且这时候满足第二个条件，因此 `slotToExpunge = 2`。
 
-    ![](https://i.loli.net/2021/09/25/YftE2wO5p4bFIR8.png)
+   ![](https://i.loli.net/2021/09/25/YftE2wO5p4bFIR8.png)
 
-    这个赋值操作最多只会执行一次，第二次再进来 `slotToExpunge == staleSlot` 这个条件一定不会再满足了，这个循环的起始位置是 `staleSlot` 的 **下个位置**，已经就不等于 `staleSlot` 了，往后的 `i` 值就更不会满足该条件。
-
+   这个赋值操作最多只会执行一次，第二次再进来 `slotToExpunge == staleSlot` 这个条件一定不会再满足了，这个循环的起始位置是 `staleSlot` 的 **下个位置**，已经就不等于 `staleSlot` 了，往后的 `i` 值就更不会满足该条件。
 3. 第二个循环过程中，如果找到了满足 `k == key` 条件的 `Entry`，那么就会进入替换及清理的代码中：
 
-    ```java
-    if (k == key) {                                                    
-        e.value = value;                                               
-                                                                               
-        tab[i] = tab[staleSlot];                                       
-        tab[staleSlot] = e;                                            
-                                                                               
-        // Start expunge at preceding stale entry if it exists         
-        if (slotToExpunge == staleSlot)                                
-            slotToExpunge = i;                                         
-        cleanSomeSlots(expungeStaleEntry(slotToExpunge), len);         
-        return;                                                        
-    }
-    ```
+   ```java
+   if (k == key) {                                                    
+       e.value = value;                                               
+                                                                              
+       tab[i] = tab[staleSlot];                                       
+       tab[staleSlot] = e;                                            
+                                                                              
+       // Start expunge at preceding stale entry if it exists         
+       if (slotToExpunge == staleSlot)                                
+           slotToExpunge = i;                                         
+       cleanSomeSlots(expungeStaleEntry(slotToExpunge), len);         
+       return;                                                        
+   }
+   ```
 
    `staleSlot` 是调用 `replaceStaleEntry` 方法时传入的参数，也就是 `set` 方法调用过程中发现的第一个 stale entry的位置。这里先将当前 `Entry` 的 `value` 进行了替换修改，然后将当前位置 `i` 与 `staleSlot` 位置的元素进行了交换，交换过后， `i` 位置变为 stale entry，而 `staleSlot` 位置成为了有效entry。
 
-    这段代码就是 `replaceStaleEntry` 命名的由来，它将原来 `set` 中识别出的 stale entry 替换为了一个新的有效 entry（key 是原来已经存在的，仅修改了 value）。下图中，`K8 == K8'`，当 `i == 4` 时，进入上述逻辑中，先将 `K8'` 的 `value` 进行替换修改，再将 `K5` 与 `K8'` 进行交换，得到下面的成果。
+   这段代码就是 `replaceStaleEntry` 命名的由来，它将原来 `set` 中识别出的 stale entry 替换为了一个新的有效 entry（key 是原来已经存在的，仅修改了 value）。下图中，`K8 == K8'`，当 `i == 4` 时，进入上述逻辑中，先将 `K8'` 的 `value` 进行替换修改，再将 `K5` 与 `K8'` 进行交换，得到下面的成果。
 
-    ![](https://i.loli.net/2021/09/25/RnS1LPQ6hMsr3oZ.png)
+   ![](https://i.loli.net/2021/09/25/RnS1LPQ6hMsr3oZ.png)
 
-    ![](https://i.loli.net/2021/09/25/yRc5FGDdluv3hE8.png)
+   ![](https://i.loli.net/2021/09/25/yRc5FGDdluv3hE8.png)
 
-    替换成功后，随后条件判断与步骤 3 逻辑相同，都是确定 `slotToExpunge` 的位置，此时的 `i` 位置已经是 stale entry 了，因此可以作为 `expungeStaleEntry`  `分段式清理` 的起点。
+   替换成功后，随后条件判断与步骤 3 逻辑相同，都是确定 `slotToExpunge` 的位置，此时的 `i` 位置已经是 stale entry 了，因此可以作为 `expungeStaleEntry`  `分段式清理` 的起点。
 
-    最后就是进行两次清理，先分段清理，再将其返回值传入 `cleanSomeSlots` 进行启发式清理，启发式清理中的第二个参数为 `len`，即哈希表当前的最大容量，区别 `set` 方法末尾的参数传入的 `sz`。
-
+   最后就是进行两次清理，先分段清理，再将其返回值传入 `cleanSomeSlots` 进行启发式清理，启发式清理中的第二个参数为 `len`，即哈希表当前的最大容量，区别 `set` 方法末尾的参数传入的 `sz`。
 4. 若第二个循环中没有找到能够替换的 `Entry` ，则进入到最后的新建逻辑：
 
-    ```java
-     // If key not found, put new entry in stale slot                       
-    tab[staleSlot].value = null;                                           
-    tab[staleSlot] = new Entry(key, value);                                
-                                                                               
-    // If there are any other stale entries in run, expunge them           
-    if (slotToExpunge != staleSlot)                                        
-        cleanSomeSlots(expungeStaleEntry(slotToExpunge), len); 
-    ```
+   ```java
+    // If key not found, put new entry in stale slot                       
+   tab[staleSlot].value = null;                                           
+   tab[staleSlot] = new Entry(key, value);                                
+                                                                              
+   // If there are any other stale entries in run, expunge them           
+   if (slotToExpunge != staleSlot)                                        
+       cleanSomeSlots(expungeStaleEntry(slotToExpunge), len); 
+   ```
 
-    `staleSlot` 处成为新元素插入的位置，如果在第二个循环中发现了其他 stale entry，就进行两步清理工作。
+   `staleSlot` 处成为新元素插入的位置，如果在第二个循环中发现了其他 stale entry，就进行两步清理工作。
 
 ## ThreadLocal 注意事项
 
