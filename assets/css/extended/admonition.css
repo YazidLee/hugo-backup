@@ -215,14 +215,14 @@
     background-color: rgba(101, 31, 255, 0.1);
   }
   .admonition.quote {
-    background-color: rgba(159, 159, 159, 0.1);
+    background-color: rgba(60,60,60,.1);
   }
   .admonition.quote .admonition-title {
-    border-bottom-color: rgba(159, 159, 159, 0.1);
-    background-color: rgba(159, 159, 159, 0.25);
+    border-bottom-color: rgba(60, 60, 60, 0.1);
+    background-color: rgba(60, 60, 60, 0.25);
   }
   .admonition.quote.open .admonition-title {
-    background-color: rgba(159, 159, 159, 0.1);
+    background-color: rgba(60, 60, 60, 0.1);
   }
   .admonition:last-child {
     margin-bottom: 0.75rem;
