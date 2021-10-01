@@ -26,13 +26,13 @@ katex: false
 《深入理解 Java 虚拟机》中对于几种引用类型做了简要的描述：
 
 {{< admonition type=quote title="Java 中的引用" open=true >}}
-强引用（*Strongly Reference* ）是最传统的“引用”的定义，是指在程序代码中普遍存在的引用赋值，即类似 `Object obj = new Ojbect()` 这种引用关系。无论任何情况下，只要强引用关系还存在，垃圾收集器就永远不会回收掉被引用的对象。
+强引用（_Strongly Reference_ ）是最传统的“引用”的定义，是指在程序代码中普遍存在的引用赋值，即类似 `Object obj = new Ojbect()` 这种引用关系。无论任何情况下，只要强引用关系还存在，垃圾收集器就永远不会回收掉被引用的对象。
 
-软引用（*Soft Reference*）是用来描述一些还有用，但非必须的对象。只被软引用关联着的对象，在系统将要发生内存溢出异常前，会把这些对象列进回收范围之中进行第二次回收，如果这次回收还没有足够的内存，才会抛出内存溢出异常。在 JDK 1.2 之后提供了 `SoftReference` 来实现软引用。
+软引用（_Soft Reference_）是用来描述一些还有用，但非必须的对象。只被软引用关联着的对象，在系统将要发生内存溢出异常前，会把这些对象列进回收范围之中进行第二次回收，如果这次回收还没有足够的内存，才会抛出内存溢出异常。在 JDK 1.2 之后提供了 `SoftReference` 来实现软引用。
 
-弱引用（*Weak Reference*）也是用来描述那些非必须对象，但是它的强度比软引用更弱一些，被弱引用关联的对象只能生存到下一次垃圾收集发生止。当垃圾收集器开始工作，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。在 JDK 1.2 之后提供了 `WeakReference` 来实现弱引用。
+弱引用（_Weak Reference_）也是用来描述那些非必须对象，但是它的强度比软引用更弱一些，被弱引用关联的对象只能生存到下一次垃圾收集发生止。当垃圾收集器开始工作，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。在 JDK 1.2 之后提供了 `WeakReference` 来实现弱引用。
 
-虚引用（*Phantom Reference*）也被称为“幽灵引用”或者“幻影引用”，它是最弱的一种引用关系。一个对象是否有虚引用存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。为对象设置虚引用关联的唯一目的只是为了能在这个对象被收集器回收时收到一个系统通知。在 JDK 1.2 之后提供了 `PhantomReference` 来实现虚引用。
+虚引用（_Phantom Reference_）也被称为“幽灵引用”或者“幻影引用”，它是最弱的一种引用关系。一个对象是否有虚引用存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。为对象设置虚引用关联的唯一目的只是为了能在这个对象被收集器回收时收到一个系统通知。在 JDK 1.2 之后提供了 `PhantomReference` 来实现虚引用。
 {{< /admonition >}}
 
 书中的介绍较为概括，并且没有提供相关的示例，当时第一次看这段文字时并没有搞清楚这几个引用的含义和用法。为了更好地理解，下面将通过几个示例进行分析介绍。
@@ -81,7 +81,7 @@ public void softReference() {
 
 ![](https://i.loli.net/2021/09/25/s7MIR3DnQeEhB4r.png)
 
-此时，对于堆中的 `Ojbect` 实例对象来说，仅仅剩下了一个 `referent` **软引用** 指向它，某些文章中称之为 **软可达对象**（*softly reachable object*），这个对象就满足了 GC 的特殊对待要求，当内存溢出时，会将其占用的堆空间回收，并将 `soft` 指向的 `SoftReference` 实例对象放入其 `queue` 关联的 `ReferenceQueue` 实例对象中。
+此时，对于堆中的 `Ojbect` 实例对象来说，仅仅剩下了一个 `referent` **软引用** 指向它，某些文章中称之为 **软可达对象**（_softly reachable object_），这个对象就满足了 GC 的特殊对待要求，当内存溢出时，会将其占用的堆空间回收，并将 `soft` 指向的 `SoftReference` 实例对象放入其 `queue` 关联的 `ReferenceQueue` 实例对象中。
 
 ## SoftReference 示例
 
@@ -188,7 +188,7 @@ SoftReference346747888 has been unreachable
 
 ## WeakReference 示例
 
-比起 `SoftReference` ，单纯的 `WeakReference` 示例较为简单，不要内存溢出的条件，只需要对象是 *weakly reachable object*（类比 `SoftReference`），且进行过一次 GC 即可。
+比起 `SoftReference` ，单纯的 `WeakReference` 示例较为简单，不要内存溢出的条件，只需要对象是 _weakly reachable object_（类比 `SoftReference`），且进行过一次 GC 即可。
 
 ```java
 /**
@@ -309,7 +309,7 @@ public int size() {
 }
 ```
 
-`expungeStaleEntries` 方法为核心清理方法，它在 `WeakHaspMap` 中的大部分方法中被调用（如 `size`   、 `put` 、 `get` 、 `remove` 等），它清理所有待清理队列（该队列由GC完成入队，类比 `SoftReferende`）中的 `Entry` 元素（删除链表中的节点并断开 value 的强引用）：
+`expungeStaleEntries` 方法为核心清理方法，它在 `WeakHaspMap` 中的大部分方法中被调用（如 `size`   、 `put` 、 `get` 、 `remove` 等），它清理所有待清理队列（该队列由 GC 完成入队，类比 `SoftReferende`）中的 `Entry` 元素（删除链表中的节点并断开 value 的强引用）：
 
 ```java
 //...
@@ -479,11 +479,11 @@ public class PhantomReference<T> extends Reference<T> {
 Note that whereas the garbage collector enqueues soft and weak reference objects when their referents are leaving the relevant reachability state, it enqueues phantom references when the referents are entering the relevant state. You can also see this difference in that the garbage collector clears soft and weak reference objects before enqueueing them, but not phantom reference objects. Thus, the garbage collector enqueues soft reference objects to indicate their referents have just left the softly reachable state. Likewise, the garbage collector enqueues weak reference objects to indicate their referents have just left the weakly reachable state. But the garbage collector enqueues phantom reference objects to indicate their referents have entered the phantom reachable state. Phantom reachable objects will remain phantom reachable until their reference objects are explicitly cleared by the program.
 {{< /admonition >}}
 
-也就是说，GC 将 `SoftReference` 、 `WeakReference` 入队的时机是在清理完它们的目标对象之后，亦即它们的目标 *softly reachable*、 *weakly reachable* 状态结束之后，而 `PhantomReference` 的入队时机是在它的目标对象被清理之前，亦即它的目标对象刚进入 *phantom reachable* 时，它将一直保持这种状态，直到他们的目标对象被应用程序显示清理（调用 `clear` 方法）或被 GC 回收。
+也就是说，GC 将 `SoftReference` 、 `WeakReference` 入队的时机是在清理完它们的目标对象之后，亦即它们的目标 _softly reachable_、 _weakly reachable_ 状态结束之后，而 `PhantomReference` 的入队时机是在它的目标对象被清理之前，亦即它的目标对象刚进入 _phantom reachable_ 时，它将一直保持这种状态，直到他们的目标对象被应用程序显示清理（调用 `clear` 方法）或被 GC 回收。
 
 ### PhantomReference 应用
 
-`PhantomReference` 既然无法对目标对象产生实际的影响，那么它的作用就是在对象进入 *phantom reachable* 状态后，利用 `queue` 进行最后的资源清理工作（*pre-mortem clean*）。
+`PhantomReference` 既然无法对目标对象产生实际的影响，那么它的作用就是在对象进入 _phantom reachable_ 状态后，利用 `queue` 进行最后的资源清理工作（_pre-mortem clean_）。
 
 下面以 Java NIO 中的 `DirectByteBuffer` 为例进行简单说明。
 
@@ -693,7 +693,7 @@ private static class Deallocator
 总结一下清理的原理：
 
 1. 随着`Reference` 类被加载 ， `Reference-handler` 后台线程被启动，它轮循 `pending` 链表，执行 `Cleaner` 的 `clean` 工作。
-2. `Cleaner` 继承自 `PhantomReference` ，它会被 GC 识别，在进入 *phantom reachable* 状态前会被GC先放入 `pending` 队列。
+2. `Cleaner` 继承自 `PhantomReference` ，它会被 GC 识别，在进入 _phantom reachable_ 状态前会被GC先放入 `pending` 队列。
 3. `clean` 方法最终执行 `Cleaner` 的 `thunk.run()` 进行清理。
 4. `DirectByteBuffer` 在创建的同时关联了一个 `Cleaner`，该 `Cleaner` 中的 `thunk` 为 `Deallocator`，`Deallocator` 使用 `Unsafe` 完成了堆外内存的清理释放。
 
