@@ -27,8 +27,9 @@ public interface Type {
     }
 }
 ```
-
-> Type is the common super interface for all types in the Java programming language. These include **raw types**, **parameterized types**, **array types**, **type variables** and **primitive types**.
+{{< admonition type=quote title="Java Type" open=true >}}
+Type is the common super interface for all types in the Java programming language. These include **raw types**, **parameterized types**, **array types**, **type variables** and **primitive types**.
+{{< /admonition >}}
 
 JDK 中的 `Type` 是一种高级抽象，其类图关系如下，它代表了 Java 中所有与 **类型** 相关的概念，此处的 **类型** 与我们常用的 **基础数据类型** 和 **引用数据类型** 的概念不同，它的抽象层级更高，概念更加宽泛，主要用于支持泛型中的类型处理。
 
@@ -390,8 +391,11 @@ public class WildcardTypeDemo {
 
 惯例先贴出 Spring 官方对于该类的简介：
 
-> Encapsulates a Java Type, providing access to supertypes, interfaces, and generic parameters along with the ability to ultimately resolve to a Class.
-> **ResolvableType**s may be obtained from fields, method parameters, method returns or classes. Most methods on this class will themselves return **ResolvableType**s, allowing easy navigation.
+{{< admonition type=quote title="ResolvableType" open=true >}}
+Encapsulates a Java Type, providing access to supertypes, interfaces, and generic parameters along with the ability to ultimately resolve to a Class.
+
+**ResolvableType**s may be obtained from fields, method parameters, method returns or classes. Most methods on this class will themselves return **ResolvableType**s, allowing easy navigation.
+{{< /admonition >}}
 
 该类封装了 Java 原生的 `Type` 类型，提供了获取父类、接口、泛型参数的服务，同时能够最终将结果解析为 `Class` 类型。
 
