@@ -27,6 +27,7 @@ public interface Type {
     }
 }
 ```
+
 {{< admonition type=quote title="Java Type" open=true >}}
 Type is the common super interface for all types in the Java programming language. These include **raw types**, **parameterized types**, **array types**, **type variables** and **primitive types**.
 {{< /admonition >}}
@@ -182,7 +183,7 @@ public interface List<E> extends Collection<E>...
 
 ![](https://i.loli.net/2021/09/25/vtgrSHYycdLikDb.png)
 
-字面意义上，它表示的是 **泛型声明**，Java 规范中，泛型的定义可以出现在 **类** 和 **方法** 上（构造器也可归属于方法），正好对应了该上图中的 3 个实现类。因此 `getGenericDeclaration()` 方法是为了获取该参数所定义的“位置”。以下代码分别定义了 4 个 `TypeVariable` ，分别展示了 3 种不同位置及 Java8 后引入的 `TypeAnnotation`。
+字面意义上，它表示的是 **泛型声明**，Java 规范中，泛型的定义可以出现在 **类** 和 **方法** 上（构造器也可归属于方法），正好对应了该上图中的 3 个实现类。因此 `getGenericDeclaration()` 方法是为了获取该参数所定义的「位置」。以下代码分别定义了 4 个 `TypeVariable` ，分别展示了 3 种不同位置及 Java8 后引入的 `TypeAnnotation`。
 
 ```java
 @Target({ElementType.TYPE_USE})
