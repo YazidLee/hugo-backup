@@ -1,5 +1,6 @@
 ---
 title: "Spring泛型"
+slug: "spring-generic"
 summary: "Java中的Type家族，Spring针对Tyep的封装--ResolvableType及其应用示例。"
 author: ["SadBird"]
 date: 2021-09-13T21:56:33+08:00

@@ -1,5 +1,6 @@
 ---
 title: "Hugo部署--Github Actions"
+slug: "hugo-git-actions"
 summary: "Github Actions简介，并用其实现Hugo的部署。"
 author: ["SadBird"]
 date: 2021-09-21T00:46:39+08:00

@@ -1,5 +1,6 @@
 ---
 title: "Hello Hugo"
+slug: "hello-hugo"
 summary: "Hugo入门，以PaperMod主题为例进行基本配置，利用git完成备份和部署工作。"
 author: ["SadBird"]
 date: 2021-08-28T01:26:43+08:00
