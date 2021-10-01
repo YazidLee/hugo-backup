@@ -368,9 +368,9 @@ OK，至此，`ThreadLocal` 表面上的东西已经介绍得差不多了，代�
 
 1. 首先需要了解过哈希表是什么，对哈希冲突、开放地址、线性探测等概念比较熟悉，最好自己动手实现过。可以上网找找，资料挺多的，这里推荐一个入门视频：
 
-{{< bilibili BV1MC4y1p7rP >}}
+    {{< bilibili BV1MC4y1p7rP >}}
 
-1. 对Java的弱引用有所了解，不知道的可以看看之前的这篇文章 [ThreadLocal分析(上)—Java中的引用](https://www.liyangjie.cn/posts/threadlocal%E5%88%86%E6%9E%90%E4%B8%8A-java%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/)。
+2. 对Java的弱引用有所了解，不知道的可以看看之前的这篇文章 [ThreadLocal分析(上)—Java中的引用](https://www.liyangjie.cn/posts/threadlocal%E5%88%86%E6%9E%90%E4%B8%8A-java%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/)。
 
 ### ThreadMap 字段
 
