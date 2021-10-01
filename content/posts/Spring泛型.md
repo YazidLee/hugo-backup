@@ -1,18 +1,24 @@
 ---
-title: "Spring泛型"
-slug: "spring-generic"
-summary: "Java中的Type家族，Spring针对Tyep的封装--ResolvableType及其应用示例。"
-author: ["SadBird"]
-date: 2021-09-13T21:56:33+08:00
-draft: false
+title: Spring 泛型
+slug: spring-generic
+summary: Java 中的 Type 家族，Spring 针对 Tyep 的封装——ResolvableType 及其应用示例。
+author:
+- SadBird
+date: 2021-09-13T21:56:33.000+08:00
 cover:
-    image: "https://spring.io/images/spring-logo-9146a4d3298760c2e7e49595184e1975.svg"
-    alt: "Spring泛型"
-categories: ["Java", "Spring"]
-tags: ["Java", "Spring", "Generic"]
+  image: https://spring.io/images/spring-logo-9146a4d3298760c2e7e49595184e1975.svg
+  alt: Spring泛型
+categories:
+- Java
+- Spring
+tags:
+- Java
+- Spring
+- Generic
 katex: false
+
 ---
-## Type概述
+## Type 概述
 
 ```java
 public interface Type {
@@ -24,16 +30,16 @@ public interface Type {
 
 > Type is the common super interface for all types in the Java programming language. These include **raw types**, **parameterized types**, **array types**, **type variables** and **primitive types**.
 
-JDK中的 `Type` 是一种高级抽象，其类图关系如下，它代表了Java中所有与**类型**相关的概念，此处的**类型**与我们常用的**基础数据类型**和**引用数据类型**的概念不同，它的抽象层级更高，概念更加宽泛，主要用于支持泛型中的类型处理。
+JDK 中的 `Type` 是一种高级抽象，其类图关系如下，它代表了 Java 中所有与 **类型** 相关的概念，此处的 **类型** 与我们常用的 **基础数据类型** 和 **引用数据类型** 的概念不同，它的抽象层级更高，概念更加宽泛，主要用于支持泛型中的类型处理。
 
 ![](https://i.loli.net/2021/09/25/6qcd8TzKnCu1NB3.png)
 
 除了我们熟悉的 `Class` 之外，还有如下子接口：
 
-- `ParameterizedType`
-- `TypeVariable`
-- `GenericArrayType`
-- `WildcardType`
+* `ParameterizedType`
+* `TypeVariable`
+* `GenericArrayType`
+* `WildcardType`
 
 下面小节将分别使用示例代码进行介绍。
 
@@ -50,11 +56,11 @@ public interface ParameterizedType extends Type {
 }
 ```
 
-`ParameterizedType` 形如 `List<String>` ，即原生类型加上泛型参数的形式，其中，泛型参数可以有多个，并且既可以是实际具体类型(如 `String` )，也可以是参数形式(如 `T,K,E` )，还可以是通配符形式(如 `? extends Number` )。各方法返回结果示例如下：
+`ParameterizedType` 形如 `List<String>` ，即原生类型加上泛型参数的形式，其中，泛型参数可以有多个，并且既可以是实际具体类型（如 `String` ），也可以是参数形式（如 `T,K,E` ），还可以是通配符形式（如 `? extends Number`）。各方法返回结果示例如下：
 
 ![](https://i.loli.net/2021/09/25/l13gCTuvsIMOxRw.png)
 
-以下代码使用反射的方式进行实验，其中 `getGenericType()` 方法可以获取字段的泛型，对 `getActualTypeArguments()` 方法获取到的类型数组进行进一步的分析，可以发现它支持所有的 `Type` 子类型，代码有些部分暂时看不懂可以先放放，等后续章节看完再回头来看
+以下代码使用反射的方式进行实验，其中 `getGenericType()` 方法可以获取字段的泛型，对 `getActualTypeArguments()` 方法获取到的类型数组进行进一步的分析，可以发现它支持所有的 `Type` 子类型，代码有些部分暂时看不懂可以先放放，等后续章节看完再回头来看：
 
 ```java
 public class ParameterizedTypeDemo<K extends Number> {
@@ -165,7 +171,7 @@ public interface TypeVariable<D extends GenericDeclaration> extends Type, Annota
 }
 ```
 
-`TypeVariable` 表示的是**类型参数**的概念，即泛型定义中使用到的`T, K, E`等，如JDK中提供的 `List` 类，其含有一个 `TypeVariable` 为 `E` 。
+`TypeVariable` 表示的是 **类型参数** 的概念，即泛型定义中使用到的 `T, K, E` 等，如 JDK 中提供的 `List` 类，其含有一个 `TypeVariable` 为 `E` 。
 
 ```java
 public interface List<E> extends Collection<E>...
@@ -175,7 +181,7 @@ public interface List<E> extends Collection<E>...
 
 ![](https://i.loli.net/2021/09/25/vtgrSHYycdLikDb.png)
 
-字面意义上，它表示的是**泛型声明**，Java规范中，泛型的定义可以出现在**类**和**方法**上(构造器也可归属于方法)，正好对应了该上图中的3个实现类。因此 `getGenericDeclaration()` 方法是为了获取该参数所定义的“位置”。以下代码分别定义了4个 `TypeVariable` ，分别展示了3种不同位置及Java 8后引入的 `TypeAnnotation` 。
+字面意义上，它表示的是 **泛型声明**，Java 规范中，泛型的定义可以出现在 **类** 和 **方法** 上（构造器也可归属于方法），正好对应了该上图中的 3 个实现类。因此 `getGenericDeclaration()` 方法是为了获取该参数所定义的“位置”。以下代码分别定义了 4 个 `TypeVariable` ，分别展示了 3 种不同位置及 Java8 后引入的 `TypeAnnotation`。
 
 ```java
 @Target({ElementType.TYPE_USE})
@@ -284,7 +290,7 @@ public interface GenericArrayType extends Type {
 }
 ```
 
-`GenericArrayType` 表示形如 `T[], T[][]` 等**泛型数组**，它有一个方法，获取数组中所存储元素的 `Type` 。示例代码如下：
+`GenericArrayType` 表示形如 `T[], T[][]` 等 **泛型数组**，它有一个方法，获取数组中所存储元素的 `Type`。示例代码如下：
 
 ```java
 public class GenericArrayTypeDemo<T> {
@@ -325,15 +331,17 @@ public class GenericArrayTypeDemo<T> {
 
 `GenericType` 相对来说还是好理解的，数组中的元素类型即为数组拿掉一个 `[]` 符号后对应的类型。
 
-为了提升理解，这里留下一个问题：上述输出结果中， `T, T[], List<T>, List<? extends T>`  分别是什么类型?
+为了提升理解，这里留下一个问题：上述输出结果中， `T, T[], List<T>, List<? extends T>`  分别是什么类型？
 
 {{< admonition type=tip title="答案" open=true >}}
+
 ```shell
 [Field: tA's component type] is TypeVariable
 [Field: tAA's component type] is GenericArrayType
 [Field: listA's component type] is ParameterizedType
 [Field: wildcardListA's component type] is ParameterizedType
 ```
+
 {{< /admonition >}}
 
 ## WildcardType
@@ -347,7 +355,7 @@ public interface WildcardType extends Type {
 }
 ```
 
-顾名思义，它表示的是 `? extends Number` 形式的**通配符类型**，接口中的两个方法也比较好理解，分别代表通配符的上界和下界。示例代码如下，为了简单起见，仅仅定义了一个Field，且使用的时候直接取数组下标0：
+顾名思义，它表示的是 `? extends Number` 形式的 **通配符类型**，接口中的两个方法也比较好理解，分别代表通配符的上界和下界。示例代码如下，为了简单起见，仅仅定义了一个 Field，且使用的时候直接取数组下标 0：
 
 ```java
 public class WildcardTypeDemo {
@@ -378,16 +386,16 @@ public class WildcardTypeDemo {
 [Field wildcardList is WildcardType]: ? extends java.lang.Number, its upper bound is [class java.lang.Number] and lower bound is []
 ```
 
-# Spring中的ResolvableType
+# Spring 中的 ResolvableType
 
-惯例先贴出Spring官方对于该类的简介：
+惯例先贴出 Spring 官方对于该类的简介：
 
 > Encapsulates a Java Type, providing access to supertypes, interfaces, and generic parameters along with the ability to ultimately resolve to a Class.
-**ResolvableType**s may be obtained from fields, method parameters, method returns or classes. Most methods on this class will themselves return **ResolvableType**s, allowing easy navigation.
+> **ResolvableType**s may be obtained from fields, method parameters, method returns or classes. Most methods on this class will themselves return **ResolvableType**s, allowing easy navigation.
 
-该类封装了Java原生的`Type`类型，提供了获取父类、接口、泛型参数的服务，同时能够最终将结果解析为`Class`类型。
+该类封装了 Java 原生的 `Type` 类型，提供了获取父类、接口、泛型参数的服务，同时能够最终将结果解析为 `Class` 类型。
 
-`ResolvableTypes`可以使用**字段**、方法参数、方法返回值、`Class`等方式获取。该类中的大部分方法都将返回`ResolvableTypes`，方便后续的调用。
+`ResolvableTypes` 可以使用 **字段**、方法参数、方法返回值、`Class` 等方式获取。该类中的大部分方法都将返回`ResolvableTypes`，方便后续的调用。
 
 官方提供的示例代码如下所示：
 
@@ -403,12 +411,11 @@ public void example() {
    t.getGeneric(1); // List<String>
    t.resolveGeneric(1, 0); // String
 }
-
 ```
 
-## ResolvableType在Spring事件机制中的应用
+## ResolvableType 在 Spring 事件机制中的应用
 
-Spring的事件机制(观察者模式)使用到了 `ResolvableType` 对广播的事件进行筛选，使得某监听器仅能监听某类型的事件，示例如下：自定义事件 `MyEvent` 及监听器 `MyListener` ，该监听器指定泛型为 `MyEvent` ：
+Spring 的事件机制（观察者模式）使用到了 `ResolvableType` 对广播的事件进行筛选，使得某监听器仅能监听某类型的事件，示例如下：自定义事件 `MyEvent` 及监听器 `MyListener`，该监听器指定泛型为 `MyEvent`：
 
 ```java
 public class MyListener implements ApplicationListener<MyEvent> {
@@ -428,7 +435,7 @@ class MyEvent extends ApplicationEvent {
 }
 ```
 
-同时，再定义一个监听器，指定其泛型为 `ContextRefreshedEvent` ，在Spring的 `finishRefresh` 阶段会由容器发布该事件：   
+同时，再定义一个监听器，指定其泛型为 `ContextRefreshedEvent`，在Spring的 `finishRefresh` 阶段会由容器发布该事件：
 
 ```java
 public class ContextRefreshedListener implements ApplicationListener<ContextRefreshedEvent> {
@@ -508,7 +515,8 @@ static ResolvableType resolveDeclaredEventType(Class<?> listenerType) {
     return (eventType != ResolvableType.NONE ? eventType : null);
 }
 ```
-代码中的1位置为重点部分， `ResolvableType` 解析了 `ApplicationListener` 具体的泛型类型。最后， `supportsEventType` 方法调用了 `ResolvableType` 的 `isAssignableFrom` 方法，以便监听器能接收泛型声明的类型及其子类事件：
+
+代码中的 1 位置为重点部分， `ResolvableType` 解析了 `ApplicationListener` 具体的泛型类型。最后， `supportsEventType` 方法调用了 `ResolvableType` 的 `isAssignableFrom` 方法，以便监听器能接收泛型声明的类型及其子类事件：
 
 ```java {hl_lines=[11]}
 public boolean supportsEventType(ResolvableType eventType) {
@@ -525,7 +533,8 @@ public boolean supportsEventType(ResolvableType eventType) {
     }
 }
 ```
-现新增一个事件 `MyEventChild`，继承 `MyEvent` ，并在代码中发布该事件，可以发现 `MyListener` 也能接收到该事件：
+
+现新增一个事件 `MyEventChild`，继承 `MyEvent`，并在代码中发布该事件，可以发现 `MyListener` 也能接收到该事件：
 
 ```java
 class MyEventChild extends MyEvent {
