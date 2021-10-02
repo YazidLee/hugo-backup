@@ -16,7 +16,7 @@ tags:
 - Spring
 - Generic
 katex: false
-draft: false
+
 ---
 ## Type 概述
 
@@ -58,7 +58,7 @@ public interface ParameterizedType extends Type {
 }
 ```
 
-`ParameterizedType` 形如 `List<String>` ，即原生类型加上泛型参数的形式，其中，泛型参数可以有多个，并且既可以是实际具体类型（如 `String` ），也可以是参数形式（如 `T,K,E` ），还可以是通配符形式（如 `? extends Number`）。各方法返回结果示例如下：
+`ParameterizedType` 形如 `List<String>` ，即原生类型加上泛型参数的形式，其中，泛型参数可以有多个，并且既可以是实际具体类型（如 `String`），也可以是参数形式（如 `T,K,E`），还可以是通配符形式（如 `? extends Number`）。各方法返回结果示例如下：
 
 ![](https://i.loli.net/2021/09/25/l13gCTuvsIMOxRw.png)
 
@@ -173,7 +173,7 @@ public interface TypeVariable<D extends GenericDeclaration> extends Type, Annota
 }
 ```
 
-`TypeVariable` 表示的是 **类型参数** 的概念，即泛型定义中使用到的 `T, K, E` 等，如 JDK 中提供的 `List` 类，其含有一个 `TypeVariable` 为 `E` 。
+`TypeVariable` 表示的是 **类型参数** 的概念，即泛型定义中使用到的 `T, K, E` 等，如 JDK 中提供的 `List` 类，其含有一个 `TypeVariable` 为 `E`。
 
 ```java
 public interface List<E> extends Collection<E>...
@@ -488,7 +488,7 @@ protected boolean supportsEvent(
 }  
 ```
 
-可以看到，将原始的 `ApplicationListener` 转换为了 `GenericApplicationListenerAdapter` ，该适配器的构造器如下：
+可以看到，将原始的 `ApplicationListener` 转换为了 `GenericApplicationListenerAdapter`，该适配器的构造器如下：
 
 ```java {hl_lines=[24]}
 public GenericApplicationListenerAdapter(ApplicationListener<?> delegate) {
