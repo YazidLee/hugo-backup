@@ -190,7 +190,7 @@ hugo server
 
   `archives.md` 内容为：
 
-  ```mark
+  ```markdown
   ---
   title: "Archive"
   layout: "archives"
@@ -303,7 +303,7 @@ hugo server
   ---
   ```
 
-  ```mark
+  ```markdown
   ---
   title: "HelloHugo2"
   date: 2021-08-29T21:18:38+08:00
@@ -334,7 +334,7 @@ taxonomies:
 
 这里又配置了一个 `series` 的分类维度，可以在博客的 front matter 中使用：
 
-```mark
+```markdown
 ---
 title: "HelloHugo1"
 date: 2021-08-29T21:13:55+08:00
@@ -386,13 +386,13 @@ markup:
 
 现在往第一篇博客中添加一个代码段如下：
 
-```markdown
+````markdown
 ```java
 public V put(K key, V value) {
     return putVal(hash(key), key, value, false, true);
 }
 ```
-```
+````
 
 显示效果如图：
 
