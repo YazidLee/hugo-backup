@@ -13,7 +13,7 @@ categories:
 tags:
 - Hugo
 katex: false
-draft: false
+
 ---
 以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll 等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。
 
@@ -32,7 +32,7 @@ hugo v0.82.1-60618210 windows/amd64 BuildDate=2021-04-20T11:02:50Z VendorInfo=go
 
 ## Hello Hugo
 
-开始使用Hugo创建一个新站点 `hello-hugo`（这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录）:
+开始使用 Hugo 创建一个新站点 `hello-hugo`（这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录）:
 
 ```shell
 hugo new site hello-hugo
@@ -47,7 +47,7 @@ Just a few more steps and you're ready to go:
    Choose a theme from https://themes.gohugo.io/ or create your own with the "hugo new theme <THEMENAME>" command.
 2. Perhaps you want to add some content. You can add single files with "hugo new <SECTIONNAME><FILENAME>.<FORMAT>".
 3. Start the built-in live server via "hugo server".
-{{< /admonition >}}
+   {{< /admonition >}}
 
 等会我们就按这个顺序完成站点的创建。先看看执行完 `hugo new site` 命令后，Hugo 为我们做了什么。
 
@@ -65,7 +65,7 @@ Just a few more steps and you're ready to go:
 * `layouts`：与博客页面布局相关的内容，如博客网页中的 `header`、`footer` 等。
 * `static`：存放静态资源，如图标、图片等。
 * `themes`：主题相关。
-* `config.toml`：站点、主题等相关内容的配置文件，它支持 `yaml`、`toml`和 `json` 格式，后续将会一直和这个文件打交道。
+* `config.toml`：站点、主题等相关内容的配置文件，它支持 `yaml`、`toml` 和 `json` 格式，后续将会一直和这个文件打交道。
 
 除了上述几个目录之外，Hugo 还规定了许多其他目录用于提供不同的作用，如 `assets`、`i18n` 等。
 
@@ -139,7 +139,7 @@ draft: false
 
 文件头部为 Hugo 自动添加的内容，它来自 `archetypes` 目录中的 `default.md` 模板，注意 `draft` 属性，默认值为 `true` 表示文章处于草稿状态，该状态下的文档不会参与站点的生成，也就是说网站上没有草稿文章，所以此处需要将其先设置为 `false`。
 
-现在可以使用Hugo内置的Server预览一下成果(工作目录必须在`hugo-hello`)：
+现在可以使用 Hugo 内置的 Server 预览一下成果（工作目录必须在 `hugo-hello`）：
 
 ```shell
 hugo server
@@ -147,7 +147,7 @@ hugo server
 
 ![](https://i.loli.net/2021/09/25/Fi2SjNc3DB65sPf.png)
 
-:sob:emmmmmmm，怎么说呢，有成果出来了，但是效果好像不太好，别急，接下来我们慢慢完善。
+:sob: emmmmmmm，怎么说呢，有成果出来了，但是效果好像不太好，别急，接下来我们慢慢完善。
 
 ## 主题配置完善
 
@@ -165,7 +165,7 @@ hugo server
 
 ### languages, archives, search
 
-在 demo 的 `languages` 的配置段中，有 `en`、`fr`和`fa` 3 块，它们使用的主题 Mode 不同，且包含部分国际化的配置，我们暂时只需要使用 `en`，可以将 `fr` 和 `fa` 注释或者直接删除掉。
+在 demo 的 `languages` 的配置段中，有 `en`、`fr` 和 `fa` 3 块，它们使用的主题 Mode 不同，且包含部分国际化的配置，我们暂时只需要使用 `en`，可以将 `fr` 和 `fa` 注释或者直接删除掉。
 
 `en` 下最重要的就是 `menu` 配置了，它表示了导航栏显示的内容，demo 中提供了最常用的 4 项，即 `Archive`、`Search`、`Tags` 及 `Categories`。每项中包含一个 `weight`，表示它们在导航栏中的显示顺序，越小越靠前。
 
@@ -269,12 +269,10 @@ hugo server
 * `ShowShareButtons` 是否显示分享博客按钮，具体按钮的设定仍可参照 [PaperMod官网](https://github.com/adityatelange/hugo-PaperMod/wiki/Icons)。
 
   ![](https://i.loli.net/2021/09/25/LvTnSraM1fWI5zP.png)
-  
 * `ShowReadingTime` 是否显示文章阅读时间。
 * `ShowBreadCrumbs` 是否显示面包屑。
 
   ![](https://i.loli.net/2021/09/25/BhbN3KgVlT2ZMyr.png)
-  
 * `ShowCodeCopyButtons` 是否显示代码复制按钮。
 * `ShowToc` 是否显示文章目录。
 * 博客封面相关：
@@ -390,31 +388,29 @@ public V put(K key, V value) {
     return putVal(hash(key), key, value, false, true);
 }
 ```
-```
 
-显示效果如图：
-
-![](https://i.loli.net/2021/09/25/wF3muHqsGAncCz6.png)
-
-### 增加评论区
-
-我选择使用的是 `Valine`，前置工作需要在 LeanCloud 上注册并创建应用，获取到相关的 `AppID` 和 `AppKey`，具体流程请参照 [Valine官方网站](https://valine.js.org/quickstart.html)。
-
-获取到这两个参数后，根据 PaperMod 官方文档的指示，创建 `layouts/partials/comments.html` 文件，`partials` 路径不存在就自己创建，在文件中添加以下内容：
-
-```html
-{{ $valinejs := resources.Get "js/Valine.min.js" }}
-<script src='{{ $valinejs.RelPermalink }}'></script>
-<div id="vcomments"></div>
-<script>
-    new Valine({
-        el: '#vcomments',
-        appId: '这里是你的AppID',
-        appKey: '这里是你的AppKey',
-        placeholder: '来都来了，说两句~'
-    })
-</script>
-```
+    显示效果如图：
+    
+    ![](https://i.loli.net/2021/09/25/wF3muHqsGAncCz6.png)
+    
+    ### 增加评论区
+    
+    我选择使用的是 `Valine`，前置工作需要在 LeanCloud 上注册并创建应用，获取到相关的 `AppID` 和 `AppKey`，具体流程请参照 [Valine官方网站](https://valine.js.org/quickstart.html)。
+    
+    获取到这两个参数后，根据 PaperMod 官方文档的指示，创建 `layouts/partials/comments.html` 文件，`partials` 路径不存在就自己创建，在文件中添加以下内容：
+    
+    ```html
+    {{ $valinejs := resources.Get "js/Valine.min.js" }}
+    <script src='{{ $valinejs.RelPermalink }}'></script>
+    <div id="vcomments"></div>
+    <script>
+        new Valine({
+            el: '#vcomments',
+            appId: '这里是你的AppID',
+            appKey: '这里是你的AppKey',
+            placeholder: '来都来了，说两句~'
+        })
+    </script>
 
 随后创建 `assets/js/Valine.min.js`，将 [CDN](https://cdnjs.cloudflare.com/ajax/libs/valine/1.4.14/Valine.min.js) 中的内容全部拷贝到该文件中，保存。
 
