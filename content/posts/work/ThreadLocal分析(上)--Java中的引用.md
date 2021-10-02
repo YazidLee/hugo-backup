@@ -15,7 +15,7 @@ tags:
 - ThreadLocal
 - Reference
 katex: false
-draft: false
+
 ---
 ## 4 种引用类型概述
 
@@ -25,13 +25,19 @@ draft: false
 
 《深入理解 Java 虚拟机》中对于几种引用类型做了简要的描述：
 
-{{< admonition type=quote title="Java 中的引用" open=true >}}
+{{< admonition type=quote title="强引用" open=true >}} 
 强引用（_Strongly Reference_ ）是最传统的「引用」的定义，是指在程序代码中普遍存在的引用赋值，即类似 `Object obj = new Ojbect()` 这种引用关系。无论任何情况下，只要强引用关系还存在，垃圾收集器就永远不会回收掉被引用的对象。
+{{< /admonition >}}
 
+{{< admonition type=quote  title="软引用" open=true >}} 
 软引用（_Soft Reference_）是用来描述一些还有用，但非必须的对象。只被软引用关联着的对象，在系统将要发生内存溢出异常前，会把这些对象列进回收范围之中进行第二次回收，如果这次回收还没有足够的内存，才会抛出内存溢出异常。在 JDK 1.2 之后提供了 `SoftReference` 来实现软引用。
+{{< /admonition >}}
 
+{{< admonition type=quote title="弱引用" open=true >}} 
 弱引用（_Weak Reference_）也是用来描述那些非必须对象，但是它的强度比软引用更弱一些，被弱引用关联的对象只能生存到下一次垃圾收集发生止。当垃圾收集器开始工作，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。在 JDK 1.2 之后提供了 `WeakReference` 来实现弱引用。
+{{< /admonition >}}
 
+{{< admonition type=quote title="虚引用" open=true >}}
 虚引用（_Phantom Reference_）也被称为「幽灵引用」或者「幻影引用」，它是最弱的一种引用关系。一个对象是否有虚引用存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。为对象设置虚引用关联的唯一目的只是为了能在这个对象被收集器回收时收到一个系统通知。在 JDK 1.2 之后提供了 `PhantomReference` 来实现虚引用。
 {{< /admonition >}}
 
