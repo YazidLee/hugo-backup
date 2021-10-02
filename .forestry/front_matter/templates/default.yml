@@ -17,11 +17,6 @@ fields:
 - type: datetime
   name: date
   label: date
-- name: draft
-  type: boolean
-  label: draft
-  description: Post Status
-  default: true
 - type: field_group
   name: cover
   label: cover
@@ -41,3 +36,8 @@ fields:
 - type: boolean
   name: katex
   label: katex
+- name: draft
+  type: boolean
+  label: draft
+  description: Post Status
+  default: true
