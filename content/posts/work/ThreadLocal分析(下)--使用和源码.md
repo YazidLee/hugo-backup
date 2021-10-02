@@ -191,7 +191,7 @@ private static int nextHashCode() {
 
 说得直白点，设 `HASH_INCREMENT` 值为 $a$，那么第 1 个 `ThreadLocal` 对象的 `threadLocalHashCode` 为 $0 * a$，第 2 个为 $1 * a$，第 3 个为 $2 * a$，... ，第 n 个为 $(n - 1) * a$，属于乘法 hash。
 
-代码中，这个 a 值设定为一个特殊的数字：`0x61c88647`，理由在注释中已经给出，这个值能够使 Key 值在大小为 $2 ^ n$ 的哈希表上均匀地分布，至于其中的原理就不继续深究，和黄金分割、斐波那契相关，感兴趣的可以自行查阅资料。
+代码中，这个 $a$ 值设定为一个特殊的数字：`0x61c88647`，理由在注释中已经给出，这个值能够使 Key 值在大小为 $2 ^ n$ 的哈希表上均匀地分布，至于其中的原理就不继续深究，和黄金分割、斐波那契相关，感兴趣的可以自行查阅资料。
 
 继续查看 `ThreadLocal` 的静态内部类 `ThreadLocalMap`，它在构造函数中将 Key 的 hashcode 映射到具体位置的代码如下：
 
@@ -414,7 +414,7 @@ static class ThreadLocalMap {
 }
 ```
 
-有没有似曾相识的感觉，在上一篇 [ThreadLocal 分析（上）——Java 中的引用](https://www.liyangjie.cn/posts/work/threadlocal-reference/) 中，介绍过一个 `WeakHashMap`，它的 `Entry` 定义 `private static class Entry<K,V> extends WeakReference<Object> ...` 与这里的 `Entry` 如出一辙，第一段注释也写得很清楚，使用 `WeakReference` 作为Key是为了回收生命周期较长的大对象。
+有没有似曾相识的感觉，在上一篇 [ThreadLocal 分析（上）——Java 中的引用](https://www.liyangjie.cn/posts/work/threadlocal-reference/) 中，介绍过一个 `WeakHashMap`，它的 `Entry` 定义 `private static class Entry<K,V> extends WeakReference<Object> ...` 与这里的 `Entry` 如出一辙，第一段注释也写得很清楚，使用 `WeakReference` 作为 Key 是为了回收生命周期较长的大对象。
 
 留意第二段注释中有个特别的说明：「当某个 `entry` 满足 `entry.get() == null` 时（隐含条件是 `entry != null`），表明这个 `entry` 的 Key 已经不再被引用关联到，因此这个 `entry` 可以被的删除（`expunged`），这样的 `entry` 在代码中被称为 `stale entry`。」多看几遍这几个重要的单词，`expunged`、`stale entries`，后面会频繁出现。
 
@@ -593,7 +593,7 @@ private Entry getEntryAfterMiss(ThreadLocal<?> key, int i, Entry e) {
 
 `getEntry` 的流程整体上比较简单，和普通线性探测哈希表的get方法没什么区别：
 
-1. 使用key的 `threadLocalHashCode` 计算出实际位置 `i`，以这个 `i` 为查找的起点，如果 `i` 位置的 Entry 就是我们想要查找的目标（`e.get() == key`），则直接返回。其实这里 `e == null` 时也可以直接返回 `null`，不过代码中把它延迟到了 `getEntryAfterMiss` 中，没什么区别。
+1. 使用 key 的 `threadLocalHashCode` 计算出实际位置 `i`，以这个 `i` 为查找的起点，如果 `i` 位置的 Entry 就是我们想要查找的目标（`e.get() == key`），则直接返回。其实这里 `e == null` 时也可以直接返回 `null`，不过代码中把它延迟到了 `getEntryAfterMiss` 中，没什么区别。
 2. `getEntryAfterMiss` 就从起点 `i` 开始，向后查找（`nextIndex`），如果找到目标，直接返回 Entry，如果遇到 `null`，直接返回 `null` 表示哈希表中没有该目标，这两个操作与普通线性探测法一致。不同的是当遇到 `k == null`，也就是 Entry 为 stale entry 时，需要多进行一次 `分段式清理` 操作。
 
 ### remove
