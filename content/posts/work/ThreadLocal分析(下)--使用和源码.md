@@ -591,7 +591,7 @@ private Entry getEntryAfterMiss(ThreadLocal<?> key, int i, Entry e) {
 }
 ```
 
-`getEntry` 的流程整体上比较简单，和普通线性探测哈希表的get方法没什么区别：
+`getEntry` 的流程整体上比较简单，和普通线性探测哈希表的 get 方法没什么区别：
 
 1. 使用 key 的 `threadLocalHashCode` 计算出实际位置 `i`，以这个 `i` 为查找的起点，如果 `i` 位置的 Entry 就是我们想要查找的目标（`e.get() == key`），则直接返回。其实这里 `e == null` 时也可以直接返回 `null`，不过代码中把它延迟到了 `getEntryAfterMiss` 中，没什么区别。
 2. `getEntryAfterMiss` 就从起点 `i` 开始，向后查找（`nextIndex`），如果找到目标，直接返回 Entry，如果遇到 `null`，直接返回 `null` 表示哈希表中没有该目标，这两个操作与普通线性探测法一致。不同的是当遇到 `k == null`，也就是 Entry 为 stale entry 时，需要多进行一次 `分段式清理` 操作。
@@ -682,7 +682,7 @@ private int expungeStaleEntry(int staleSlot) {
 
 这个清理基本上等同于普通线性探测法的删除操作，只是在 rehash 的过程中增加了一个删除 stale entry 的步骤。下面以一个示例对流程进行讲解：
 
-1. 初始状态： `K1~K7` 代表一个键簇，假定 `K1~K7` 计算后得到的位置均为 `13`。图中绿色表示有效 entry，灰色表示 stale entry，而白色为 `null`。现在开始执行 `expungeStaleEntry(13)`，即传入的参数 `staleSlot = 13`。
+1. 初始状态：`K1~K7` 代表一个键簇，假定 `K1~K7` 计算后得到的位置均为 `13`。图中绿色表示有效 entry，灰色表示 stale entry，而白色为 `null`。现在开始执行 `expungeStaleEntry(13)`，即传入的参数 `staleSlot = 13`。
 
    ![](https://i.loli.net/2021/09/25/Vo8XRde32W6vCAn.png)
 2. 根据步骤，首先删除 `K1` 的 `Entry`，并将 `i` 移动到 `K1` 的下个位置 `14`：
@@ -697,11 +697,11 @@ private int expungeStaleEntry(int staleSlot) {
 5. 与步骤 3 类似，清空 `K4`，`i` 移动至 `1` 位置。
 
    ![](https://i.loli.net/2021/09/25/SveMP48UqOtGFBc.png)
-6. `K5~K7` 均为有效 entry，因此进行 rehash 操作，`K5` 的 `h = 13`，此时 `13` 位置不为空，则 `h` 移动到 `14`， `14` 位置为空，则将 `K5` 的 `Entry` 移动到 `14`。同理，将 `K6` 和 `K7` 移动到 `15` 和 `0` 位置。最后，`i` 移动到  `4` 的位置（**原** 键簇末尾紧邻的 null 位置），返回 `i`（马上会用到），本次 `分段式清理` 结束。
+6. `K5~K7` 均为有效 entry，因此进行 rehash 操作，`K5` 的 `h = 13`，此时 `13` 位置不为空，则 `h` 移动到 `14`，`14` 位置为空，则将 `K5` 的 `Entry` 移动到 `14`。同理，将 `K6` 和 `K7` 移动到 `15` 和 `0` 位置。最后，`i` 移动到 `4` 的位置（**原** 键簇末尾紧邻的 null 位置），返回 `i`（马上会用到），本次 `分段式清理` 结束。
 
    ![](https://i.loli.net/2021/09/25/bvNpCDqBdocyRhi.png)
 
-了解过 `expungeStaleEntry` 基本原理后， 回头看看 `rehash` 代码中调用的 `expungeStaleEntries` 方法：
+了解过 `expungeStaleEntry` 基本原理后，回头看看 `rehash` 代码中调用的 `expungeStaleEntries` 方法：
 
 ```java
 /**                                       
@@ -856,7 +856,7 @@ private void replaceStaleEntry(ThreadLocal<?> key, Object value,
        return;                                               
    }
    ```
-2. `replaceStaleEntry` 中的第一个循环主要作用是找到 `i` 位置所在键簇最前端的某个 stale entry 位置。举例说明， `set` 方法将传入参数 `K8`，图中 `K8` 为待探测元素，计算得到它的起始位置为 `0`。由于 `K4` 为有效 entry，且 `K4 ≠ K8`，因此 `set` 方法中的 `i` 移动至 `1` 位置。`1` 位置上的 `K5` 是 stale entry，因此，从这里开始调用 `replaceStaleEntry`，传入的第三个参数 `staleSlot` 为 `1`。这时候，`replaceStaleEntry` 的第一个循环就从这个 `staleSlot` 开始 **向前移动**，寻找最前端的 stale slot，即 `13`（虽然 `15` 也是 stale slot，但它不是这个键簇的最前端），并赋值 `slotToExpunge = 13`。
+2. `replaceStaleEntry` 中的第一个循环主要作用是找到 `i` 位置所在键簇最前端的某个 stale entry 位置。举例说明，`set` 方法将传入参数 `K8`，图中 `K8` 为待探测元素，计算得到它的起始位置为 `0`。由于 `K4` 为有效 entry，且 `K4 ≠ K8`，因此 `set` 方法中的 `i` 移动至 `1` 位置。`1` 位置上的 `K5` 是 stale entry，因此，从这里开始调用 `replaceStaleEntry`，传入的第三个参数 `staleSlot` 为 `1`。这时候，`replaceStaleEntry` 的第一个循环就从这个 `staleSlot` 开始 **向前移动**，寻找最前端的 stale slot，即 `13`（虽然 `15` 也是 stale slot，但它不是这个键簇的最前端），并赋值 `slotToExpunge = 13`。
 
    ![](https://i.loli.net/2021/09/25/rmgx6PUztFLnW8R.png)
 3. 第二个循环从 `staleSlot` 的下个位置开始，**往后移动**，在键簇中寻找 `k == key` 的 `Entry`，直到键簇末尾。注意循环末尾的一小段代码：
