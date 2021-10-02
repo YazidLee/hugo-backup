@@ -427,7 +427,7 @@ public void  weakHashMapTest() {
 
 ![](https://i.loli.net/2021/09/25/nfioMISKwR84jhH.png)
 
-`size` 的值为 1？折腾了好久，在 `WeakHashMap` 的 `expungeStaleEntries` 方法中加了断点也找不到所以然。后来想了想以前在调试 Spring 源码时也遇到过类似的情况，结果是 idea 的调试过程自动帮我们调用一些方法以获取属性，如 `size`、`toString`等。
+`size` 的值为 1？折腾了好久，在 `WeakHashMap` 的 `expungeStaleEntries` 方法中加了断点也找不到所以然。后来想了想以前在调试 Spring 源码时也遇到过类似的情况，结果是 idea 的调试过程自动帮我们调用一些方法以获取属性，如 `size`、`toString` 等。
 
 为了确认该结论，先取消断点，在代码最后添加一个阻塞方法 `System.in.read();`，使用 VisualVM 查看内存：
 
