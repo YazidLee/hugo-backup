@@ -52,7 +52,7 @@ jobs:
       - name: Build
         run: |
           hugo --gc --verbose --minify
-          cp .forestry/admin public/admin
+          cp -r .forestry/admin public/admin
 
       # Deploy site by using rsync
       - name: Deploy
