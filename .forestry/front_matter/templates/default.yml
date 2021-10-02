@@ -40,3 +40,4 @@ fields:
   type: boolean
   label: draft
   description: Post Status
+  default: true
