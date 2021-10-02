@@ -36,3 +36,7 @@ fields:
 - type: boolean
   name: katex
   label: katex
+- name: draft
+  type: boolean
+  label: draft
+  description: Post Status
