@@ -890,7 +890,7 @@ private void replaceStaleEntry(ThreadLocal<?> key, Object value,
    }
    ```
 
-   `staleSlot` 是调用 `replaceStaleEntry` 方法时传入的参数，也就是 `set` 方法调用过程中发现的第一个 stale entry的位置。这里先将当前 `Entry` 的 `value` 进行了替换修改，然后将当前位置 `i` 与 `staleSlot` 位置的元素进行了交换，交换过后，`i` 位置变为 stale entry，而 `staleSlot` 位置成为了有效entry。
+   `staleSlot` 是调用 `replaceStaleEntry` 方法时传入的参数，也就是 `set` 方法调用过程中发现的第一个 stale entry 的位置。这里先将当前 `Entry` 的 `value` 进行了替换修改，然后将当前位置 `i` 与 `staleSlot` 位置的元素进行了交换，交换过后，`i` 位置变为 stale entry，而 `staleSlot` 位置成为了有效 entry。
 
    这段代码就是 `replaceStaleEntry` 命名的由来，它将原来 `set` 中识别出的 stale entry 替换为了一个新的有效 entry（key 是原来已经存在的，仅修改了 value）。下图中，`K8 == K8'`，当 `i == 4` 时，进入上述逻辑中，先将 `K8'` 的 `value` 进行替换修改，再将 `K5` 与 `K8'` 进行交换，得到下面的成果。
 
@@ -898,7 +898,7 @@ private void replaceStaleEntry(ThreadLocal<?> key, Object value,
 
    ![](https://i.loli.net/2021/09/25/yRc5FGDdluv3hE8.png)
 
-   替换成功后，随后条件判断与步骤 3 逻辑相同，都是确定 `slotToExpunge` 的位置，此时的 `i` 位置已经是 stale entry 了，因此可以作为 `expungeStaleEntry`  `分段式清理` 的起点。
+   替换成功后，随后条件判断与步骤 3 逻辑相同，都是确定 `slotToExpunge` 的位置，此时的 `i` 位置已经是 stale entry 了，因此可以作为 `expungeStaleEntry` `分段式清理` 的起点。
 
    最后就是进行两次清理，先分段清理，再将其返回值传入 `cleanSomeSlots` 进行启发式清理，启发式清理中的第二个参数为 `len`，即哈希表当前的最大容量，区别 `set` 方法末尾的参数传入的 `sz`。
 5. 若第二个循环中没有找到能够替换的 `Entry`，则进入到最后的新建逻辑：
