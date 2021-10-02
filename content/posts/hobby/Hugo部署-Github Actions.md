@@ -190,9 +190,11 @@ jobs:
 
 在仓库目录下创建 `.github/workflows` 目录，并且在目录中创建 `deploy.yml` 文件：
 
-    - .github
-      |- workflows
-        |- deploy.yml
+```
+- .github
+  |- workflows
+    |- deploy.yml
+```
 
 `deploy.yml` 中的内容如下：
 
