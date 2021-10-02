@@ -45,6 +45,8 @@ JDK 中的 `Type` 是一种高级抽象，其类图关系如下，它代表了 J
 
 下面小节将分别使用示例代码进行介绍。
 
+***
+
 ## ParameterizedType
 
 ```java
@@ -158,6 +160,8 @@ Field 'ownerTest' ParameterizedType cn.liyangjie.spring.OuterClass<K>$InnerClass
 (T) K 
 ---------------------------------
 ```
+
+***
 
 ## TypeVariable
 
@@ -284,6 +288,8 @@ class MethodAndConstructorTest {
 ---------------------------------
 ```
 
+***
+
 ## GenericArrayType
 
 ```java
@@ -346,6 +352,8 @@ public class GenericArrayTypeDemo<T> {
 
 {{< /admonition >}}
 
+***
+
 ## WildcardType
 
 ```java
@@ -388,7 +396,9 @@ public class WildcardTypeDemo {
 [Field wildcardList is WildcardType]: ? extends java.lang.Number, its upper bound is [class java.lang.Number] and lower bound is []
 ```
 
-# Spring 中的 ResolvableType
+***
+
+## Spring 中的 ResolvableType
 
 惯例先贴出 Spring 官方对于该类的简介：
 
@@ -418,7 +428,7 @@ public void example() {
 }
 ```
 
-## ResolvableType 在 Spring 事件机制中的应用
+### ResolvableType 在 Spring 事件机制中的应用
 
 Spring 的事件机制（观察者模式）使用到了 `ResolvableType` 对广播的事件进行筛选，使得某监听器仅能监听某类型的事件，示例如下：自定义事件 `MyEvent` 及监听器 `MyListener`，该监听器指定泛型为 `MyEvent`：
 
