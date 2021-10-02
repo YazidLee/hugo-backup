@@ -115,7 +115,7 @@ hugo new posts/HelloHugo2.md
 
 进入 `posts` 目录，编辑两个 `.md` 文件，写点内容：
 
-```markd
+```markdown
 ---
 title: "HelloHugo1"
 date: 2021-08-29T21:13:55+08:00
@@ -126,7 +126,7 @@ draft: false
 你好，雨果
 ```
 
-```markd
+```markdown
 ---
 title: "HelloHugo2"
 date: 2021-08-29T21:18:38+08:00
@@ -382,36 +382,37 @@ markup:
 
 现在往第一篇博客中添加一个代码段如下：
 
-```markdown
+````markdown
 ```java
 public V put(K key, V value) {
     return putVal(hash(key), key, value, false, true);
 }
 ```
-```
+````
 
-    显示效果如图：
+显示效果如图：
     
-    ![](https://i.loli.net/2021/09/25/wF3muHqsGAncCz6.png)
+![](https://i.loli.net/2021/09/25/wF3muHqsGAncCz6.png)
     
-    ### 增加评论区
+### 增加评论区
     
-    我选择使用的是 `Valine`，前置工作需要在 LeanCloud 上注册并创建应用，获取到相关的 `AppID` 和 `AppKey`，具体流程请参照 [Valine官方网站](https://valine.js.org/quickstart.html)。
+我选择使用的是 `Valine`，前置工作需要在 LeanCloud 上注册并创建应用，获取到相关的 `AppID` 和 `AppKey`，具体流程请参照  [Valine官方网站](https://valine.js.org/quickstart.html)。
     
-    获取到这两个参数后，根据 PaperMod 官方文档的指示，创建 `layouts/partials/comments.html` 文件，`partials` 路径不存在就自己创建，在文件中添加以下内容：
+获取到这两个参数后，根据 PaperMod 官方文档的指示，创建 `layouts/partials/comments.html` 文件，`partials` 路径不存在就自己创建，在文件中添加以下内容：
     
-    ```html
-    {{ $valinejs := resources.Get "js/Valine.min.js" }}
-    <script src='{{ $valinejs.RelPermalink }}'></script>
-    <div id="vcomments"></div>
-    <script>
-        new Valine({
-            el: '#vcomments',
-            appId: '这里是你的AppID',
-            appKey: '这里是你的AppKey',
-            placeholder: '来都来了，说两句~'
-        })
-    </script>
+```html
+{{ $valinejs := resources.Get "js/Valine.min.js" }}
+<script src='{{ $valinejs.RelPermalink }}'></script>
+<div id="vcomments"></div>
+<script>
+    new Valine({
+      el: '#vcomments',
+      appId: '这里是你的AppID',
+      appKey: '这里是你的AppKey',
+      placeholder: '来都来了，说两句~'
+    })
+</script>
+```
 
 随后创建 `assets/js/Valine.min.js`，将 [CDN](https://cdnjs.cloudflare.com/ajax/libs/valine/1.4.14/Valine.min.js) 中的内容全部拷贝到该文件中，保存。
 
