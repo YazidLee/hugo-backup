@@ -99,6 +99,8 @@ class Service2 {
 
 以上就是 `ThreadLocal` 最基本的使用场景，通过 `ThreadLocal` 来透传全局的某些上下文信息，以便后续的分析和追踪（`logback` 中实现 `MDC` 正是使用了 `ThreadLocal`）。
 
+***
+
 ## ThreadLocal 源码分析
 
 ### ThreadLocal 概览
@@ -361,6 +363,8 @@ hash seq for 16 size table: 0  7  14  5  12  3  10  1  8  15  6  13  4  11  2  9
   ```
 
 OK，至此，`ThreadLocal` 表面上的东西已经介绍得差不多了，代码都比较简单，结合上面那个草图理解起来应该没什么问题。然而，`ThreadLocal` 最为复杂的部分其实是它的内部类 `ThreadLocalMap`，下面的内容就是把这块硬骨头一点一点啃下来。
+
+***
 
 ## ThreadLocalMap 源码分析
 
@@ -914,6 +918,8 @@ private void replaceStaleEntry(ThreadLocal<?> key, Object value,
    ```
 
    `staleSlot` 处成为新元素插入的位置，如果在第二个循环中发现了其他 stale entry，就进行两步清理工作。
+
+***
 
 ## ThreadLocal 注意事项
 
