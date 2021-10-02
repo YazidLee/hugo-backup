@@ -52,10 +52,12 @@ GitHub Actions 中的几个重要概念如下：
 
 GitHub Actions 的具体实现是在当前工作目录下创建 `.github/workflows/`，并在目录中添加 `.yml` 脚本文件，每个 `.yml` 文件都代表了一个 `workflow`。目录结构如下：
 
-    - .github
-      |- workflows
-        |- workflow1.yml
-        |- workflow2.yml
+```
+- .github
+  |- workflows
+    |- workflow1.yml
+    |- workflow2.yml
+```
 
 下面是 [GitHub官方](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions) 提供的示例文件：
 
