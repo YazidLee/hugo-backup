@@ -43,6 +43,8 @@ katex: false
 
 书中的介绍较为概括，并且没有提供相关的示例，当时第一次看这段文字时并没有搞清楚这几个引用的含义和用法。为了更好地理解，下面将通过几个示例进行分析介绍。
 
+***
+
 ## Reference
 
 `Reference` 中有两个重要的字段：
@@ -88,6 +90,8 @@ public void softReference() {
 ![](https://i.loli.net/2021/09/25/s7MIR3DnQeEhB4r.png)
 
 此时，对于堆中的 `Ojbect` 实例对象来说，仅仅剩下了一个 `referent` **软引用** 指向它，某些文章中称之为 **软可达对象**（_softly reachable object_），这个对象就满足了 GC 的特殊对待要求，当内存溢出时，会将其占用的堆空间回收，并将 `soft` 指向的 `SoftReference` 实例对象放入其 `queue` 关联的 `ReferenceQueue` 实例对象中。
+
+***
 
 ## SoftReference 示例
 
@@ -192,6 +196,8 @@ SoftReference1217855145 has been unreachable
 SoftReference346747888 has been unreachable
 ```
 
+***
+
 ## WeakReference 示例
 
 比起 `SoftReference` ，单纯的 `WeakReference` 示例较为简单，不要内存溢出的条件，只需要对象是 _weakly reachable object_（类比 `SoftReference`），且进行过一次 GC 即可。
@@ -225,6 +231,8 @@ data has bean unreachable
 ```
 
 进行一次 GC 后，弱可达对象就被清理了。
+
+***
 
 ## WeakHashMap
 
@@ -434,6 +442,8 @@ public void  weakHashMapTest() {
 ![](https://i.loli.net/2021/09/25/EIutlU4LiAQyNpb.png)
 
 果然，此时的 `size` 为 2，且关联队列中的 `queueLength` 为 1，表示队列中有元素待清理。
+
+***
 
 ## PhantomReference
 
