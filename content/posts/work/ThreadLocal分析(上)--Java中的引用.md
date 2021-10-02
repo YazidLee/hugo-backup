@@ -15,7 +15,7 @@ tags:
 - ThreadLocal
 - Reference
 katex: false
-draft: false
+
 ---
 ## 4 种引用类型概述
 
@@ -25,13 +25,19 @@ draft: false
 
 《深入理解 Java 虚拟机》中对于几种引用类型做了简要的描述：
 
-{{< admonition type=quote title="Java 中的引用" open=true >}}
+{{< admonition type=quote title="强引用" open=true >}}
 强引用（_Strongly Reference_ ）是最传统的「引用」的定义，是指在程序代码中普遍存在的引用赋值，即类似 `Object obj = new Ojbect()` 这种引用关系。无论任何情况下，只要强引用关系还存在，垃圾收集器就永远不会回收掉被引用的对象。
+{{< /admonition >}}
 
+{{< admonition type=quote  title="软引用" open=true >}}
 软引用（_Soft Reference_）是用来描述一些还有用，但非必须的对象。只被软引用关联着的对象，在系统将要发生内存溢出异常前，会把这些对象列进回收范围之中进行第二次回收，如果这次回收还没有足够的内存，才会抛出内存溢出异常。在 JDK 1.2 之后提供了 `SoftReference` 来实现软引用。
+{{< /admonition >}}
 
+{{< admonition type=quote title="弱引用" open=true >}}
 弱引用（_Weak Reference_）也是用来描述那些非必须对象，但是它的强度比软引用更弱一些，被弱引用关联的对象只能生存到下一次垃圾收集发生止。当垃圾收集器开始工作，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。在 JDK 1.2 之后提供了 `WeakReference` 来实现弱引用。
+{{< /admonition >}}
 
+{{< admonition type=quote title="虚引用" open=true >}}
 虚引用（_Phantom Reference_）也被称为「幽灵引用」或者「幻影引用」，它是最弱的一种引用关系。一个对象是否有虚引用存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。为对象设置虚引用关联的唯一目的只是为了能在这个对象被收集器回收时收到一个系统通知。在 JDK 1.2 之后提供了 `PhantomReference` 来实现虚引用。
 {{< /admonition >}}
 
@@ -289,16 +295,16 @@ map size before: 2
 map size after: 1
 ```
 
-将 `kye1` 的强引用断开且进行GC后， `WeakHashMap` 清理了 `key1` 对应的元素，因此 `size` 为 1。
+将 `kye1` 的强引用断开且进行GC后，`WeakHashMap` 清理了 `key1` 对应的元素，因此 `size` 为 1。
 
-此处使用自定义的 `Key` 类型而不是直接用 `String` ，是为了突出重点，如果使用 `String` 作为 Key 请一定要注意使用如下方法定义：
+此处使用自定义的 `Key` 类型而不是直接用 `String`，是为了突出重点，如果使用 `String` 作为 Key 请一定要注意使用如下方法定义：
 
 ```java
 // 不要使用这种方式: String key1 = "key1"; 这将在常量池中一直存在一个强引用指向key1，它不会被回收
 String key1 = new String("key1");
 ```
 
-注意，上述代码中， `WeakHashMap` 清理元素的时间是在调用 `size` 方法时。该方法如下：
+注意，上述代码中，`WeakHashMap` 清理元素的时间是在调用 `size` 方法时。该方法如下：
 
 ```java
 public int size() {
@@ -309,7 +315,7 @@ public int size() {
 }
 ```
 
-`expungeStaleEntries` 方法为核心清理方法，它在 `WeakHaspMap` 中的大部分方法中被调用（如 `size`   、 `put` 、 `get` 、 `remove` 等），它清理所有待清理队列（该队列由 GC 完成入队，类比 `SoftReferende`）中的 `Entry` 元素（删除链表中的节点并断开 value 的强引用）：
+`expungeStaleEntries` 方法为核心清理方法，它在 `WeakHaspMap` 中的大部分方法中被调用（如 `size`、`put`、`get`、`remove` 等），它清理所有待清理队列（该队列由 GC 完成入队，类比 `SoftReferende`）中的 `Entry` 元素（删除链表中的节点并断开 value 的强引用）：
 
 ```java
 //...
@@ -381,7 +387,7 @@ private static class Entry<K,V> extends WeakReference<Object> implements Map.Ent
 }
 ```
 
-学习 `WeakHashMap` 为后续深入了解 `ThreadLocal` 奠定了基础， `ThreadLocal` 中的 `ThreadLocalMap` 与 `WeakHashMap` 原理基本一致。
+学习 `WeakHashMap` 为后续深入了解 `ThreadLocal` 奠定了基础，`ThreadLocal` 中的 `ThreadLocalMap` 与 `WeakHashMap` 原理基本一致。
 
 ### 一个代码调试的小坑
 
@@ -389,7 +395,7 @@ private static class Entry<K,V> extends WeakReference<Object> implements Map.Ent
 
 将上述代码中的第二个 `size` 方法调用取消，并在该行添加断点：
 
-```java
+```java {hl_lines=[24],linenostart=1}
 /**
  * -XX:+PrintGC
  */
@@ -413,15 +419,15 @@ public void  weakHashMapTest() {
     System.runFinalization();                                            
                                                                          
     // System.out.println("map size after: " + weakHashMap.size());         
-    System.out.println("map size after: ");  // 在这行添加断点                                                                   
+    System.out.println("map size after: ");  // 在这行添加断点                                             
 }
 ```
 
-按上述分析，此时没有调用 `size` 方法及其他附带清理效果的方法， `weakHashMap` 的 `size` 应该为 2，但看下面的截图：
+按上述分析，此时没有调用 `size` 方法及其他附带清理效果的方法，`weakHashMap` 的 `size` 应该为 2，但看下面的截图：
 
 ![](https://i.loli.net/2021/09/25/nfioMISKwR84jhH.png)
 
-`size` 的值为 1？折腾了好久，在 `WeakHashMap` 的 `expungeStaleEntries` 方法中加了断点也找不到所以然。后来想了想以前在调试 Spring 源码时也遇到过类似的情况，结果是 idea 的调试过程自动帮我们调用一些方法以获取属性，如 `size` 、 `toString` 等。
+`size` 的值为 1？折腾了好久，在 `WeakHashMap` 的 `expungeStaleEntries` 方法中加了断点也找不到所以然。后来想了想以前在调试 Spring 源码时也遇到过类似的情况，结果是 idea 的调试过程自动帮我们调用一些方法以获取属性，如 `size`、`toString` 等。
 
 为了确认该结论，先取消断点，在代码最后添加一个阻塞方法 `System.in.read();`，使用 VisualVM 查看内存：
 
@@ -431,7 +437,7 @@ public void  weakHashMapTest() {
 
 ## PhantomReference
 
-`PhantomReference` 在使用方法上与 `SoftReference` 、 `WeakReference` 稍有不同，查看它的源码：
+`PhantomReference` 在使用方法上与 `SoftReference`、`WeakReference` 稍有不同，查看它的源码：
 
 ```java
 public class PhantomReference<T> extends Reference<T> {
@@ -467,9 +473,9 @@ public class PhantomReference<T> extends Reference<T> {
 }
 ```
 
-可以发现，它的构造函数必须接收一个 `ReferenceQueue` 参数，且它的 `get` 方法永远返回 `null`（注意， `PhantomReference` 仍然持有一个 `referent` ，只是它不对外公开）。
+可以发现，它的构造函数必须接收一个 `ReferenceQueue` 参数，且它的 `get` 方法永远返回 `null`（注意， `PhantomReference` 仍然持有一个 `referent`，只是它不对外公开）。
 
-既然永远获得不到 `referent` ，那么 `PhantomReference` 即使从 `queue` 中获取到了该对象，也无法改变其实际目标对象的命运，它最终将被回收。
+既然永远获得不到 `referent`，那么 `PhantomReference` 即使从 `queue` 中获取到了该对象，也无法改变其实际目标对象的命运，它最终将被回收。
 
 [Why Garbage Collection?](https://www.artima.com/insidejvm/ed2/gcP.html)
 
@@ -479,7 +485,7 @@ public class PhantomReference<T> extends Reference<T> {
 Note that whereas the garbage collector enqueues soft and weak reference objects when their referents are leaving the relevant reachability state, it enqueues phantom references when the referents are entering the relevant state. You can also see this difference in that the garbage collector clears soft and weak reference objects before enqueueing them, but not phantom reference objects. Thus, the garbage collector enqueues soft reference objects to indicate their referents have just left the softly reachable state. Likewise, the garbage collector enqueues weak reference objects to indicate their referents have just left the weakly reachable state. But the garbage collector enqueues phantom reference objects to indicate their referents have entered the phantom reachable state. Phantom reachable objects will remain phantom reachable until their reference objects are explicitly cleared by the program.
 {{< /admonition >}}
 
-也就是说，GC 将 `SoftReference` 、 `WeakReference` 入队的时机是在清理完它们的目标对象之后，亦即它们的目标 _softly reachable_、 _weakly reachable_ 状态结束之后，而 `PhantomReference` 的入队时机是在它的目标对象被清理之前，亦即它的目标对象刚进入 _phantom reachable_ 时，它将一直保持这种状态，直到他们的目标对象被应用程序显示清理（调用 `clear` 方法）或被 GC 回收。
+也就是说，GC 将 `SoftReference`、`WeakReference` 入队的时机是在清理完它们的目标对象之后，亦即它们的目标 _softly reachable_、 _weakly reachable_ 状态结束之后，而 `PhantomReference` 的入队时机是在它的目标对象被清理之前，亦即它的目标对象刚进入 _phantom reachable_ 时，它将一直保持这种状态，直到他们的目标对象被应用程序显示清理（调用 `clear` 方法）或被 GC 回收。
 
 ### PhantomReference 应用
 
@@ -540,7 +546,7 @@ static {
 }
 ```
 
-`Reference` 在静态代码块中启动了该线程，也就是说只要 `Reference` 被加载，就会启动该线程，线程的核心任务为 `tryHandlePending` ，如下：
+`Reference` 在静态代码块中启动了该线程，也就是说只要 `Reference` 被加载，就会启动该线程，线程的核心任务为 `tryHandlePending`，如下：
 
 ```java
 static boolean tryHandlePending(boolean waitForNotify) {                                      
@@ -654,7 +660,7 @@ DirectByteBuffer(int cap) {                   // package-private
 }
 ```
 
-忽略构造函数中具体分配内存的代码，这里重点看与 `DirectByteBuffer` 对象关联的 `cleaner`，它的 `PhantomReference` `referent` 字段指向当前 `DirectByteBuffer` 对象，并且它的清理工 `thunk` 字段为 `Deallocator`。 `Deallocator` 为 `DirectByteBuffer` 的静态内部类，其定义如下：
+忽略构造函数中具体分配内存的代码，这里重点看与 `DirectByteBuffer` 对象关联的 `cleaner`，它的 `PhantomReference` `referent` 字段指向当前 `DirectByteBuffer` 对象，并且它的清理工 `thunk` 字段为 `Deallocator`。`Deallocator` 为 `DirectByteBuffer` 的静态内部类，其定义如下：
 
 ```java
 private static class Deallocator                                
@@ -692,8 +698,8 @@ private static class Deallocator
 
 总结一下清理的原理：
 
-1. 随着`Reference` 类被加载 ， `Reference-handler` 后台线程被启动，它轮循 `pending` 链表，执行 `Cleaner` 的 `clean` 工作。
-2. `Cleaner` 继承自 `PhantomReference` ，它会被 GC 识别，在进入 _phantom reachable_ 状态前会被GC先放入 `pending` 队列。
+1. 随着`Reference` 类被加载，`Reference-handler` 后台线程被启动，它轮循 `pending` 链表，执行 `Cleaner` 的 `clean` 工作。
+2. `Cleaner` 继承自 `PhantomReference`，它会被 GC 识别，在进入 _phantom reachable_ 状态前会被GC先放入 `pending` 队列。
 3. `clean` 方法最终执行 `Cleaner` 的 `thunk.run()` 进行清理。
 4. `DirectByteBuffer` 在创建的同时关联了一个 `Cleaner`，该 `Cleaner` 中的 `thunk` 为 `Deallocator`，`Deallocator` 使用 `Unsafe` 完成了堆外内存的清理释放。
 
@@ -701,7 +707,7 @@ private static class Deallocator
 
 再从 `DirectByteBuffer` 的角度来看看清理的过程：
 
-1. `DirectByteBuffer` 创建时关联了一个 `Cleaner` ，该 `Cleaner` 的 `thunk` 为 `Deallocator`。
+1. `DirectByteBuffer` 创建时关联了一个 `Cleaner`，该 `Cleaner` 的 `thunk` 为 `Deallocator`。
 2. 当 `DirectByteBuffer` 强引用断开时，GC 识别到 `Cleaner`，并将 `Cleaner` 加入到 `Reference` 的静态链表 `pending` 中。
 3. `Reference` 的后台线程 `Reference-handler` 从 `pending` 链表中获取到该 `Cleaner`，并调用 `clean` 方法。
 4. `clean` 方法最终调用 `Deallocator` 的 `run` 方法，通过 `Unsafe` 完成了清理工作。

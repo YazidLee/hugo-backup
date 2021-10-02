@@ -15,7 +15,7 @@ tags:
 - ThreadLocal
 - Reference
 katex: true
-draft: false
+
 ---
 ## ThreadLocal 基本使用
 
@@ -103,7 +103,7 @@ class Service2 {
 
 ### ThreadLocal 概览
 
-在解释具体代码之前，首先要搞清楚 `ThreadLocal` 、 `Thread` 及 `ThreadLocal` 中实际保存的 `value` 的关系，下面是 `ThreadLocal` 源码中的一段注释：
+在解释具体代码之前，首先要搞清楚 `ThreadLocal`、`Thread` 及 `ThreadLocal` 中实际保存的 `value` 的关系，下面是 `ThreadLocal` 源码中的一段注释：
 
 ```java
 /**                                                               
@@ -122,11 +122,11 @@ private final int threadLocalHashCode = nextHashCode();
 这里面有几个关键信息：
 
 1. `ThreadLocal` 机制依靠的是 `Thread.threadLocals` 和 `Thread.inheritableThreadLocals` 这两个哈希表。
-2. 每个线程有自己的 `Thread.threadLocals` 和 `Thread.inheritableThreadLocals` ，线程间通过这种方式避免了共享，实现了隔离。
+2. 每个线程有自己的 `Thread.threadLocals` 和 `Thread.inheritableThreadLocals`，线程间通过这种方式避免了共享，实现了隔离。
 3. `ThreadLocal` 自身的作用是作为 `Thread.threadLocals` 和 `Thread.inheritableThreadLocals` 的 Key，因此每个 `ThreadLocal` 都需要有自己的hashcode，即 `threadLocalHashCode`。
-4. `Thread.threadLocals` 和 `Thread.inheritableThreadLocals` 处理冲突的方式为 `linear-probe` ，即线性探测。
+4. `Thread.threadLocals` 和 `Thread.inheritableThreadLocals` 处理冲突的方式为 `linear-probe`，即线性探测。
 
-在此基础上，我们先去 `Thread` 中找到 `Thread.threadLocals` 和 `Thread.inheritableThreadLocals` ：
+在此基础上，我们先去 `Thread` 中找到 `Thread.threadLocals` 和 `Thread.inheritableThreadLocals`：
 
 ```java
 // ...
@@ -144,7 +144,7 @@ ThreadLocal.ThreadLocalMap inheritableThreadLocals = null;
 // ...
 ```
 
-现在，可以画出一个大致的关系草图如下，先以 `threadLocals` 为例， `inheritableThreadLocals` 原理与 `threadLocals` 相同：
+现在，可以画出一个大致的关系草图如下，先以 `threadLocals` 为例，`inheritableThreadLocals` 原理与 `threadLocals` 相同：
 
 ![](https://i.loli.net/2021/09/25/NeXLKPmW4vCJbcM.png)
 
@@ -160,7 +160,7 @@ ThreadLocal.ThreadLocalMap threadLocals = null;
 
 ### 作为哈希表的 Key
 
-上面已经提到，每个 `ThreadLocal` 都有 `threadLocalHashCode` 属性，这个值将作为 Key 的 hashcode 参与到后续的计算。 `threadLocalHashCode` 的计算方式如下：
+上面已经提到，每个 `ThreadLocal` 都有 `threadLocalHashCode` 属性，这个值将作为 Key 的 hashcode 参与到后续的计算。`threadLocalHashCode` 的计算方式如下：
 
 ```java
 private final int threadLocalHashCode = nextHashCode();              
@@ -187,13 +187,13 @@ private static int nextHashCode() {
 }
 ```
 
-可以看到，第1个 `ThreadLocal` 的 `threadLocalHashCode` 为 0，此后，每新建一个 `ThreadLocal` 对象，该对象的 `threadLocalHashCode` 值就为上一个对象的 `threadLocalHashCode` 值加上 `HASH_INCREMENT` 。
+可以看到，第1个 `ThreadLocal` 的 `threadLocalHashCode` 为 0，此后，每新建一个 `ThreadLocal` 对象，该对象的 `threadLocalHashCode` 值就为上一个对象的 `threadLocalHashCode` 值加上 `HASH_INCREMENT`。
 
-说得直白点，设`HASH_INCREMENT` 值为a，那么第 1 个 `ThreadLocal` 对象的 `threadLocalHashCode` 为 $0 * a$，第 2 个为 $1 * a$，第 3 个为 $2 * a$，... ，第 n 个为 $(n - 1) * a$，属于乘法 hash。
+说得直白点，设 `HASH_INCREMENT` 值为 $a$，那么第 1 个 `ThreadLocal` 对象的 `threadLocalHashCode` 为 $0 * a$，第 2 个为 $1 * a$，第 3 个为 $2 * a$，... ，第 n 个为 $(n - 1) * a$，属于乘法 hash。
 
-代码中，这个 a 值设定为一个特殊的数字： `0x61c88647` ，理由在注释中已经给出，这个值能够使 Key 值在大小为 $2 ^ n$ 的哈希表上均匀地分布，至于其中的原理就不继续深究，和黄金分割、斐波那契相关，感兴趣的可以自行查阅资料。
+代码中，这个 $a$ 值设定为一个特殊的数字：`0x61c88647`，理由在注释中已经给出，这个值能够使 Key 值在大小为 $2 ^ n$ 的哈希表上均匀地分布，至于其中的原理就不继续深究，和黄金分割、斐波那契相关，感兴趣的可以自行查阅资料。
 
-继续查看 `ThreadLocal` 的静态内部类 `ThreadLocalMap` ，它在构造函数中将 Key 的 hashcode 映射到具体位置的代码如下：
+继续查看 `ThreadLocal` 的静态内部类 `ThreadLocalMap`，它在构造函数中将 Key 的 hashcode 映射到具体位置的代码如下：
 
 ```java
 // ...
@@ -360,7 +360,7 @@ hash seq for 16 size table: 0  7  14  5  12  3  10  1  8  15  6  13  4  11  2  9
   ThreadLocal<Object> tl = ThreadLocal.withInitial(Object::new);
   ```
 
-OK，至此，`ThreadLocal` 表面上的东西已经介绍得差不多了，代码都比较简单，结合上面那个草图理解起来应该没什么问题。然而， `ThreadLocal` 最为复杂的部分其实是它的内部类 `ThreadLocalMap`，下面的内容就是把这块硬骨头一点一点啃下来。
+OK，至此，`ThreadLocal` 表面上的东西已经介绍得差不多了，代码都比较简单，结合上面那个草图理解起来应该没什么问题。然而，`ThreadLocal` 最为复杂的部分其实是它的内部类 `ThreadLocalMap`，下面的内容就是把这块硬骨头一点一点啃下来。
 
 ## ThreadLocalMap 源码分析
 
@@ -369,7 +369,7 @@ OK，至此，`ThreadLocal` 表面上的东西已经介绍得差不多了，代�
 1. 首先需要了解过哈希表是什么，对哈希冲突、开放地址、线性探测等概念比较熟悉，最好自己动手实现过。可以上网找找，资料挺多的，这里推荐一个入门视频：
 
    {{< bilibili BV1MC4y1p7rP >}}
-2. 对Java的弱引用有所了解，不知道的可以看看之前的这篇文章 [ThreadLocal分析(上)—Java中的引用](https://www.liyangjie.cn/posts/threadlocal%E5%88%86%E6%9E%90%E4%B8%8A-java%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/)。
+2. 对 Java 的弱引用有所了解，不知道的可以看看之前的这篇文章 [ThreadLocal 分析（上）——Java 中的引用](https://www.liyangjie.cn/posts/work/threadlocal-reference/)。
 
 ### ThreadMap 字段
 
@@ -377,9 +377,9 @@ OK，至此，`ThreadLocal` 表面上的东西已经介绍得差不多了，代�
 
 ![](https://i.loli.net/2021/09/25/q8mJRXyKC2hwM4S.png)
 
-阅读过 `HashMap` 源码的话其实这些字段都不需要再解释了，非常简单，从上到下依次为：初始容量（最大桶数量）、实际的哈希表（ `Entry` 数组，它的长度一定为 $2 ^ n$）、当前哈希表中元素的数量、下次扩容的阈值。
+阅读过 `HashMap` 源码的话其实这些字段都不需要再解释了，非常简单，从上到下依次为：初始容量（最大桶数量）、实际的哈希表（`Entry` 数组，它的长度一定为 $2 ^ n$）、当前哈希表中元素的数量、下次扩容的阈值。
 
-其他字段都好说，这里引入关键问题的字段就是 `Entry` ：
+其他字段都好说，这里引入关键问题的字段就是 `Entry`：
 
 ```java
 
@@ -414,9 +414,9 @@ static class ThreadLocalMap {
 }
 ```
 
-有没有似曾相识的感觉，在上一篇 [ThreadLocal分析(上)—Java中的引用](https://www.liyangjie.cn/posts/threadlocal%E5%88%86%E6%9E%90%E4%B8%8A-java%E4%B8%AD%E7%9A%84%E5%BC%95%E7%94%A8/) 中，介绍过一个 `WeakHashMap`，它的 `Entry` 定义 `private static class Entry<K,V> extends WeakReference<Object> ...` 与这里的 `Entry` 如出一辙，第一段注释也写得很清楚，使用 `WeakReference` 作为Key是为了回收生命周期较长的大对象。
+有没有似曾相识的感觉，在上一篇 [ThreadLocal 分析（上）——Java 中的引用](https://www.liyangjie.cn/posts/work/threadlocal-reference/) 中，介绍过一个 `WeakHashMap`，它的 `Entry` 定义 `private static class Entry<K,V> extends WeakReference<Object> ...` 与这里的 `Entry` 如出一辙，第一段注释也写得很清楚，使用 `WeakReference` 作为 Key 是为了回收生命周期较长的大对象。
 
-留意第二段注释中有个特别的说明：「当某个 `entry` 满足 `entry.get() == null` 时（隐含条件是 `entry != null`），表明这个 `entry` 的 Key 已经不再被引用关联到，因此这个 `entry` 可以被的删除（ `expunged` ），这样的 `entry` 在代码中被称为 `stale entry`。」多看几遍这几个重要的单词，`expunged`、`stale entries`，后面会频繁出现。
+留意第二段注释中有个特别的说明：「当某个 `entry` 满足 `entry.get() == null` 时（隐含条件是 `entry != null`），表明这个 `entry` 的 Key 已经不再被引用关联到，因此这个 `entry` 可以被的删除（`expunged`），这样的 `entry` 在代码中被称为 `stale entry`。」多看几遍这几个重要的单词，`expunged`、`stale entries`，后面会频繁出现。
 
 现在可以将第一个草图进行修改了，哈希表 `ThreaedLoclaMap` 中 `Entry` 的Key实际上是一个 `WeakReference` 对象，这个对象中的 `referent` 弱指向了实际的 `ThreadLocal` 对象，虚线表示弱引用：
 
@@ -549,8 +549,8 @@ private void resize() {
 1. 首先介绍一下 `nextIndex` 和 `preIndex` 方法，它们分别计算当前位置 `i` 的下一个位置和上一个位置，这种计算方式使得数组的位置得到了循环利用，逻辑上构成了一个环形数组，`next` 表示顺时针，而 `pre` 表示逆时针，如下图所示：
 
    ![](https://i.loli.net/2021/09/25/EcMjfxBbpv8LrSt.png)
-2. `set` 方法的主要作用是新增和修改哈希表中的元素，处理冲突的方式也是常用的线性探测法，即如果使用 Key（`ThreadLocal` 类型）的 `threadLocalHashCode` 计算出的位置已经存在 `Entry`（这个 `Entry` 有可能是有效的元素，也有可能是 Key 已经被回收的 `stale entry`），就进入循环，判断是否是修改操作。注意循环中还有个 `replaceStaleEntry`，它会执行一些清理工作，然后将 `key`、`value` 放到合适的 `Entry` 中，后面会详细介绍。一直探测到某个位置的 `Entry` 为 `null`，就用 `key` 、 `value` 新建 `Entry` 并放在该位置。
-3. `rehash` 操作前，会先进行一次 `cleanSomeSlots` 清理操作，这个方法在源码注释中使用了 _Heuristically（启发式地）_ 进行描述，因此这里简称它为 `启发式清理`。而在 `rehash` 方法中，在调用 `resize` 方法扩容前，还会调用另外一个 `expungeStaleEntries` 清理操作，熟悉的词汇，在源码注释中描述为 _Expunge all stale entries in the table（清理所有stale entry）_，它本质上是调用了 `expungeStaleEntry` 方法，而 `expungeStaleEntry` 方法是对哈希表中的 stale entry 进行部分清理，后面就简称它为 `分段式清理`。
+2. `set` 方法的主要作用是新增和修改哈希表中的元素，处理冲突的方式也是常用的线性探测法，即如果使用 Key（`ThreadLocal` 类型）的 `threadLocalHashCode` 计算出的位置已经存在 `Entry`（这个 `Entry` 有可能是有效的元素，也有可能是 Key 已经被回收的 `stale entry`），就进入循环，判断是否是修改操作。注意循环中还有个 `replaceStaleEntry`，它会执行一些清理工作，然后将 `key`、`value` 放到合适的 `Entry` 中，后面会详细介绍。一直探测到某个位置的 `Entry` 为 `null`，就用 `key` 、`value` 新建 `Entry` 并放在该位置。
+3. `rehash` 操作前，会先进行一次 `cleanSomeSlots` 清理操作，这个方法在源码注释中使用了 _Heuristically（启发式地）_ 进行描述，因此这里简称它为 `启发式清理`。而在 `rehash` 方法中，在调用 `resize` 方法扩容前，还会调用另外一个 `expungeStaleEntries` 清理操作，熟悉的词汇，在源码注释中描述为 _Expunge all stale entries in the table（清理所有 stale entry）_，它本质上是调用了 `expungeStaleEntry` 方法，而 `expungeStaleEntry` 方法是对哈希表中的 stale entry 进行部分清理，后面就简称它为 `分段式清理`。
 4. 两个清理工作完成后，才开始正式的 `resize` 扩容流程，新建一个两倍容量的数组，将旧表中的元素转移到新表，同时清理一些 stale entry。
 
 ### getEntry
@@ -591,9 +591,9 @@ private Entry getEntryAfterMiss(ThreadLocal<?> key, int i, Entry e) {
 }
 ```
 
-`getEntry` 的流程整体上比较简单，和普通线性探测哈希表的get方法没什么区别：
+`getEntry` 的流程整体上比较简单，和普通线性探测哈希表的 get 方法没什么区别：
 
-1. 使用key的 `threadLocalHashCode` 计算出实际位置 `i`，以这个 `i` 为查找的起点，如果 `i` 位置的 Entry 就是我们想要查找的目标（`e.get() == key`），则直接返回。其实这里 `e == null` 时也可以直接返回 `null`，不过代码中把它延迟到了 `getEntryAfterMiss` 中，没什么区别。
+1. 使用 key 的 `threadLocalHashCode` 计算出实际位置 `i`，以这个 `i` 为查找的起点，如果 `i` 位置的 Entry 就是我们想要查找的目标（`e.get() == key`），则直接返回。其实这里 `e == null` 时也可以直接返回 `null`，不过代码中把它延迟到了 `getEntryAfterMiss` 中，没什么区别。
 2. `getEntryAfterMiss` 就从起点 `i` 开始，向后查找（`nextIndex`），如果找到目标，直接返回 Entry，如果遇到 `null`，直接返回 `null` 表示哈希表中没有该目标，这两个操作与普通线性探测法一致。不同的是当遇到 `k == null`，也就是 Entry 为 stale entry 时，需要多进行一次 `分段式清理` 操作。
 
 ### remove
@@ -680,15 +680,15 @@ private int expungeStaleEntry(int staleSlot) {
 }
 ```
 
-这个清理基本上等同于普通线性探测法的删除操作，只是在Rehash的过程中增加了一个删除 stale entry 的步骤。下面以一个示例对流程进行讲解：
+这个清理基本上等同于普通线性探测法的删除操作，只是在 rehash 的过程中增加了一个删除 stale entry 的步骤。下面以一个示例对流程进行讲解：
 
-1. 初始状态： `K1~K7` 代表一个键簇，假定 `K1~K7` 计算后得到的位置均为 `13`。图中绿色表示有效 entry，灰色表示 stale entry，而白色为 `null`。现在开始执行 `expungeStaleEntry(13)`，即传入的参数 `staleSlot = 13`。
+1. 初始状态：`K1~K7` 代表一个键簇，假定 `K1~K7` 计算后得到的位置均为 `13`。图中绿色表示有效 entry，灰色表示 stale entry，而白色为 `null`。现在开始执行 `expungeStaleEntry(13)`，即传入的参数 `staleSlot = 13`。
 
    ![](https://i.loli.net/2021/09/25/Vo8XRde32W6vCAn.png)
 2. 根据步骤，首先删除 `K1` 的 `Entry`，并将 `i` 移动到 `K1` 的下个位置 `14`：
 
    ![](https://i.loli.net/2021/09/25/UbnYR2vdl7FVTZ3.png)
-3. 随后， `K2` 位置为 stale entry，进入 `k == null` 分支，删除 `K2`，进入下次循环，`i` 到达 `15`，`K3` 为有效 entry，进行 rehash 操作，将 `h` 进行计算 `h = 13`（1 中的假设）。
+3. 随后，`K2` 位置为 stale entry，进入 `k == null` 分支，删除 `K2`，进入下次循环，`i` 到达 `15`，`K3` 为有效 entry，进行 rehash 操作，将 `h` 进行计算 `h = 13`（1 中的假设）。
 
    ![](https://i.loli.net/2021/09/25/Yxi7F5KkSvDQjaL.png)
 4. 先清空 `i` 位置，随后开始判断 `h` 位置，刚好 `h` 位置为空，则直接将 `K3` 代表的 `Entry` 放入 `13` 位置，`i` 移动到 `0` 位置。
@@ -697,11 +697,11 @@ private int expungeStaleEntry(int staleSlot) {
 5. 与步骤 3 类似，清空 `K4`，`i` 移动至 `1` 位置。
 
    ![](https://i.loli.net/2021/09/25/SveMP48UqOtGFBc.png)
-6. `K5~K7` 均为有效 entry，因此进行 rehash 操作，`K5` 的 `h = 13`，此时 `13` 位置不为空，则 `h` 移动到 `14`， `14` 位置为空，则将 `K5` 的 `Entry` 移动到 `14`。同理，将 `K6` 和 `K7` 移动到 `15` 和 `0` 位置。最后，`i` 移动到  `4` 的位置（**原** 键簇末尾紧邻的 null 位置），返回 `i`（马上会用到），本次 `分段式清理` 结束。
+6. `K5~K7` 均为有效 entry，因此进行 rehash 操作，`K5` 的 `h = 13`，此时 `13` 位置不为空，则 `h` 移动到 `14`，`14` 位置为空，则将 `K5` 的 `Entry` 移动到 `14`。同理，将 `K6` 和 `K7` 移动到 `15` 和 `0` 位置。最后，`i` 移动到 `4` 的位置（**原** 键簇末尾紧邻的 null 位置），返回 `i`（马上会用到），本次 `分段式清理` 结束。
 
    ![](https://i.loli.net/2021/09/25/bvNpCDqBdocyRhi.png)
 
-了解过 `expungeStaleEntry` 基本原理后， 回头看看 `rehash` 代码中调用的 `expungeStaleEntries` 方法：
+了解过 `expungeStaleEntry` 基本原理后，回头看看 `rehash` 代码中调用的 `expungeStaleEntries` 方法：
 
 ```java
 /**                                       
@@ -849,18 +849,17 @@ private void replaceStaleEntry(ThreadLocal<?> key, Object value,
 
 1. 这个方法是在 `set` 中被调用的，在线性探测插入（或修改）元素时，如果遇到了 stale entry，那么就进入到 `replaceStaleEntry`，传入的参数为元素的 `key`、`value` 以及 stale entry 的位置 `i`。
 
-```java
-// k为null的情况，表示stale entry                                                        
-if (k == null) {                                          
-    replaceStaleEntry(key, value, i);                     
-    return;                                               
-}
-```
-
-1. `replaceStaleEntry` 中的第一个循环主要作用是找到 `i` 位置所在键簇最前端的某个 stale entry 位置。举例说明， `set` 方法将传入参数 `K8`，图中 `K8` 为待探测元素，计算得到它的起始位置为 `0`。由于 `K4` 为有效 entry，且 `K4 ≠ K8`，因此 `set` 方法中的 `i` 移动至 `1` 位置。`1` 位置上的 `K5` 是 stale entry，因此，从这里开始调用 `replaceStaleEntry`，传入的第三个参数 `staleSlot` 为 `1`。这时候，`replaceStaleEntry` 的第一个循环就从这个 `staleSlot` 开始 **向前移动**，寻找最前端的 stale slot，即 `13`（虽然 `15` 也是 stale slot，但它不是这个键簇的最前端），并赋值 `slotToExpunge = 13`。
+   ```java
+   // k为null的情况，表示stale entry                                                        
+   if (k == null) {                                          
+       replaceStaleEntry(key, value, i);                     
+       return;                                               
+   }
+   ```
+2. `replaceStaleEntry` 中的第一个循环主要作用是找到 `i` 位置所在键簇最前端的某个 stale entry 位置。举例说明，`set` 方法将传入参数 `K8`，图中 `K8` 为待探测元素，计算得到它的起始位置为 `0`。由于 `K4` 为有效 entry，且 `K4 ≠ K8`，因此 `set` 方法中的 `i` 移动至 `1` 位置。`1` 位置上的 `K5` 是 stale entry，因此，从这里开始调用 `replaceStaleEntry`，传入的第三个参数 `staleSlot` 为 `1`。这时候，`replaceStaleEntry` 的第一个循环就从这个 `staleSlot` 开始 **向前移动**，寻找最前端的 stale slot，即 `13`（虽然 `15` 也是 stale slot，但它不是这个键簇的最前端），并赋值 `slotToExpunge = 13`。
 
    ![](https://i.loli.net/2021/09/25/rmgx6PUztFLnW8R.png)
-2. 第二个循环从 `staleSlot` 的下个位置开始，**往后移动**，在键簇中寻找 `k == key` 的 `Entry`，直到键簇末尾。注意循环末尾的一小段代码：
+3. 第二个循环从 `staleSlot` 的下个位置开始，**往后移动**，在键簇中寻找 `k == key` 的 `Entry`，直到键簇末尾。注意循环末尾的一小段代码：
 
    ```java
    if (k == null && slotToExpunge == staleSlot)                       
@@ -874,7 +873,7 @@ if (k == null) {
    ![](https://i.loli.net/2021/09/25/YftE2wO5p4bFIR8.png)
 
    这个赋值操作最多只会执行一次，第二次再进来 `slotToExpunge == staleSlot` 这个条件一定不会再满足了，这个循环的起始位置是 `staleSlot` 的 **下个位置**，已经就不等于 `staleSlot` 了，往后的 `i` 值就更不会满足该条件。
-3. 第二个循环过程中，如果找到了满足 `k == key` 条件的 `Entry`，那么就会进入替换及清理的代码中：
+4. 第二个循环过程中，如果找到了满足 `k == key` 条件的 `Entry`，那么就会进入替换及清理的代码中：
 
    ```java
    if (k == key) {                                                    
@@ -891,7 +890,7 @@ if (k == null) {
    }
    ```
 
-   `staleSlot` 是调用 `replaceStaleEntry` 方法时传入的参数，也就是 `set` 方法调用过程中发现的第一个 stale entry的位置。这里先将当前 `Entry` 的 `value` 进行了替换修改，然后将当前位置 `i` 与 `staleSlot` 位置的元素进行了交换，交换过后， `i` 位置变为 stale entry，而 `staleSlot` 位置成为了有效entry。
+   `staleSlot` 是调用 `replaceStaleEntry` 方法时传入的参数，也就是 `set` 方法调用过程中发现的第一个 stale entry 的位置。这里先将当前 `Entry` 的 `value` 进行了替换修改，然后将当前位置 `i` 与 `staleSlot` 位置的元素进行了交换，交换过后，`i` 位置变为 stale entry，而 `staleSlot` 位置成为了有效 entry。
 
    这段代码就是 `replaceStaleEntry` 命名的由来，它将原来 `set` 中识别出的 stale entry 替换为了一个新的有效 entry（key 是原来已经存在的，仅修改了 value）。下图中，`K8 == K8'`，当 `i == 4` 时，进入上述逻辑中，先将 `K8'` 的 `value` 进行替换修改，再将 `K5` 与 `K8'` 进行交换，得到下面的成果。
 
@@ -899,10 +898,10 @@ if (k == null) {
 
    ![](https://i.loli.net/2021/09/25/yRc5FGDdluv3hE8.png)
 
-   替换成功后，随后条件判断与步骤 3 逻辑相同，都是确定 `slotToExpunge` 的位置，此时的 `i` 位置已经是 stale entry 了，因此可以作为 `expungeStaleEntry`  `分段式清理` 的起点。
+   替换成功后，随后条件判断与步骤 3 逻辑相同，都是确定 `slotToExpunge` 的位置，此时的 `i` 位置已经是 stale entry 了，因此可以作为 `expungeStaleEntry` `分段式清理` 的起点。
 
    最后就是进行两次清理，先分段清理，再将其返回值传入 `cleanSomeSlots` 进行启发式清理，启发式清理中的第二个参数为 `len`，即哈希表当前的最大容量，区别 `set` 方法末尾的参数传入的 `sz`。
-4. 若第二个循环中没有找到能够替换的 `Entry` ，则进入到最后的新建逻辑：
+5. 若第二个循环中没有找到能够替换的 `Entry`，则进入到最后的新建逻辑：
 
    ```java
     // If key not found, put new entry in stale slot                       
@@ -922,7 +921,7 @@ if (k == null) {
 
 ![](https://i.loli.net/2021/09/25/td1sG2VzF9WQwTN.png)
 
-根据官方文档的推荐，我们平时使用 `ThreadLocal` 往往都会将它声名为 `private static` ，那么，上图中红色部分的强引用将会一直存在（metaspace 中），该 `ThreadLocal` 在一个长期执行线程的 `Thread.threadLocals` 哈希表中对应的一个 `Entry e` ，由于强引用的存在，`e.get()` 返回的 **不会** 是 `null`，那么指望上面的各种自动清理方法回收 `value` 内存就不太现实，需要开发人员手动调用 `remove` 方法回收不再使用的 `ThreadLocal`。
+根据官方文档的推荐，我们平时使用 `ThreadLocal` 往往都会将它声名为 `private static`，那么，上图中红色部分的强引用将会一直存在（metaspace 中），该 `ThreadLocal` 在一个长期执行线程的 `Thread.threadLocals` 哈希表中对应的一个 `Entry e`，由于强引用的存在，`e.get()` 返回的 **不会** 是 `null`，那么指望上面的各种自动清理方法回收 `value` 内存就不太现实，需要开发人员手动调用 `remove` 方法回收不再使用的 `ThreadLocal`。
 
 ### 脏数据
 
