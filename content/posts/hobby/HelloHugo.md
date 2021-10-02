@@ -30,6 +30,8 @@ hugo v0.82.1-60618210 windows/amd64 BuildDate=2021-04-20T11:02:50Z VendorInfo=go
 
 其他系统环境下安装方式见 [官网](https://gohugo.io/getting-started/installing/)。
 
+***
+
 ## Hello Hugo
 
 开始使用 Hugo 创建一个新站点 `hello-hugo`（这个名字各位自己决定，只要当前工作目录下不存在非空的重名子目录）:
@@ -148,6 +150,8 @@ hugo server
 ![](https://i.loli.net/2021/09/25/Fi2SjNc3DB65sPf.png)
 
 :sob: emmmmmmm，怎么说呢，有成果出来了，但是效果好像不太好，别急，接下来我们慢慢完善。
+
+***
 
 ## 主题配置完善
 
@@ -382,24 +386,24 @@ markup:
 
 现在往第一篇博客中添加一个代码段如下：
 
-````markdown
+```markdown
 ```java
 public V put(K key, V value) {
     return putVal(hash(key), key, value, false, true);
 }
 ```
-````
+```
 
 显示效果如图：
-    
+
 ![](https://i.loli.net/2021/09/25/wF3muHqsGAncCz6.png)
-    
+
 ### 增加评论区
-    
+
 我选择使用的是 `Valine`，前置工作需要在 LeanCloud 上注册并创建应用，获取到相关的 `AppID` 和 `AppKey`，具体流程请参照  [Valine官方网站](https://valine.js.org/quickstart.html)。
-    
+
 获取到这两个参数后，根据 PaperMod 官方文档的指示，创建 `layouts/partials/comments.html` 文件，`partials` 路径不存在就自己创建，在文件中添加以下内容：
-    
+
 ```html
 {{ $valinejs := resources.Get "js/Valine.min.js" }}
 <script src='{{ $valinejs.RelPermalink }}'></script>
@@ -427,6 +431,8 @@ comments: true
 ![](https://i.loli.net/2021/09/25/Wkd3A7vbXstCG81.png)
 
 配置入门大致就先讲到这里，下面简单介绍下我的站点部署方式。
+
+***
 
 ## 部署相关
 
