@@ -21,6 +21,8 @@ katex: false
 
 Hugo官方提供了多种部署方式，其中，[Host on GitHub](https://gohugo.io/hosting-and-deployment/hosting-on-github/) 和 [Deployment with Rsync](https://gohugo.io/hosting-and-deployment/deployment-with-rsync/) 结合正好可以满足我的需求，具体实现是直接放弃自己远程主机上的仓库，并使用 GitHub Actions 进行站点的部署。
 
+***
+
 ## GitHub Actions
 
 ### 概念
@@ -52,12 +54,10 @@ GitHub Actions 中的几个重要概念如下：
 
 GitHub Actions 的具体实现是在当前工作目录下创建 `.github/workflows/`，并在目录中添加 `.yml` 脚本文件，每个 `.yml` 文件都代表了一个 `workflow`。目录结构如下：
 
-```
-- .github
-  |- workflows
-    |- workflow1.yml
-    |- workflow2.yml
-```
+    - .github
+      |- workflows
+        |- workflow1.yml
+        |- workflow2.yml
 
 下面是 [GitHub官方](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions) 提供的示例文件：
 
@@ -102,6 +102,8 @@ jobs:
 * 用户使用自己提供的 `runner` 也是免费。
 * 私有仓库，且使用的是 GitHub 提供的 `runner`，收费标准见 [官网](https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions)。
   {{< /admonition >}}
+
+***
 
 ## Hugo 部署
 
@@ -188,11 +190,9 @@ jobs:
 
 在仓库目录下创建 `.github/workflows` 目录，并且在目录中创建 `deploy.yml` 文件：
 
-```
-- .github
-  |- workflows
-    |- deploy.yml
-```
+    - .github
+      |- workflows
+        |- deploy.yml
 
 `deploy.yml` 中的内容如下：
 
