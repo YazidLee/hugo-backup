@@ -189,7 +189,7 @@ private static int nextHashCode() {
 
 可以看到，第1个 `ThreadLocal` 的 `threadLocalHashCode` 为 0，此后，每新建一个 `ThreadLocal` 对象，该对象的 `threadLocalHashCode` 值就为上一个对象的 `threadLocalHashCode` 值加上 `HASH_INCREMENT`。
 
-说得直白点，设 `HASH_INCREMENT` 值为a，那么第 1 个 `ThreadLocal` 对象的 `threadLocalHashCode` 为 $0 * a$，第 2 个为 $1 * a$，第 3 个为 $2 * a$，... ，第 n 个为 $(n - 1) * a$，属于乘法 hash。
+说得直白点，设 `HASH_INCREMENT` 值为 $a$，那么第 1 个 `ThreadLocal` 对象的 `threadLocalHashCode` 为 $0 * a$，第 2 个为 $1 * a$，第 3 个为 $2 * a$，... ，第 n 个为 $(n - 1) * a$，属于乘法 hash。
 
 代码中，这个 a 值设定为一个特殊的数字：`0x61c88647`，理由在注释中已经给出，这个值能够使 Key 值在大小为 $2 ^ n$ 的哈希表上均匀地分布，至于其中的原理就不继续深究，和黄金分割、斐波那契相关，感兴趣的可以自行查阅资料。
 
@@ -849,24 +849,22 @@ private void replaceStaleEntry(ThreadLocal<?> key, Object value,
 
 1. 这个方法是在 `set` 中被调用的，在线性探测插入（或修改）元素时，如果遇到了 stale entry，那么就进入到 `replaceStaleEntry`，传入的参数为元素的 `key`、`value` 以及 stale entry 的位置 `i`。
 
-    ```java
-    // k为null的情况，表示stale entry                                                        
-    if (k == null) {                                          
-        replaceStaleEntry(key, value, i);                     
-        return;                                               
-    }
-    ```
-
+   ```java
+   // k为null的情况，表示stale entry                                                        
+   if (k == null) {                                          
+       replaceStaleEntry(key, value, i);                     
+       return;                                               
+   }
+   ```
 2. `replaceStaleEntry` 中的第一个循环主要作用是找到 `i` 位置所在键簇最前端的某个 stale entry 位置。举例说明， `set` 方法将传入参数 `K8`，图中 `K8` 为待探测元素，计算得到它的起始位置为 `0`。由于 `K4` 为有效 entry，且 `K4 ≠ K8`，因此 `set` 方法中的 `i` 移动至 `1` 位置。`1` 位置上的 `K5` 是 stale entry，因此，从这里开始调用 `replaceStaleEntry`，传入的第三个参数 `staleSlot` 为 `1`。这时候，`replaceStaleEntry` 的第一个循环就从这个 `staleSlot` 开始 **向前移动**，寻找最前端的 stale slot，即 `13`（虽然 `15` 也是 stale slot，但它不是这个键簇的最前端），并赋值 `slotToExpunge = 13`。
 
    ![](https://i.loli.net/2021/09/25/rmgx6PUztFLnW8R.png)
-   
 3. 第二个循环从 `staleSlot` 的下个位置开始，**往后移动**，在键簇中寻找 `k == key` 的 `Entry`，直到键簇末尾。注意循环末尾的一小段代码：
 
-    ```java
-    if (k == null && slotToExpunge == staleSlot)                       
-        slotToExpunge = i; 
-    ```
+   ```java
+   if (k == null && slotToExpunge == staleSlot)                       
+       slotToExpunge = i; 
+   ```
 
    它表示如果在 **往后**（区别步骤 2 中的往前）寻找的过程中遇到了 stale entry，且刚才步骤 2 中没找到 stale entry，那么就将 `slotToExpunge` 赋值为这个 stale entry 的位置 `i`。再用一个例子来说明，如下图所示，同样从 `set` `K8` 元素开始，到 `1` 位置进入 `replaceStaleEntry`，此时往前寻找不到 stale entry，那么进入第二个循环前，`slotToExpunge == staleSlot`。
 
@@ -875,7 +873,6 @@ private void replaceStaleEntry(ThreadLocal<?> key, Object value,
    ![](https://i.loli.net/2021/09/25/YftE2wO5p4bFIR8.png)
 
    这个赋值操作最多只会执行一次，第二次再进来 `slotToExpunge == staleSlot` 这个条件一定不会再满足了，这个循环的起始位置是 `staleSlot` 的 **下个位置**，已经就不等于 `staleSlot` 了，往后的 `i` 值就更不会满足该条件。
-   
 4. 第二个循环过程中，如果找到了满足 `k == key` 条件的 `Entry`，那么就会进入替换及清理的代码中：
 
    ```java
@@ -904,7 +901,6 @@ private void replaceStaleEntry(ThreadLocal<?> key, Object value,
    替换成功后，随后条件判断与步骤 3 逻辑相同，都是确定 `slotToExpunge` 的位置，此时的 `i` 位置已经是 stale entry 了，因此可以作为 `expungeStaleEntry`  `分段式清理` 的起点。
 
    最后就是进行两次清理，先分段清理，再将其返回值传入 `cleanSomeSlots` 进行启发式清理，启发式清理中的第二个参数为 `len`，即哈希表当前的最大容量，区别 `set` 方法末尾的参数传入的 `sz`。
-   
 5. 若第二个循环中没有找到能够替换的 `Entry`，则进入到最后的新建逻辑：
 
    ```java
