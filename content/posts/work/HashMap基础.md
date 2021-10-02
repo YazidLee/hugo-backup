@@ -13,7 +13,7 @@ categories:
 tags:
 - HashMap
 katex: false
-
+draft: false
 ---
 HashMap 是 Java 程序员使用频率最高处理的数据结构之一，线程不安全，允许 null 作为键和值。HashMap 对 Key 要求是不可变类型的，设想如果是可变类型的 Key，那么在使用过程中很有可能对 Key 对象进行了修改，导致哈希值发生变化，最终无法定位到 HashMap 中的元素。
 

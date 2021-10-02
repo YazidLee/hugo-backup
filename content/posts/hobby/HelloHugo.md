@@ -13,7 +13,7 @@ categories:
 tags:
 - Hugo
 katex: false
-
+draft: false
 ---
 以前自己折腾过各种平台的博客，WordPress、Hexo、Jekyll 等，但最终都没有坚持把自己的博客搭建完成，不是这里效果不好，自己折腾不出来，然后一怒之下就弃了，要么就是工作出差，回来后就忘了，总之放弃是件简单的事情。
 

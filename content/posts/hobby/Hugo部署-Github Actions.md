@@ -15,7 +15,7 @@ tags:
 - Github Actions
 - rsync
 katex: false
-
+draft: false
 ---
 在 [Hello Hugo](https://www.liyangjie.cn/posts/hellohugo/) 文章中介绍了 Hugo 的入门，并使用 git hook 机制实现了一个简单的部署工作。在完善博客的过程中，我想实现读者在线纠错、修改文章内容的功能，需要将文章内容托管到公有的平台，最好的选择当然是 GitHub。这时候问题就来了，我关联了两个远程仓库，一个在自己的远程主机上，用于实现部署；另一个在 GitHub 上，方便读者进行在线编辑。每次在本地完成内容后，都要向两个远程仓库提交代码，这多少有些膈应，更重要的是，在线编辑的内容是要从 GitHub 上同步到我的远程主机的，显然这是不合适的。
 
