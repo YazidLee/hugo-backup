@@ -19,6 +19,8 @@ HashMap 是 Java 程序员使用频率最高处理的数据结构之一，线程
 
 Java8 对 HashMap 进行了大修改，为了防止链表过大，影响插入和查找的效率（链表过大时，时间复杂度为 _O(n)_），当链表元素的数量超过某个值时，自动将链表转换为红黑树（时间复杂度为 _O(log n)_，注意这个地方有个坑，文章最后会介绍）。
 
+***
+
 ## 基础结构
 
 ![](https://i.loli.net/2021/09/25/iDejz2BNJY79x3P.png)
@@ -31,6 +33,8 @@ Java8 对 HashMap 进行了大修改，为了防止链表过大，影响插入�
 * _loadFactor_：负载因子，它搭配 _capacity_ 使用，判断扩容条件，默认值为 0.75。
 * _size_：当前 HashMap 中的 Node 总数量。
 * _threshold_：扩容阈值，它的值为 `loadFactor * capacity`，**重点：当 _size_ 的值大于 _threshold_ 值时，进行扩容**。
+
+***
 
 ## 源码分析
 
