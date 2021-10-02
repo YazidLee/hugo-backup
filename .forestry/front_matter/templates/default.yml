@@ -1,0 +1,38 @@
+---
+label: default
+hide_body: false
+fields:
+- type: text
+  name: title
+  label: title
+- type: text
+  name: slug
+  label: slug
+- type: text
+  name: summary
+  label: summary
+- type: list
+  name: author
+  label: author
+- type: datetime
+  name: date
+  label: date
+- type: field_group
+  name: cover
+  label: cover
+  fields:
+  - type: file
+    name: image
+    label: image
+  - type: text
+    name: alt
+    label: alt
+- type: list
+  name: categories
+  label: categories
+- type: list
+  name: tags
+  label: tags
+- type: boolean
+  name: katex
+  label: katex
