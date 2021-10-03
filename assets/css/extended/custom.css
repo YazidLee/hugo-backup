@@ -15,6 +15,10 @@ ol {
     margin: 0;
 }
 
+.post-content hr {
+    border: 0;
+}
+
 .post-content {
     font-size: 16px;
     /* text-align: justify; */
