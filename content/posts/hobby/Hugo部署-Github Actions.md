@@ -17,7 +17,7 @@ tags:
 katex: false
 
 ---
-在 [Hello Hugo](https://www.liyangjie.cn/posts/hellohugo/) 文章中介绍了 Hugo 的入门，并使用 git hook 机制实现了一个简单的部署工作。在完善博客的过程中，我想实现读者在线纠错、修改文章内容的功能，需要将文章内容托管到公有的平台，最好的选择当然是 GitHub。这时候问题就来了，我关联了两个远程仓库，一个在自己的远程主机上，用于实现部署；另一个在 GitHub 上，方便读者进行在线编辑。每次在本地完成内容后，都要向两个远程仓库提交代码，这多少有些膈应，更重要的是，在线编辑的内容是要从 GitHub 上同步到我的远程主机的，显然这是不合适的。
+在 [Hello Hugo](https://www.liyangjie.cn/posts/hobby/hello-hugo/) 文章中介绍了 Hugo 的入门，并使用 git hook 机制实现了一个简单的部署工作。在完善博客的过程中，我想实现读者在线纠错、修改文章内容的功能，需要将文章内容托管到公有的平台，最好的选择当然是 GitHub。这时候问题就来了，我关联了两个远程仓库，一个在自己的远程主机上，用于实现部署；另一个在 GitHub 上，方便读者进行在线编辑。每次在本地完成内容后，都要向两个远程仓库提交代码，这多少有些膈应，更重要的是，在线编辑的内容是要从 GitHub 上同步到我的远程主机的，显然这是不合适的。
 
 Hugo官方提供了多种部署方式，其中，[Host on GitHub](https://gohugo.io/hosting-and-deployment/hosting-on-github/) 和 [Deployment with Rsync](https://gohugo.io/hosting-and-deployment/deployment-with-rsync/) 结合正好可以满足我的需求，具体实现是直接放弃自己远程主机上的仓库，并使用 GitHub Actions 进行站点的部署。
 
@@ -116,7 +116,7 @@ jobs:
 
   部署流程使用 `rsync` 进行文件的同步工作， `rsync` 默认是基于 SSH，需要提前在自己的远程主机上安装 `rsync`，并准备密钥对。
 
-  这里使用 [上篇文章](https://www.liyangjie.cn/posts/hellohugo/) 中创建的 git 用户作为同步数据时使用的账户：
+  这里使用 [上篇文章](https://www.liyangjie.cn/posts/hobby/hello-hugo/) 中创建的 git 用户作为同步数据时使用的账户：
 
   ```shell
   # 安装 rsync
