@@ -16,7 +16,21 @@ ol {
 }
 
 .post-content hr {
-    border: 0;
+    border: none;
+    height: 2px;
+    background-color: var(--tertiary);
+}
+
+.post-content hr::after {
+    content: '§';
+    color: var(--content);
+    display: inline-block;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(60deg);
+    transform-origin: 50% 50%;
+    padding: 1rem;
+    background-color: var(--theme);
 }
 
 .post-content {
