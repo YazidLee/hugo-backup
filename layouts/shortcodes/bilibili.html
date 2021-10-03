@@ -1,4 +1,4 @@
 {{- /* 使用方法 {{< bilibili BV1TJ411C7An 3 >}}, 第一个参数为bvid，第二个参数为第几p */ -}}
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: var(--radius);">
+<div class="bilibili">
     <iframe src="https://player.bilibili.com/player.html?bvid={{ .Get 0 }}&page={{ .Get 1 | default 1 }}&as_wide=1&high_quality=1&danmaku=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="Bilibili Video" loading="lazy"></iframe>
 </div>

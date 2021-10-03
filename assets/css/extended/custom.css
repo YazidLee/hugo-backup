@@ -101,6 +101,15 @@ figure img {
     width: auto;
 }
 
+.bilibili {
+    position: relative; 
+    margin: 1rem auto; 
+    padding-bottom: 56.25%;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
 /* 版权说明区 */
 #post-licensing {
     border-left: 0;
