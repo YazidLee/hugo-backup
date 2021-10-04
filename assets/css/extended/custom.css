@@ -2,11 +2,11 @@
     --main-width: 768px;
 }
 
-body {
+body, .admonition {
     font-family: -apple-system,"Merriweather",system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
 }
 
-h1, h2, h3, h4, h5, h6, .toc, footer {
+h1, h2, h3, h4, h5, h6, .toc, footer, .post-meta, .post-content, .entry-content, .archive-meta {
     font-family: -apple-system,"Lato",system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
 }
 
