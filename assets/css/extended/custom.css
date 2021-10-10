@@ -47,15 +47,15 @@ ol {
 
 .post-content code {
     font-family: -apple-system, "JetBrains Mono", system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
-    font-size: .8em;
+    font-size: .9em;
     font-weight: normal;
-    padding: 3px 6px 3px 6px;
+    padding: 1px 6px 1px 6px;
     margin: auto 0;
 }
 
 .post-content .highlight .chroma code {
     font-family: -apple-system, "JetBrains Mono", system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
-    font-size: .8em;
+    font-size: .9em;
     font-weight: normal;
 }
 
