@@ -60,7 +60,7 @@ MAS_1.4
 - `8`：浏览器中打开官网（会打开三个网页）。
 - `9`：退出。
 
-当然，最重要的就是其中的 `2-4` 这三个选项了，分别使用3种不同的方式进行激活。对于 Win10、11，这里推荐使用 `2：HWID Activation` 进行激活，而对于 Win7 只能选择 `4：Online KMS Activation` 进行激活，`4：Online KMS Activation` 同样支持 Office 的激活，但不推荐使用。
+当然，最重要的就是其中的 `2-4` 这三个选项了，分别使用 3 种不同的方式进行激活。对于 Win10、11，这里推荐使用 `2：HWID Activation` 进行激活，而对于 Win7 只能选择 `4：Online KMS Activation` 进行激活，`4：Online KMS Activation` 同样支持 Office 的激活，但不推荐使用。
 
 对于 Office 这里推荐一个从安装到激活的Office一站式部署工具 [Office Tool Plus](https://otp.landian.vip/)。
 
@@ -113,7 +113,6 @@ slmgr.vbs -xpr
       * Pfn - Package Family Name - The package family name of your Windows edition.
       * OA3xOriginalProductKey - The BIOS product key. (Yes, it's a duplicate).
       * DownlevelGenuineState - Indicates whether or not your system is genuine. (activated)
-    
   * Signatures:
     * signature: (Either downlevelGTkey or clientLockboxKey depending on which utility actually generated the ticket - SLC, gatherosstate or ClipUp.)
       * downlevelGTkey - rsa-sha256 signature for the Properties field.
