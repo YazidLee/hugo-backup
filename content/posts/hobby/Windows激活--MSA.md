@@ -102,7 +102,6 @@ slmgr.vbs -xpr
   * Properties:
     * OA3xOriginalProductId - The Product ID of the BIOS key.
     * OA3xOriginalProductKey - The BIOS product key.
-    * TimeStampClient - The ISO 8601 format date of ticket generation.
     * SessionId:
       * OSMajorVersion - The OS Version Major
       * OSMinorVersion - The OS Version Minor
@@ -113,6 +112,7 @@ slmgr.vbs -xpr
       * Pfn - Package Family Name - The package family name of your Windows edition.
       * OA3xOriginalProductKey - The BIOS product key. (Yes, it's a duplicate).
       * DownlevelGenuineState - Indicates whether or not your system is genuine. (activated)
+    * TimeStampClient - The ISO 8601 format date of ticket generation.
   * Signatures:
     * signature: (Either downlevelGTkey or clientLockboxKey depending on which utility actually generated the ticket - SLC, gatherosstate or ClipUp.)
       * downlevelGTkey - rsa-sha256 signature for the Properties field.
@@ -189,6 +189,36 @@ KMS（Key Management Service）是微软官方为政府、学校或公司等组�
 我在虚拟机进行了测试，使用刚制作好的预激活镜像进行系统安装（Win11 的安装需要联网并且登录微软账号），安装成功后，系统已是激活状态：
 
 ![](https://i.loli.net/2021/10/24/ifPvXcRoaZwQ7G2.png)
+
+---
+
+## 安全
+
+MAS 提供了一份项目中使用到的所有不可读文件的病毒检测报告：
+
+{{< admonition type=success title="Virus Total Report" open=true >}}
+
+
+```
+fabb5a0fc1e6a372219711152291339af36ed0b5 *gatherosstate.exe         Virus Total = 0/71
+ca3a51fdfc8749b8be85f7904b1c238a6dfba135 *slc.dll                   Virus Total = 0/68
+578364cb2319da7999acd8c015b4ce8da8f1b282 *ARM64_gatherosstate.exe   Virus Total = 0/69
+5dbea3a580cf60391453a04a5c910a3ceca2b810 *ARM64_slc.dll             Virus Total = 0/67
+```
+
+**以下 exe 均为 Microsoft 官方提供的文件，因此即使检测报告数量不为0，也并不用担心安全问题：**
+
+
+```
+48d928b1bec25a56fe896c430c2c034b7866aa7a *ClipUp.exe                Virus Total = 0/68
+d30a0e4e5911d3ca705617d17225372731c770e2 *cleanosppx64.exe          Virus Total = 0/66
+39ed8659e7ca16aaccb86def94ce6cec4c847dd6 *cleanosppx86.exe          Virus Total = 1/66
+9d5b4b3e761cca9531d64200dfbbfa0dec94f5b0 *_Info.txt                 Virus Total = 0/59
+```
+
+{{< /admonition >}}
+
+---
 
 ## 总结
 
