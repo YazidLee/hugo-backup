@@ -1,6 +1,6 @@
 ---
 title: "Windows 激活——MAS"
-slug: ""
+slug: "windows-activation"
 summary: "Windows MAS（Microsoft Activation Scripts）激活脚本介绍及使用，支持 Win10、11。"
 author: ["SadBird"]
 date: 2021-10-23T16:41:53+08:00
@@ -12,13 +12,12 @@ tags: ["Windows 激活"]
 katex: false
 
 ---
+## MAS
+
 时至今日，仍然有很多朋友对 Windows 的激活束手无策，百度搜索出来的解决方案也是五花八门，甚至有些是恶意病毒，这更让「白嫖」的小白用户痛不欲生。
 
 为了解决激活问题，本文推荐一个安全、便捷的 Windows 激活脚本开源项目：[Microsoft Activation Scripts](https://github.com/massgravel/Microsoft-Activation-Scripts)。
 
----
-
-## MAS
 {{< admonition type=quote title="Microsoft Activation Scripts" open=true >}}
 
 A collection of scripts for activating Microsoft products using HWID / KMS38 / Online KMS activation methods with a focus on open-source code, less antivirus detection and user-friendliness.
@@ -64,6 +63,17 @@ MAS_1.4
 当然，最重要的就是其中的 `2-4` 这三个选项了，分别使用3种不同的方式进行激活。对于 Win10、11，这里推荐使用 `2：HWID Activation` 进行激活，而对于 Win7 只能选择 `4：Online KMS Activation` 进行激活，`4：Online KMS Activation` 同样支持 Office 的激活，但不推荐使用。
 
 对于 Office 这里推荐一个从安装到激活的Office一站式部署工具 [Office Tool Plus](https://otp.landian.vip/)。
+
+激活成功后，使用如下命令查看激活状态：
+
+
+```shell
+slmgr.vbs -xpr
+```
+
+结果如下：
+
+![](https://i.loli.net/2021/10/24/BsG2xfWUymK54LH.png)
 
 ---
 
@@ -156,6 +166,30 @@ KMS（Key Management Service）是微软官方为政府、学校或公司等组�
 同时，世界上还存在许多公用的 KMS Host Server，我们的 KMS Client 仅需要提供本机的一些信息（不敏感）给这些公用 Server，它们就会提供激活功能。这也是 Online KMS 使用的方法。它使用了一些常用的公共 Server，且保证了和 KMS38 方法的兼容性。
 
 ---
+
+## 制作预激活镜像
+
+平时我们对于系统的安装和激活总是先使用纯净镜像进行安装，安装完成进入系统后再手动执行激活操作。MAS提供了一个预激活（Windows Pre-Activation）的方法，能够在系统安装完成的同时自动执行激活操作。
+
+操作流程也非常简单，同样打开 `All-In-One-Version` 目录中的 cmd 脚本，选择 `6` 进入其他功能选项菜单，再选择 `[1] Extract $OEM$ Folder [Preactivation]` 即可进入到预激活文件选择界面，如下图所示：
+
+![](https://i.loli.net/2021/10/24/bNztyPkGQ9UVgZM.png)
+
+这里我们选择 `[3] HWID, Fallback to KMS38`，它表示预激活先使用 HWID 方法，若激活失败，则降级到使用 KMS38（至于再次降级使用 Online KMS，个人认为没有必要），此时程序会在桌面上创建一个 `$OEM$` 目录，里面就包含了预激活脚本。
+
+准备好 Windows ISO 纯净镜像，这里以 Win11 为例，打开 [官网](https://www.microsoft.com/en-us/software-download/windows11)，按照下图所示即可完成下载：
+
+![](https://i.loli.net/2021/10/24/Z3eikdOoKLlJh8s.png)
+
+使用 UltraISO、AnyBurn 等刻录工具打开你下载好的纯净 Windows ISO 镜像文件，将上述目录拷贝到镜像下的 `\sources` 目录，此时应该存在目录 `\sources\$OEM$`，记得保存，如下图所示：
+
+![](https://i.loli.net/2021/10/24/G9EOzgTNjU75yhf.png)
+
+至此，我们完成了预激活镜像的制作。
+
+我在虚拟机进行了测试，使用刚制作好的预激活镜像进行系统安装（Win11 的安装需要联网并且登录微软账号），安装成功后，系统已是激活状态：
+
+![](https://i.loli.net/2021/10/24/ifPvXcRoaZwQ7G2.png)
 
 ## 总结
 
