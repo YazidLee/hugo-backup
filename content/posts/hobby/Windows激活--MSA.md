@@ -194,7 +194,7 @@ KMS（Key Management Service）是微软官方为政府、学校或公司等组�
 
 ## 安全
 
-MAS 提供了一份项目中使用到的所有不可读文件的病毒检测报告：
+MAS 提供了一份项目中使用到的所有不可读文件的病毒检测报告（检测平台：Virus Total）：
 
 {{< admonition type=success title="Virus Total Report" open=true >}}
 
