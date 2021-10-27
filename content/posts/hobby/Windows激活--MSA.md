@@ -62,7 +62,7 @@ MAS_1.4
 
 当然，最重要的就是其中的 `2-4` 这三个选项了，分别使用 3 种不同的方式进行激活。对于 Win10、11，这里推荐使用 `2：HWID Activation` 进行激活，而对于 Win7 只能选择 `4：Online KMS Activation` 进行激活，`4：Online KMS Activation` 同样支持 Office 的激活，但不推荐使用。
 
-对于 Office 这里推荐一个从安装到激活的Office一站式部署工具 [Office Tool Plus](https://otp.landian.vip/)。
+对于 Office 这里推荐一个从安装到激活的 Office 一站式部署工具 [Office Tool Plus](https://otp.landian.vip/)。
 
 激活成功后，使用如下命令查看激活状态：
 
@@ -87,7 +87,7 @@ slmgr.vbs -xpr
 
 - 仅支持 Win10 及 Win11。
 - 机器处于联网状态。
-- Windows Update Service（就是我们经常抱怨的 Windows 自动更新服务） 处于Automatic状态。 
+- Windows Update Service（就是我们经常抱怨的 Windows 自动更新服务） 处于 Automatic 状态。 
 
 当 Windows 版本从 Win7、Win8 或者 Win8.1 升级到 Win10（包括低版本 Win10 升级到更高版本的 Win10）时，已经激活的系统会自动获得一个数字许可（*Digital License*），该许可将会和用户**永久**绑定（通过用户的硬件或者用户的 Microsoft 账号），亦即我们所谓的「永久激活」。
 
@@ -148,9 +148,9 @@ Umm.. Yes, but actully no.
 
 ### KMS38
 
-这种方法与 HWID 方法流程基本一致，使用的工具一模一样，只是在 ticket 中的时间字段存在不同。HWID 中使用的是 `Pfn` 字段，而在 KMS38 中使用的是 `GVLKExp`，它是 Generic Volume Key Expiration （date）的简写，是一个 ISO8601 标准的时间戳，表示 KMS 激活的到期时间（到2038年）。KMS38 最终并不会将 ticket 发送到微软服务器进行认证，而是发送到 KMS 服务器，MAS 提供了一个本地执行的服务器进行该认证操作。
+这种方法与 HWID 方法流程基本一致，使用的工具一模一样，只是在 KMS38 ticket 中的时间字段。HWID 中使用的是 `Pfn` 字段，而在 KMS38 中使用的是 `GVLKExp`，它是 Generic Volume Key Expiration （date）的简写，是一个 ISO8601 标准的时间戳，表示 KMS 激活的到期时间（到2038年）。KMS38 最终并不会将 ticket 发送到微软服务器进行认证，而是发送到 KMS 服务器，MAS 提供了一个本地执行的服务器进行该认证操作。
 
-KMS38使用注意事项：
+KMS38 使用注意事项：
 
 - 激活前，确保当前系统中不存在任何其他的 KMS 激活服务正在运行，若有则需要先卸载。
 - 激活完成后，如果要使用 KMS 进行 Windows 其他产品的激活（如 Office），需要确保这些 KMS 能够兼容 KMS38，即不覆盖我们已经完成的 KMS38 激活（如果不能保证兼容，则需要执行 MAS 中的 KMS38 保护机制：进入主界面的 `6` 选项，选择 `[4] Protect / Unprotect KMS38 Activation`）。
@@ -158,7 +158,7 @@ KMS38使用注意事项：
 
 ### Online KMS
 
-KMS（Key Management Service）是微软官方为政府、学校或公司等组织提供的一种批量授权手段，在组织中的机器（KMS Client）可以向组织内的 KMS Host Server 申请许可，而不是微软的授权服务器。这种方式的特点是：每次申请的许可最长过期时间为180天，且每隔7天，KMS Client 都会向 KMS Host Server 发起许可更新请求。
+KMS（Key Management Service）是微软官方为政府、学校或公司等组织提供的一种批量授权手段，在组织中的机器（KMS Client）可以向组织内的 KMS Host Server 申请许可，而不是微软的授权服务器。这种方式的特点是：每次申请的许可最长过期时间为 180 天，且每隔 7 天，KMS Client 都会向 KMS Host Server 发起许可更新请求。
 
 市面上许多的 KMS 激活工具都是在机器本地创建一个 KMS HOST Server，为自己本机提供激活服务，因此这些工具都需要在机器本地执行一个后台程序，从而导致一些病毒检测程序误杀误报。
 
@@ -168,7 +168,7 @@ KMS（Key Management Service）是微软官方为政府、学校或公司等组�
 
 ## 制作预激活镜像
 
-平时我们对于系统的安装和激活总是先使用纯净镜像进行安装，安装完成进入系统后再手动执行激活操作。MAS提供了一个预激活（Windows Pre-Activation）的方法，能够在系统安装完成的同时自动执行激活操作。
+平时我们对于系统的安装和激活总是先使用纯净镜像进行安装，安装完成进入系统后再手动执行激活操作。MAS 提供了一个预激活（Windows Pre-Activation）的方法，能够在系统安装完成的同时自动执行激活操作。
 
 操作流程也非常简单，同样打开 `All-In-One-Version` 目录中的 cmd 脚本，选择 `6` 进入其他功能选项菜单，再选择 `[1] Extract $OEM$ Folder [Preactivation]` 即可进入到预激活文件选择界面，如下图所示：
 
@@ -206,7 +206,7 @@ ca3a51fdfc8749b8be85f7904b1c238a6dfba135 *slc.dll                   Virus Total 
 5dbea3a580cf60391453a04a5c910a3ceca2b810 *ARM64_slc.dll             Virus Total = 0/67
 ```
 
-**以下 exe 均为 Microsoft 官方提供的文件，因此即使检测报告数量不为0，也并不用担心安全问题：**
+**以下 exe 均为 Microsoft 官方提供的文件，因此即使检测报告数量不为 0，也并不用担心安全问题：**
 
 
 ```
