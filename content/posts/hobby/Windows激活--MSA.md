@@ -16,7 +16,7 @@ katex: false
 
 时至今日，仍然有很多朋友对 Windows 的激活束手无策，百度搜索出来的解决方案也是五花八门，甚至有些是恶意病毒，这更让「白嫖」的小白用户痛不欲生。
 
-为了解决激活问题，本文推荐一个安全、便捷的 Windows 激活脚本开源项目：[Microsoft Activation Scripts](https://github.com/massgravel/Microsoft-Activation-Scripts)。
+为了解决激活问题，本文推荐一个安全、便捷的 Windows 激活脚本开源项目：[Microsoft Activation Scripts](https://windowsaddict.ml/)。
 
 {{< admonition type=quote title="Microsoft Activation Scripts" open=true >}}
 
@@ -32,40 +32,42 @@ A collection of scripts for activating Microsoft products using HWID / KMS38 / O
 
 官方提供了 [GitHub](https://github.com/massgravel/Microsoft-Activation-Scripts/releases) 和 [GitLab](https://gitlab.com/massgrave/microsoft-activation-scripts/-/releases) 两个下载地址，请自行选择。此处以 GitHUB 为例进行介绍：
 
-![](https://i.loli.net/2021/10/23/MQX1UH425D98FgA.png)
+![](https://s2.loli.net/2022/01/26/fkRKWxLzOtmucZi.png)
 
-下载后，使用图中所示解压密码进行解压，得到 `MAS_1.4` 目录。目录结构如下：
+下载后，使用图中所示解压密码进行解压，得到 `MAS_1.5` 目录。目录结构如下：
 
 ```shell
-MAS_1.4
+MAS_1.5
 ├─ All-In-One-Version
 └─ Separate-Files-Version
 ```
 
-其中，`All-In-One-Version` 目录中为集成脚本，提供了所有激活方法的快捷操作入口。而 `Separate-Files-Version` 为具体的各个激活方法的独立脚本，用户可以根据需要自行选择执行。
+其中，`All-In-One-Version` 目录中为集成脚本，提供了所有激活方法的快捷操作入口。而 `Separate-Files-Version` 为具体的各个激活方法的独立脚本，用户可以根据需要自行选择执行。剩余 `ReadMe.html` 为说明文档，`Verify_Files-Clear_Zone.Identifier-68.cmd` 校验文件并对时区进行清理，防止 SmartScreen 警告。
 
-作为小白用户，这里当然推荐使用集成脚本，进入 `All-In-One-Version` 目录，直接双击执行该目录下的执行脚本，界面如下：
+作为小白用户，这里当然推荐直接使用集成脚本，进入 `All-In-One-Version` 目录，直接双击执行该目录下的执行脚本（这里 1.5 版本为 `MAS_1.5_AIO_CRC32_21D20776.cmd`），界面如下：
 
-![](https://i.loli.net/2021/10/23/TjNmigKOLwSPz6a.png)
+![](https://s2.loli.net/2022/01/26/9mnQ8btSqkldiZM.png)
 
 根据提示的选项，输入具体的数字进行进行激活即可：
 
-- `1`：说明文档，详细介绍了每种激活方法支持的 Windows 产品，使用方法等。
-- `2`：HWID Activation 激活。
-- `3`：KMS38 Activation 激活。
-- `4`：Online KMS Activation 激活。
-- `5`：查看当前激活状态。
-- `6`：其他功能选项。
-- `7`：所有支持组件罗列。
-- `8`：浏览器中打开官网（会打开三个网页）。
-- `9`：退出。
+- `1`：HWID 激活（永久，支持 Win 10-11）。
+- `2`：KMS38 激活（有效期至 2038年，适用于 Win10-11-Server）。
+- `3`：Online KMS 激活（有效期 180 天，支持 Win7 以上和 Office）。
+- `4`：查看当前激活状态（vbs）。
+- `5`：查看当前激活状态（wmi）。
+- `6`：其他功能选项（如预激活镜像制作等）。
+- `7`：说明文档，详细介绍了每种激活方法支持的 Windows 产品，使用方法等。
+- `8`：退出。
 
-当然，最重要的就是其中的 `2-4` 这三个选项了，分别使用 3 种不同的方式进行激活。对于 Win10、11，这里推荐使用 `2：HWID Activation` 进行激活，而对于 Win7 只能选择 `4：Online KMS Activation` 进行激活，`4：Online KMS Activation` 同样支持 Office 的激活，但不推荐使用。
+当然，最重要的就是其中的 `1-3` 这三个选项了，分别使用 3 种不同的方式进行激活。对于 Win10、11，这里推荐使用 `1：HWID` 进行激活，而对于 Win7 只能选择 `3：Online KMS` 进行激活，`3：Online KMS` 同样支持 Office 的激活，但不推荐使用。对于 Office 这里推荐一个从安装到激活的 Office 一站式部署工具 [Office Tool Plus](https://otp.landian.vip/)。
 
-对于 Office 这里推荐一个从安装到激活的 Office 一站式部署工具 [Office Tool Plus](https://otp.landian.vip/)。
+这里以 `1: HWID` 为例进行演示：
+- 首先在主界面输入 `1`，即可进入 `HWID` 激活界面：
+  ![](https://s2.loli.net/2022/01/26/zju2QlJGIi3kKZ6.png)
+- 在上述界面中，再次输入 `1`，开始进行 Windows 激活，完成后，如下图所示：
+  ![](https://s2.loli.net/2022/01/26/ByHvRPmzl2NJE9e.png)
 
 激活成功后，使用如下命令查看激活状态：
-
 
 ```shell
 slmgr.vbs -xpr
@@ -170,11 +172,11 @@ KMS（Key Management Service）是微软官方为政府、学校或公司等组�
 
 平时我们对于系统的安装和激活总是先使用纯净镜像进行安装，安装完成进入系统后再手动执行激活操作。MAS 提供了一个预激活（Windows Pre-Activation）的方法，能够在系统安装完成的同时自动执行激活操作。
 
-操作流程也非常简单，同样打开 `All-In-One-Version` 目录中的 cmd 脚本，选择 `6` 进入其他功能选项菜单，再选择 `[1] Extract $OEM$ Folder [Preactivation]` 即可进入到预激活文件选择界面，如下图所示：
+操作流程也非常简单，同样打开 `All-In-One-Version` 目录中的 cmd 脚本，选择 `6` 进入其他功能选项菜单，再选择 `[2] Extract $OEM$ Folder` 即可进入到预激活文件选择界面，如下图所示：
 
-![](https://i.loli.net/2021/10/24/bNztyPkGQ9UVgZM.png)
+![](https://s2.loli.net/2022/01/26/YZGpbhXgKOJDSyw.png)
 
-这里我们选择 `[3] HWID, Fallback to KMS38`，它表示预激活先使用 HWID 方法，若激活失败，则降级到使用 KMS38（至于再次降级使用 Online KMS，个人认为没有必要），此时程序会在桌面上创建一个 `$OEM$` 目录，里面就包含了预激活脚本。
+这里我们选择 `[4] HWID > KMS38`，它表示预激活先使用 HWID 方法，若激活失败，则降级到使用 KMS38（至于再次降级使用 Online KMS，个人认为没有必要），此时程序会在桌面上创建一个 `$OEM$` 目录，里面就包含了预激活脚本。
 
 准备好 Windows ISO 纯净镜像，这里以 Win11 为例，打开 [官网](https://www.microsoft.com/en-us/software-download/windows11)，按照下图所示即可完成下载：
 
