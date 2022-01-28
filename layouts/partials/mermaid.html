@@ -1,0 +1,12 @@
+<!-- The loading of mermaid is deferred to speed up page rendering -->
+{{- if not .Site.Params.assets.disableFingerprinting }}
+{{- $mermaid := resources.Get "js/mermaid.js" | minify | fingerprint }}
+<script defer crossorigin="anonymous" src="{{ $mermaid.RelPermalink }}" integrity="{{ $mermaid.Data.Integrity }}"></script>
+{{- else }}
+{{- $mermaid := resources.Get "js/mermaid.js" | minify }}
+<script defer crossorigin="anonymous" src="{{ $mermaid.RelPermalink }}"></script>
+{{- end }}
+
+<script>
+    mermaid.initialize({ startOnLoad: true });
+</script>

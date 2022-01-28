@@ -10,6 +10,7 @@ cover:
 categories: []
 tags: []
 katex: false
+mermaid: false
 draft: true
 ---
 
