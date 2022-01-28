@@ -32,5 +32,15 @@
 			"{{< bilibili ${1:bid} ${2:p} >}}"
 		],
 		"description": "bilibili shortcode"
+	},
+	"mermaid": {
+		"scope": "markdown",
+		"prefix": "merm",
+		"body": [
+			"{{< mermaid >}}",
+			"$0",
+			"{{< /mermaid >}}"
+		],
+		"description": "mermaid shortcode"
 	}
 }
