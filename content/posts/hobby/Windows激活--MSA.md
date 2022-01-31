@@ -180,7 +180,7 @@ KMS（Key Management Service）是微软官方为政府、学校或公司等组�
 
 准备好 Windows ISO 纯净镜像，这里以 Win11 为例，打开 [官网](https://www.microsoft.com/en-us/software-download/windows11)，按照下图所示即可完成下载：
 
-![](https://i.loli.net/2021/10/24/Z3eikdOoKLlJh8s.png)
+![](https://s2.loli.net/2022/01/31/R1MmzOGAt5Q7CZw.png)
 
 使用 UltraISO、AnyBurn 等刻录工具打开你下载好的纯净 Windows ISO 镜像文件，将上述目录拷贝到镜像下的 `\sources` 目录，此时应该存在目录 `\sources\$OEM$`，记得保存，如下图所示：
 
