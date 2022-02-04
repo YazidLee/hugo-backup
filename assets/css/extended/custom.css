@@ -25,6 +25,10 @@ ol {
     margin-bottom: 0;
 }
 
+.post-content li p:not(:first-child) {
+    margin-top: var(--content-gap);
+}
+
 .post-content hr {
     border: none;
     height: 2px;

@@ -406,14 +406,14 @@ private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<
 
    ```java
    protected Object getEarlyBeanReference(String beanName, RootBeanDefinition mbd, Object bean) {
-		Object exposedObject = bean;
-		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
-			for (SmartInstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().smartInstantiationAware) {
-				exposedObject = bp.getEarlyBeanReference(exposedObject, beanName);
-			}
-		}
-		return exposedObject;
-	}
+        Object exposedObject = bean;
+        if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
+            for (SmartInstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().smartInstantiationAware) {
+                exposedObject = bp.getEarlyBeanReference(exposedObject, beanName);
+            }
+        }
+        return exposedObject;
+    }
    ```
    
    这里的过程是要调用 `SmartInstantiationAwareBeanPostProcessor` 中的 `getEarlyBeanReference` 方法，将原始的半成品实例进行包装，典型的应用就是在这里给 AOP 提供一个包装的机会，试想如果我们示例中的 A 对象需要被代理，那么在这里就会给 A 对象的半成品 A' 进行包装，让等待依赖注入的 B 最终能够得到的是 AOP 包装后的 A，而不是原始的 A 对象。但本例中的 A 不需要代理，因此直接返回 A' 对象即可。
@@ -424,13 +424,13 @@ private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<
 
    ```java
    protected void addSingleton(String beanName, Object singletonObject) {
-		synchronized (this.singletonObjects) {
-			this.singletonObjects.put(beanName, singletonObject);
-			this.singletonFactories.remove(beanName);
-			this.earlySingletonObjects.remove(beanName);
-			this.registeredSingletons.add(beanName);
-		}
-	}
+        synchronized (this.singletonObjects) {
+            this.singletonObjects.put(beanName, singletonObject);
+            this.singletonFactories.remove(beanName);
+            this.earlySingletonObjects.remove(beanName);
+            this.registeredSingletons.add(beanName);
+        }
+    }
    ```
 
    它将创建完成的 B 对象放入 `singletonObjects` 中，并从 `singletonFactories` 和 `earlySingletonObjects` 中移除同名的临时对象。至此，B 对象创建完成。
@@ -445,4 +445,449 @@ private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<
 
 ## AOP 下的循环依赖
 
-未完待续……
+AOP 是 Spring 的核心功能之一，而 Spring 中的 AOP 实现手段主要是「动态代理」，无论是 JDK 亦或是 CGLIB，都是针对**方法**层面进行增强。
+
+简单来说，Spring 中的 AOP 就是向外提供一个「代理对象」，该对象中封装了所有适配的拦截器和原始对象的目标方法，成为一个调用链，在调用代理对象的方法时处理调用链中的所有逻辑（包括目标方法本身），以达到动态增强的效果，顺带一提，Spring 中「代理对象」主要有两种实现：`JdkDynamicAopProxy` 和 `CglibAopProxy`，它们的 `getProxy` 方法可以返回我们所需的「代理对象」，感兴趣的可以大致浏览下源码，核心部分都是拦截器链的封装和调用。
+
+### AOP 介绍
+
+普及一下 AOP 中一些 API，涉及了部分源码，也有点杂乱。实际工作中，我们通常都是使用 `@Aspect` 注解的方式来声明切面类（包含 `@Pointcut` 切点描述及 `@Before`、`@After` 等通知），但实际上 Spring 提供了一套清晰可用的编程接口，可以灵活地进行定制实现。下面先介绍一些基本的接口：
+
+- `JoinPoint`：AOP 中的**连接点**，在 Spring 只支持方法层面的增强，这点从它的唯一子接口 `MethodInvacation` 中也可以看出，因此直接理解为方法即可。
+- `Pointcut`：AOP 中的**切点**，作用是从所有的**连接点**中进行筛选操作，它不具备任何的具体业务逻辑，仅仅是选出我们所需要增强的方法。
+- `Advice`：AOP 中的**通知**，它是具体增强业务的实现，Spring 中支持 `before`、`after`、`afterReturning`、`afterThrows` 和 `around` 这几个类型的通知，它协同 `Pointcut` 在特定的方法上在特定「位置」实现增强操作。
+- `Advisor`：Spring 中的一个中间接口，主要使用其子接口 `PointcutAdivsor`，它将 `Pointcut` 和 `Advice` 进行组合，放在一个 `Advisor` 类中，方便使用。
+- `MethodInterceptor`：字面意思是**方法拦截器**，它是 `Advice` 的子接口，Spirng 中的 `Around` 通知就是使用它来实现的，且所有的其他通知都会交由相应适配器处理，最终都转换为 `MethodInterceptor` 放入「代理对象」的拦截器链中。
+- `ProxyFactory`：创建「代理对象」的工厂类，它是 `AdvisedSupport` 的子类，提供了一系列配置的方法，内部使用 `DefaultAopProxyFactory` 创建具体的「代理对象」，`DefaultAopProxyFactory` 核心代码如下：
+  
+  ```java {hl_lines=[12, 15]}
+  @Override
+  public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+      if (!NativeDetector.inNativeImage() &&
+              (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config))) {
+          Class<?> targetClass = config.getTargetClass();
+          if (targetClass == null) {
+              throw new AopConfigException("TargetSource cannot determine target class: " +
+                      "Either an interface or a target is required for proxy creation.");
+          }
+          if (targetClass.isInterface() || Proxy.isProxyClass(targetClass)) {
+              // JDK 动态代理
+              return new JdkDynamicAopProxy(config);
+          }
+          // CGLIB 动态代理，ObjenesisCglibAopProxy 是 CglibAopProxy 的子类
+          return new ObjenesisCglibAopProxy(config);
+      }
+      else {
+          return new JdkDynamicAopProxy(config);
+      }
+  }
+  ```
+- `AbstractAutoProxyCreator`：与 Spring IOC 结合，实现 Spring 容器 AOP 代理对象的自动创建功能，本质上它是`SmartInstantiationAwareBeanPostProcessor`，实现了以下几个重要的逻辑：
+  - `postProcessBeforeInstantiation`：在 Bean 实例化前被调用，调用了 `isInfrustructureClass` 和 `shouldSkip` 来决定当前 Bean 是否应该被代理，其中 `shouldSkip` 会触发 `findEligibleAdvisors` 的逻辑，将容器中所有切面逻辑进行筛选。同时包含了处理自定义 `TargetSource` 的业务（不常用，具体可以查看官方文档，与热替换和池化技术关联较大）。
+  - `getEarlyReference`：如果当前 Bean  需要被代理，则在解决循环依赖的过程中，需要提前暴露这个「代理对象」，以替换原对象，成为注入到其他 Bean 中的真正对象。核心方法 `wrapIfNecessary`。
+  - `postProcessAfterInitialization`：在初始化后调用，属于 `BeanPostProcessor` 接口中的方法，同样调用了 `wrapIfNecessary` 方法，在对象创建完成且属性填充完成后进行生成代理操作。
+
+有了上述这些基本概念后，下面是两个具体的实例，分别展示了 Spring 手动创建代理和自动创建代理：
+
+- 手动创建
+  
+  目标类：
+  ```java
+  public class ManualA {
+    public void execute() {
+        System.out.println("Executing A...");
+    }
+
+    public void other() {
+        System.out.println("Other method...");
+    }
+  }
+  ```
+  实现手动创建代理：
+  ```java
+  public class ManualProxyDemo {
+    
+    static class ManualMethodInterceptor implements MethodInterceptor {
+        @Nullable
+        @Override
+        public Object invoke(@Nonnull MethodInvocation invocation) throws Throwable {
+            System.out.println("---------------------");
+            System.out.println("Enhancement Before...");
+            Object result = invocation.proceed();
+            System.out.println("Enhancement After...");
+            System.out.println("---------------------");
+            return result;
+        }
+    }
+
+    public Advice methodInterceptor() {
+        return new ManualMethodInterceptor();
+    }
+
+    public Pointcut manualPointcut() {
+        return new StaticMethodMatcherPointcut() {
+            @Override
+            public boolean matches(Method method, Class<?> targetClass) {
+                // 切点，只匹配方法名为 execute 的方法
+                return "execute".equals(method.getName());
+            }
+        };
+    }
+
+    public Advisor manualAdvisor(Pointcut pointcut, Advice methodInterceptor) {
+        return new DefaultPointcutAdvisor(pointcut, methodInterceptor);
+    }
+
+    public static void main(String[] args) {
+        ManualProxyDemo config = new ManualProxyDemo();
+        // Pointcut、Advice、Advisor 准备
+        Pointcut pointcut = config.manualPointcut();
+        Advice advice = config.methodInterceptor();
+        Advisor advisor = config.manualAdvisor(pointcut, advice);
+
+        // 目标对象
+        ManualA target = new ManualA();
+
+        // 代理工厂，设置目标对象
+        ProxyFactory proxyFactory = new ProxyFactory(target);
+        // 配置
+        // 使用 CGLIB 动态代理
+        proxyFactory.setProxyTargetClass(true);
+        // 将我们准备好的 Advisor 设置到工厂中
+        proxyFactory.addAdvisor(advisor);
+
+        // 创建「代理对象」
+        ManualA proxy = (ManualA) proxyFactory.getProxy();
+        // 使用「代理对象」执行符合 Pointcut 的目标方法
+        proxy.execute();
+        // 使用「代理对象」执行其他不符合的方法
+        proxy.other();
+    }
+  }
+  ```
+  手动创建代理的流程也比较简单，准备好 `Pointcut`、`Advice` 对象，并封装为 `Advisor` 添加到 `ProxyFactory`中（也可以直接添加 `Advice`，工厂会自动进行封装），`ProxyFactory` 可在构造函数中指定需要代理的目标对象，且可以设置一些通用属性（如 proxyTargetClass、exposeProxy 等）。最终调用 `getProxy` 方法获取我们所需要的「代理对象」。执行上面代码后，结果如下：符合 `Pointcut` 的方法 `execute` 得到了增强，而 `other` 方法则直接调用原始对象中的同名方法。
+  ```shell
+  ---------------------
+  Enhancement Before...
+  Executing A...
+  Enhancement After...
+  ---------------------
+  Other method...
+  ```
+- 自动创建
+  
+  目标类中新增一个注解和内部方法调用：
+  ```java {hl_lines=[1, 8]}
+  @Component
+  public class ManualA {
+    public void execute() {
+        System.out.println("Executing A...");
+    }
+
+    public void other() {
+        execute();
+        System.out.println("Other method...");
+    }
+  }
+  ```
+
+  自动创建代理，新增 `@EnableAspectJAutoProxy` 注解和 `@Bean`、`@Primary`，移除手动创建的代码，取而代之的是使用 Spring IOC 自动创建的方式：
+  ```java {hl_lines=[2]}
+  @ComponentScan
+  @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
+  public class ManualProxyDemo {
+      static class ManualMethodInterceptor implements MethodInterceptor {
+          @Nullable
+          @Override
+          public Object invoke(@Nonnull MethodInvocation invocation) throws Throwable {
+              System.out.println("---------------------");
+              System.out.println("Enhancement Before...");
+              Object result = invocation.proceed();
+              System.out.println("Enhancement After...");
+              System.out.println("---------------------");
+              return result;
+          }
+      }
+
+    // @Bean 注解将 MethodInterceptor 交由 Spring 管理，@Primary 防止其他 MethodInterceptor 干扰
+    @Bean
+    @Primary
+    public Advice methodInterceptor() {
+        return new ManualMethodInterceptor();
+    }
+
+    @Bean
+    @Primary
+    public Pointcut manualPointcut() {
+        return new StaticMethodMatcherPointcut() {
+            @Override
+            public boolean matches(Method method, Class<?> targetClass) {
+                // 切点，只匹配方法名为 execute 的方法
+                return "execute".equals(method.getName());
+            }
+        };
+    }
+
+    @Bean
+    @Primary
+    public Advisor manualAdvisor(Pointcut pointcut, Advice methodInterceptor) {
+        return new DefaultPointcutAdvisor(pointcut, methodInterceptor);
+    }
+
+    public static void main(String[] args) {
+        // 结合 Spring 容器使用
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(ManualProxyDemo.class);
+
+        // 启动容器，过程中创建 Bean 实例，并完成「代理对象」的自动创建
+        context.refresh();
+
+        // 从容器中获取对象，该对象为我们需要的「代理对象」
+        ManualA proxy = context.getBean(ManualA.class);
+        // 打印 proxy 的类名
+        System.out.println(proxy.getClass().getName());
+        // 执行结果与手动创建类似
+        proxy.execute();
+        // 注意这个方法，它内部调用了 execute 方法
+        proxy.other();
+    }
+  }
+  ```
+  
+  与手动创建代理对象相比，首先需要使用 `@EnableAspectJAutoProxy` 将自动创建代理的相关类导入。具体来说，在 `@EnableAspectJAutoProxy` 类上可以找到 `@Import(AspectJAutoProxyRegistrar.class)`。进入 `AspectJAutoProxyRegistrar` 的 `registerBeanDefinitions` 方法及相关 `AopConfigUtils` 配置类，如下：
+  ```java {hl_lines=[5, 11, 14, 28, 34, 41]}
+  @Override
+  public void registerBeanDefinitions(
+          AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+
+      AopConfigUtils.registerAspectJAnnotationAutoProxyCreatorIfNecessary(registry);
+
+      AnnotationAttributes enableAspectJAutoProxy =
+              AnnotationConfigUtils.attributesFor(importingClassMetadata, EnableAspectJAutoProxy.class);
+      if (enableAspectJAutoProxy != null) {
+          if (enableAspectJAutoProxy.getBoolean("proxyTargetClass")) {
+              AopConfigUtils.forceAutoProxyCreatorToUseClassProxying(registry);
+          }
+          if (enableAspectJAutoProxy.getBoolean("exposeProxy")) {
+              AopConfigUtils.forceAutoProxyCreatorToExposeProxy(registry);
+          }
+      }
+  }
+
+  @Nullable
+  public static BeanDefinition registerAspectJAnnotationAutoProxyCreatorIfNecessary(BeanDefinitionRegistry registry) {
+      return registerAspectJAnnotationAutoProxyCreatorIfNecessary(registry, null);
+  }
+
+  @Nullable
+  public static BeanDefinition registerAspectJAnnotationAutoProxyCreatorIfNecessary(
+          BeanDefinitionRegistry registry, @Nullable Object source) {
+
+      return registerOrEscalateApcAsRequired(AnnotationAwareAspectJAutoProxyCreator.class, registry, source);
+  }
+
+  public static void forceAutoProxyCreatorToUseClassProxying(BeanDefinitionRegistry registry) {
+      if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
+          BeanDefinition definition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
+          definition.getPropertyValues().add("proxyTargetClass", Boolean.TRUE);
+      }
+  }
+
+  public static void forceAutoProxyCreatorToExposeProxy(BeanDefinitionRegistry registry) {
+      if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
+          BeanDefinition definition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
+          definition.getPropertyValues().add("exposeProxy", Boolean.TRUE);
+      }
+  }
+  ```
+  重点部分已用高亮标出，主要是将 `AnnotationAwareAspectJAutoProxyCreator` 类作为 `BeanDefinition` 加入到容器中，且为其配置了 `proxyTargetClass` 属性和 `exposeProxy` 属性。`proxyTargetClass` 设置为 true，表示强制使用 CGLIB 动态代理；`exposeProxy` 设置为 true，表示需要暴露 `ManualA` 的「代理对象」，可以使用 `AopContext` 获取该对象。
+
+  自动创建的方式将 `Pointcut`、`Advice` 及 `Advisor` 交由 Spring 容器管理，容器启动后，会自动根据我们配置好的 `Advisor` 为我们将原始的 `ManualA` 对象进行增加，创建其「代理对象」，并将该代理对象放入 `singletonObjects` 缓存中。调用 `getBean` 可以从容器的 `singletonObjects` 缓存中获取出 `ManualA` 类型的 Bean，通过 `execute` 和 `other` 的执行结果我们可以发现该对象是「代理对象」而非原始的目标对象。
+
+  ```shell 
+  cn.liyangjie.spring.circular.ManualA$$EnhancerBySpringCGLIB$$d4361f08
+  ---------------------
+  Enhancement Before...
+  Executing A...
+  Enhancement After...
+  ---------------------
+  Executing A... in other()
+  Executing A...
+  Other method...
+  ```
+
+  同时需要注意到，上述 `other` 方法内部调用的 `execute` 并没有经过增强，只是简单的调用原始方法，这就是 `exposeProxy` 的作用所在了，为了让 `other` 能够调用到增强的 `execute` 方法，这点也适用于 Spring 事务中，同一个类中的 `@Transactional` 方法间的相互调用。
+  
+  现在将 `ManualA` 的 `other` 修改如下：
+
+  ```java {hl_lines=[3, 4]}
+  public void other() {
+      System.out.println("Executing A... in other()");
+      ManualA proxy = (ManualA) AopContext.currentProxy();
+      proxy.execute();
+      System.out.println("Other method...");
+  }
+  ```
+  再执行得到的结果如下：`other` 中成功调用了增强后的 `execute` 方法。
+
+  ```shell
+  cn.liyangjie.spring.circular.ManualA$$EnhancerBySpringCGLIB$$d4361f08
+  ---------------------
+  Enhancement Before...
+  Executing A...
+  Enhancement After...
+  ---------------------
+  Executing A... in other()
+  ---------------------
+  Enhancement Before...
+  Executing A...
+  Enhancement After...
+  ---------------------
+  Other method...
+  ```
+### AOP 下的循环依赖
+
+现在我们使用示例代码如下：
+
+```java
+@Component
+public class ServiceA {
+    private ServiceB serviceB;
+
+    @Autowired
+    public void setServiceB(ServiceB serviceB) {
+        this.serviceB = serviceB;
+    }
+
+    public void service() {
+        System.out.println("Executing Service A...");
+    }
+}
+```
+
+```java
+@Component
+public class ServiceB {
+    private ServiceA serviceA;
+
+    @Autowired
+    public void setServiceA(ServiceA serviceA) {
+        this.serviceA = serviceA;
+    }
+
+    public void service() {
+        System.out.println("Executing ServiceB...");
+    }
+}
+```
+
+```java
+@ComponentScan
+// 使用 CGLIB 动态代理，并且暴露「代理对象」，可使用 AopContext 访问
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
+public class CircularReferenceDemo {
+    static class CircularInterceptor implements MethodInterceptor {
+        @Nullable
+        @Override
+        public Object invoke(@Nonnull MethodInvocation invocation) throws Throwable {
+            System.out.println("Enhancement...");
+            return null;
+        }
+    }
+
+    @Bean
+    public MethodInterceptor interceptor() {
+        return new CircularInterceptor();
+    }
+
+    @Bean
+    public Pointcut pointcut() {
+        return new StaticMethodMatcherPointcut(){
+            @Override
+            public boolean matches(Method method, Class<?> targetClass) {
+                return "service".equals(method.getName());
+            }
+        };
+    }
+
+    @Bean
+    public Advisor advisor() {
+        return new DefaultPointcutAdvisor(pointcut(), interceptor());
+    }
+
+    public static void main(String[] args) {
+        // 注解方式进行测试，需要使用 AnnotationConfigApplicationContext
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+
+        // 注册当前 CircularReferenceDemo，以触发 @ComponentScan 扫描当前包
+        context.register(CircularReferenceDemo.class);
+
+        // 启动容器
+        context.refresh();
+
+        // 获取 bean 实例
+        ServiceA a = context.getBean(ServiceA.class);
+        ServiceB b = context.getBean(ServiceB.class);
+    }
+}
+```
+
+`ServiceA` 和 `ServiceB` 存在循环依赖关系，且这两个对象都有 `service` 方法，满足 AOP 自动代理的条件，这就是典型的 AOP 场景下的循环依赖。
+
+从之前的 AOP 示例中我们可以了解到，对于「代理对象」和原始目标对象，Spring 容器中对外暴露的是前者，因此，在依赖注入的过程中，循环依赖要注入的也是 `ServiceA` 和 `ServiceB` 的代理对象。
+
+有了上面 setter 方式的分析，这里偷个懒，还是使用上面那张图，图中的 `A` 和 `B` 请读者自动替换为 `ServiceA` 和 `ServiceB`。在图中标出了 3 个紫色的位置，这是接下来要分析的重点。
+
+![](https://s2.loli.net/2022/02/04/AWr2LFYve9l41Ey.png)
+
+流程还是和 setter 方式类似，从 `ServiceA` 进入，再到 `ServiceA` 中的 `populate` 触发 `ServiceB` 的获取。而 `ServiceB` 的 `populate` 中同样又需要 `ServiceA`，因此还是会进入到步骤 7。
+
+如果有些记忆模糊的话，请回头去看看步骤 7 的具体流程，这里重新贴一下这段代码：
+
+```java
+protected Object getEarlyBeanReference(String beanName, RootBeanDefinition mbd, Object bean) {
+     Object exposedObject = bean;
+     if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
+         for (SmartInstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().smartInstantiationAware) {
+             exposedObject = bp.getEarlyBeanReference(exposedObject, beanName);
+         }
+     }
+     return exposedObject;
+ }
+```
+刚才介绍过，当我们使用 `@EnableAspectJAutoProxy` 开启 AOP 自动创建模式后，容器中会导入一个 `AbstractAutoProxyCreator` 类，这个类此时满足这里的 `SmartInstantiationAwareBeanPostProcessor` 条件，因此会调用 `exposedObject = bp.getEarlyBeanReference(exposedObject, beanName);` 对我们的原始 `ServiceA` 的半成品进行增强处理。`AbstractAutoProxyCreator` 中 `getEarlyBeanReference` 具体代码如下：
+
+```java
+@Override
+public Object getEarlyBeanReference(Object bean, String beanName) {
+    Object cacheKey = getCacheKey(bean.getClass(), beanName);
+    this.earlyProxyReferences.put(cacheKey, bean);
+    return wrapIfNecessary(bean, beanName, cacheKey);
+}
+```
+
+这里就不深入展开了，只需要了解到 `wrapIfNecessary` 是具体创建半成品「代理对象」的位置就行了。
+
+步骤 7 完成后，由于有了 `ServiceA` 半成品「代理对象」，此时就可以返回 `ServiceB` 的 `populate` 方法，并完成其属性填充工作。随后调用 `initializeBean` 方法，调用该方法前，`ServiceB` 还是原始的目标类型，没有任何增强。
+
+`initializeBean` 中在执行了各种初始化操作后，会进入 `BeanPostProcessor` 的 after 中，`AbstractAutoProxyCreator` 中该方法的实现如下：
+
+```java
+@Override
+public Object postProcessAfterInitialization(@Nullable Object bean, String beanName) {
+    if (bean != null) {
+        Object cacheKey = getCacheKey(bean.getClass(), beanName);
+        if (this.earlyProxyReferences.remove(cacheKey) != bean) {
+            return wrapIfNecessary(bean, beanName, cacheKey);
+        }
+    }
+    return bean;
+}
+```
+是不是感觉非常得熟悉呢？这里同样调用了 `wrapIfNecessary` 方法，完成了 `ServiceB` 成品「代理对象」创建，注意，这里是成品。
+
+接下来，使用这个 `ServiceB` 的成品「代理对象」完成 `ServiceA` 的 `populate` 工作，并进入到 `ServiceA` 的 `initializingBean` 方法。
+
+这时与 `ServiceB` 中不同的是，`ServiceA` 已经创建过一次并且进行了相关缓存（`cacheKey` 的作用），因此不会再进行创建，直接返回即可。
+
+最终，容器中的 `ServiceA` 和 `ServiceB` 均顺利创建，都被进行了动态代理增强，且循环依赖也得到了很好的解决。
