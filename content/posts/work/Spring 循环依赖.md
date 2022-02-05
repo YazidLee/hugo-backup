@@ -29,7 +29,7 @@ Unlike the typical case (with no circular dependencies), a circular dependency b
 
 {{< /admonition >}}
 
-Spring 中如果使用构造器的方式进行注入，那么有可能出现无法解决的循环依赖问题，举例来说：A 类中使用构造器的方式注入 B，B 类同样使用构造器方式注入 A，那么当 Spring IoC 容器到这种循环相互引用关系时，就会抛出运行时异常 `BeanCurrentlyInCreationException`。
+Spring 中如果使用构造器的方式进行注入，那么有可能出现无法解决的循环依赖问题，举例来说：A 类中使用构造器的方式注入 B，B 类同样使用构造器方式注入 A，那么当 Spring IoC 容器检测到这种循环相互引用关系时，就会抛出运行时异常 `BeanCurrentlyInCreationException`。
 
 ![](https://s2.loli.net/2022/01/27/BfkyoIDxXdYth49.png)
 
@@ -205,10 +205,10 @@ public class B {
 
 其中，A 和 B 对象的创建流程基本一致，思路都是先尝试从缓存中获取，若缓存中不存在，则进行创建。创建的核心步骤在 `doCreateBean` 方法中，主要包括四个过程：
 
-- 创建对象实例 `createBeanInstance`：工厂方法、实例工厂方法、`Supplier` 或构造器等，本例中为默认构造器。这个方法调用之后，其实内存中已经创建好了一个 Bean 的实例对象，只不过是半成品，还没有调用 `populateBean` 完成属性填充，也未调用 `initializeBean` 完成初始化工作。
+- 创建对象实例 `createBeanInstance`：工厂方法、实例工厂方法、`Supplier` 或构造器等，本例中为默认构造器。这个方法调用之后，其实内存中已经创建好了一个 Bean 的实例对象，只不过是半成品，还没有调用 `populateBean` 完成属性填充，也未调用 `initializeBean` 完成初始化工作，这个状态的对象就是前文提到的「实例化」完成，但未进行初始化。
 - 提前暴露半成品 `addSingletonFactory`：将上个步骤的半成品通过特殊包装放入缓存中，以解决循环依赖问题。
-- 填充属性 `populateBean`：主要完成完成属性的填充、 Autowired 的注入工作，从上一个调用栈图能看出调用的是 `AutowiredAnnotationBeanPostProcessor` 中的 `postProcessProperties` 方法完成注入。
-- 自定义初始化 `initializeBean`：包括了 `Aware` 接口处理、`BeanPostPostProcessor` 的 before 和 after 逻辑、`@PostConstruct` 注解处理、`init-method` 处理、`InitializingBean` 处理等，注意在创建 A 的过程中，这个方法由于 `populate` 触发了依赖处理，因此将在 B 创建完成后才会被调用。
+- 填充属性 `populateBean`：主要完成完成属性的填充、 `@Autowired` 的注入工作，从上一个调用栈图能看出调用的是 `AutowiredAnnotationBeanPostProcessor` 中的 `postProcessProperties` 方法完成注入。提前暴露方法 `addSingletonFactory` 在本方法之前调用也正是因为在 `populate` 过程中会触发依赖对象的获取过程，要在该过程前把当前的半成品放入缓存中。完成这个步骤的对象暂且称之为「属性填充完成」，但依然还未进行初始化。
+- 自定义初始化 `initializeBean`：包括了 `Aware` 接口处理、`BeanPostPostProcessor` 的 before 和 after 逻辑、`@PostConstruct` 注解处理、`init-method` 处理、`InitializingBean` 处理等，注意在创建 A 的过程中，这个方法由于 `populate` 触发了依赖处理，因此将在 B 创建完成后才会被调用。这个方法执行完成后，我们才能把最终返回的对象称为「完全初始化」的对象，也就是所谓的成品。
 
 Spring 容器中的缓存位于 `DefaultSingletonBeanRegistry` 类中，具体定义如下：
 
@@ -443,15 +443,17 @@ private final Map<String, Object> earlySingletonObjects = new ConcurrentHashMap<
 
    ![](https://s2.loli.net/2022/01/28/YMyO8r416T9XAsC.png)
 
-## AOP 下的循环依赖
+---
 
-AOP 是 Spring 的核心功能之一，而 Spring 中的 AOP 实现手段主要是「动态代理」，无论是 JDK 亦或是 CGLIB，都是针对**方法**层面进行增强。
+## AOP 和循环依赖
 
-简单来说，Spring 中的 AOP 就是向外提供一个「代理对象」，该对象中封装了所有适配的拦截器和原始对象的目标方法，成为一个调用链，在调用代理对象的方法时处理调用链中的所有逻辑（包括目标方法本身），以达到动态增强的效果，顺带一提，Spring 中「代理对象」主要有两种实现：`JdkDynamicAopProxy` 和 `CglibAopProxy`，它们的 `getProxy` 方法可以返回我们所需的「代理对象」，感兴趣的可以大致浏览下源码，核心部分都是拦截器链的封装和调用。
+AOP 是 Spring 的核心功能之一，而 Spring 中的 AOP 实现手段主要是「动态代理」，无论是 JDK 亦或是 CGLIB，都是针对**方法**层面进行增强。本节将首先介绍 AOP 的核心概念及部分 API，然后再对 AOP 代理对象间的循环依赖进行分析。
 
 ### AOP 介绍
 
-普及一下 AOP 中一些 API，涉及了部分源码，也有点杂乱。实际工作中，我们通常都是使用 `@Aspect` 注解的方式来声明切面类（包含 `@Pointcut` 切点描述及 `@Before`、`@After` 等通知），但实际上 Spring 提供了一套清晰可用的编程接口，可以灵活地进行定制实现。下面先介绍一些基本的接口：
+简单来说，Spring 中的 AOP 就是向外提供一个「代理对象」，该对象中封装了所有适配的拦截器和原始对象的目标方法，成为一个调用链，在调用代理对象的方法时处理调用链中的所有逻辑（包括目标方法本身），以达到动态增强的效果，顺带一提，Spring 中「代理对象」主要有两种实现：`JdkDynamicAopProxy` 和 `CglibAopProxy`，它们的 `getProxy` 方法可以返回我们所需的「代理对象」，感兴趣的可以大致浏览下源码，核心部分都是拦截器链的封装和调用。
+
+这里普及一下 AOP 中一些 API，涉及了部分源码。实际工作中，我们通常都是使用 `@Aspect` 注解的方式来声明切面类（包含 `@Pointcut` 切点描述及 `@Before`、`@After` 等通知），但实际上 Spring 提供了一套清晰可用的编程接口，可以灵活地进行定制实现。下面先介绍一些基本的接口：
 
 - `JoinPoint`：AOP 中的**连接点**，在 Spring 只支持方法层面的增强，这点从它的唯一子接口 `MethodInvacation` 中也可以看出，因此直接理解为方法即可。
 - `Pointcut`：AOP 中的**切点**，作用是从所有的**连接点**中进行筛选操作，它不具备任何的具体业务逻辑，仅仅是选出我们所需要增强的方法。
@@ -566,6 +568,7 @@ AOP 是 Spring 的核心功能之一，而 Spring 中的 AOP 实现手段主要�
   }
   ```
   手动创建代理的流程也比较简单，准备好 `Pointcut`、`Advice` 对象，并封装为 `Advisor` 添加到 `ProxyFactory`中（也可以直接添加 `Advice`，工厂会自动进行封装），`ProxyFactory` 可在构造函数中指定需要代理的目标对象，且可以设置一些通用属性（如 proxyTargetClass、exposeProxy 等）。最终调用 `getProxy` 方法获取我们所需要的「代理对象」。执行上面代码后，结果如下：符合 `Pointcut` 的方法 `execute` 得到了增强，而 `other` 方法则直接调用原始对象中的同名方法。
+
   ```shell
   ---------------------
   Enhancement Before...
@@ -577,6 +580,7 @@ AOP 是 Spring 的核心功能之一，而 Spring 中的 AOP 实现手段主要�
 - 自动创建
   
   目标类中新增一个注解和内部方法调用：
+
   ```java {hl_lines=[1, 8]}
   @Component
   public class ManualA {
@@ -592,6 +596,7 @@ AOP 是 Spring 的核心功能之一，而 Spring 中的 AOP 实现手段主要�
   ```
 
   自动创建代理，新增 `@EnableAspectJAutoProxy` 注解和 `@Bean`、`@Primary`，移除手动创建的代码，取而代之的是使用 Spring IOC 自动创建的方式：
+
   ```java {hl_lines=[2]}
   @ComponentScan
   @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
@@ -655,6 +660,7 @@ AOP 是 Spring 的核心功能之一，而 Spring 中的 AOP 实现手段主要�
   ```
   
   与手动创建代理对象相比，首先需要使用 `@EnableAspectJAutoProxy` 将自动创建代理的相关类导入。具体来说，在 `@EnableAspectJAutoProxy` 类上可以找到 `@Import(AspectJAutoProxyRegistrar.class)`。进入 `AspectJAutoProxyRegistrar` 的 `registerBeanDefinitions` 方法及相关 `AopConfigUtils` 配置类，如下：
+
   ```java {hl_lines=[5, 11, 14, 28, 34, 41]}
   @Override
   public void registerBeanDefinitions(
@@ -745,6 +751,9 @@ AOP 是 Spring 的核心功能之一，而 Spring 中的 AOP 实现手段主要�
   ---------------------
   Other method...
   ```
+
+---
+
 ### AOP 下的循环依赖
 
 现在我们使用示例代码如下：
@@ -886,8 +895,17 @@ public Object postProcessAfterInitialization(@Nullable Object bean, String beanN
 ```
 是不是感觉非常得熟悉呢？这里同样调用了 `wrapIfNecessary` 方法，完成了 `ServiceB` 成品「代理对象」创建，注意，这里是成品。
 
-接下来，使用这个 `ServiceB` 的成品「代理对象」完成 `ServiceA` 的 `populate` 工作，并进入到 `ServiceA` 的 `initializingBean` 方法。
+接下来，使用这个 `ServiceB` 的成品「代理对象」完成 `ServiceA` 的 `populate` 工作，并进入到 `ServiceA` 的 `initializingBean` 方法。这时与 `ServiceB` 中不同的是，`ServiceA` 已经创建过一次并且进行了相关缓存（`cacheKey` 的作用），因此不会再进行创建，直接返回即可。
 
-这时与 `ServiceB` 中不同的是，`ServiceA` 已经创建过一次并且进行了相关缓存（`cacheKey` 的作用），因此不会再进行创建，直接返回即可。
+最终，容器中的 `ServiceA` 和 `ServiceB` 均顺利创建，都被进行了动态代理增强，且循环依赖也得到了解决。
 
-最终，容器中的 `ServiceA` 和 `ServiceB` 均顺利创建，都被进行了动态代理增强，且循环依赖也得到了很好的解决。
+---
+
+## 总结
+
+Spring 循环依赖分为两种情况：
+
+- 构造器注入
+- setter注入
+
+只有在 setter（包括 `@Autowired` 注解，它的注入时期也是在 `populate` 中）注入情景下才能够解决，整体思路是利用提前「暴露」一个半成品对象完成其中一方的属性填充。而 AOP 场景下的循环依赖实际上还是依赖这套逻辑，只是对提前「暴露」的这个半成品进行了一些处理。
