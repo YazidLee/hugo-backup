@@ -102,7 +102,7 @@ params:
     #           url: tags
 
     homeInfoParams:
-        Title: "SadBird的狗窝"
+        Title: "SadBird 的狗窝"
         Content: >
             怨无大小，生于所爱；物无美恶，过则为灾。
     socialIcons:
