@@ -99,6 +99,7 @@ ol {
 }
 
 .chroma {
+    background: var(--hljs-bg)!important;
     border-radius: var(--radius);
 }
 
