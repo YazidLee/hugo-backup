@@ -400,7 +400,9 @@ public V put(K key, V value) {
 
 ### 增加评论区
 
-我选择使用的是 `Valine`，前置工作需要在 LeanCloud 上注册并创建应用，获取到相关的 `AppID` 和 `AppKey`，具体流程请参照  [Valine官方网站](https://valine.js.org/quickstart.html)。
+`Valine` 已经停止更新维护，因此将评论区功能换到了 `Twikoo`，[官方文档](https://twikoo.js.org/)非常详尽，各种方式的安装和配置都有，可直接前往查阅。
+
+如果仍要使用 `Valine`，前置工作需要在 LeanCloud 上注册并创建应用，获取到相关的 `AppID` 和 `AppKey`，具体流程请参照  [Valine官方网站](https://valine.js.org/quickstart.html)。
 
 获取到这两个参数后，根据 PaperMod 官方文档的指示，创建 `layouts/partials/comments.html` 文件，`partials` 路径不存在就自己创建，在文件中添加以下内容：
 
@@ -438,9 +440,13 @@ comments: true
 
 Hugo 与 Hexo 类似，提供了直接部署为 Github Pages 的方式，比较简单，请直接移步到 [官网](https://gohugo.io/hosting-and-deployment/hosting-on-github/)。
 
-但我自己想折腾折腾，以前使用 Hexo 的时候在自己的云主机上进行了部署，当时域名整了好久（国内域名，需要备案），等域名搞定，黄花菜都凉了，所以这次刚好手头还保留着一台云主机，域名也一直在续费，就借此机会再折腾折腾。
+个人使用的最新部署方案已经单独在[另一篇博客](https://www.liyangjie.cn/posts/hobby/hugo-git-actions/)中进行详细介绍，以 GitHub 作为代码托管平台，使用 GitHub Action 完成部署。
+
+如果打算将博客源码仓库放在自己的服务器上，还是可以采用下面的方案，同时也包含了 nginx 的简单配置。
 
 ### 准备工作
+
+以前使用 Hexo 的时候在自己的云主机上进行了部署，当时域名整了好久（国内域名，需要备案），等域名搞定，黄花菜都凉了，所以这次刚好手头还保留着一台云主机，域名也一直在续费，就借此机会再折腾折腾。这个方案也是以前在别处看过的，具体出处已经找不到了，内容仅供参考。
 
 #### 软件环境准备
 
@@ -475,13 +481,7 @@ git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell
 
 ```shell
 git init --bare hello-hugo.git
-cd hello-hugo.git
-# 仅checkout public文件夹
-git sparse-checkout init --cone
-git sparse-checkout set public
 ```
-
-需要注意：[sparse-checkout](https://github.blog/2020-01-17-bring-your-monorepo-down-to-size-with-sparse-checkout/) 是 Git 2.25.0 推出的新特性。
 
 将该目录授权给刚创建好的 git 用户
 
