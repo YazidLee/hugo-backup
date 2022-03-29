@@ -1,7 +1,7 @@
 ---
 title: "Lua 脚本入门"
 slug: "hello-lua"
-summary: "东拼西凑之 Lua"
+summary: "东拼西凑之 Lua。"
 author: ["SadBird"]
 date: 2022-02-05T22:08:07+08:00
 cover:
