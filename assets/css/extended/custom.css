@@ -53,9 +53,14 @@ ol {
     /* text-align: justify; */
 }
 
+.post-content img.in-text {
+    vertical-align: text-bottom;
+    border: none
+}
+
 .post-content img {
     /* 居中 */
-    margin: 1rem auto;
+    margin: auto;
     border-radius: var(--radius);
     border: 1px solid var(--border);
 }
