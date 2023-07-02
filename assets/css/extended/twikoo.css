@@ -40,15 +40,17 @@
     margin-bottom: 1rem;
 }
 
+.twikoo pre {
+    background: var(--code-bg);
+    border-radius: 2px;
+    padding: 4px 8px;
+}
+
 .twikoo code {
     font-family: -apple-system, "JetBrains Mono", system-ui,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial;
     font-size: .8em !important;
     font-weight: normal;
-    margin: auto 4px;
-    padding: 4px 6px;
     line-height: 1.5;
-    background: var(--code-bg);
-    border-radius: 2px;
 }
 
 .twikoo code[class*="language-"] {
