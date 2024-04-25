@@ -5,7 +5,7 @@ summary: "Debezium Incremental Snapshotting 介绍。"
 author: ["SadBird"]
 date: 2022-10-18T23:44:33+08:00
 cover:
-    image: "https://ozgurozkok.com/wp-content/uploads/2020/01/debezium_dribbble-01.png"
+    image: "https://s2.loli.net/2024/04/25/KiPXz1DZj943Axv.png"
     alt: ""
 categories: [Database]
 tags: [CDC, Debezium, DBLog]

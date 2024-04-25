@@ -5,7 +5,7 @@ summary: "Spring 中解决循环依赖问题的源码剖析。"
 author: ["SadBird"]
 date: 2022-01-27T16:50:18+08:00
 cover:
-    image: "https://spring.io/images/spring-logo-9146a4d3298760c2e7e49595184e1975.svg"
+    image: "https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2022/12/spring-framework.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5"
     alt: "Spring 循环依赖"
 categories: [Java, Spring]
 tags: [Java, Spring, 循环依赖]

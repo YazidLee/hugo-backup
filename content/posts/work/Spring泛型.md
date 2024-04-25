@@ -6,7 +6,7 @@ author:
 - SadBird
 date: 2021-09-13T21:56:33.000+08:00
 cover:
-  image: https://spring.io/images/spring-logo-9146a4d3298760c2e7e49595184e1975.svg
+  image: https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2022/12/spring-framework.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5
   alt: Spring泛型
 categories:
 - Java

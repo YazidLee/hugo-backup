@@ -95,7 +95,9 @@ ol {
 .post-content pre {
     background: unset !important;
     margin-bottom: var(--content-gap);
-    border-radius: 0;
+}
+.post-content pre code {
+    border-radius: 0 !important;
 }
 
 /* 代码突出显示的css，使用方式例： ```java {hl_lines=[24]}， 这个hl_lines数组可以包含多段分开的代码，如 {hl_lines=[24,"50-60"]} */
@@ -104,7 +106,7 @@ ol {
 }
 
 .chroma {
-    background: var(--hljs-bg)!important;
+    background: var(--hljs-bg) !important;
     border-radius: var(--radius);
 }
 
