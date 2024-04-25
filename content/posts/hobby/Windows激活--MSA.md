@@ -16,7 +16,7 @@ katex: false
 
 时至今日，仍然有很多朋友对 Windows 的激活束手无策，百度搜索出来的解决方案也是五花八门，甚至有些是恶意病毒，这更让「白嫖」的小白用户痛不欲生。
 
-为了解决激活问题，本文推荐一个安全、便捷的 Windows 激活脚本开源项目：[Microsoft Activation Scripts](https://windowsaddict.ml/)。
+为了解决激活问题，本文推荐一个安全、便捷的 Windows 激活脚本开源项目：[Microsoft Activation Scripts](https://massgrave.dev/)。
 
 {{< admonition type=quote title="Microsoft Activation Scripts" open=true >}}
 
