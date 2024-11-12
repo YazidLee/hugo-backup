@@ -35,7 +35,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: master
           submodules: true  # Fetch Hugo themes (true OR recursive)
@@ -43,7 +43,7 @@ jobs:
       
       # Prepare Hugo env
       - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
+        uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: 'latest'
           # extended: true
@@ -56,7 +56,7 @@ jobs:
 
       # Deploy site by using rsync
       - name: Deploy
-        uses: burnett01/rsync-deployments@5.1
+        uses: burnett01/rsync-deployments@7.0.1
         with:
           switches: -avzr --delete
           path: ./public/

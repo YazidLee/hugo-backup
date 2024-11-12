@@ -119,7 +119,7 @@
 </script>
 
 {{- /* Scroll To Comment */ -}}
-{{- if (and (.IsPage) (ne .Layout "archives") (ne .Layout "search")) }}
+{{- if (and (.Param "comments") (.IsPage) (ne .Layout "archives") (ne .Layout "search")) }}
 <a href="#comment" aria-label="go to bottom comment" title="Go to Bottom Comment (Alt + B)" class="top-link bottom-comment" id="bottom-comment" accesskey="b" style="visibility: visible; opacity: 1;">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.338 29.338" fill="currentcolor">
         <path d="M27.184,1.605H2.156C0.967,1.605,0,2.572,0,3.76v17.572c0,1.188,0.967,2.155,2.156,2.155h13.543
@@ -164,10 +164,10 @@
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
         <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
     </span>
-    <!-- <span>
+    <div>
         ICP证：
-        <a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">鄂ICP备16007812号-1</a>
-    </span> -->
+        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank">闽ICP备2024076817号-1</a>
+    </div>
 </footer>
 
 {{- /* img lazy load & gallery */}}

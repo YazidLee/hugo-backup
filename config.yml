@@ -85,7 +85,7 @@ params:
     ShowBreadCrumbs: true
     ShowCodeCopyButtons: true
     ShowToc: true
-    comments: true
+    comments: false
     hideFooter: true # 使用自定义footer(新增备案号)，隐藏原footer
     katex: false
     images: ["https://i.loli.net/2021/09/26/3OMGXylm8HUYJ6p.png"] # link or path of image for opengraph, twitter-cards
