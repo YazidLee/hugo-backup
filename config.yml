@@ -146,7 +146,7 @@ params:
         yandex:
             SiteVerificationTag: "3975215bf5f68fc0"
         baidu:
-            SiteVerificationTag: "code-9oLyeix0aK"
+            SiteVerificationTag: "codeva-k083EJGzuw"
 
     cover:
         hidden: true # hide everywhere but not in structured data
