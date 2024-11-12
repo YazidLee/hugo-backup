@@ -146,7 +146,7 @@
   text-rendering: auto;
 }
 .katex * {
-  -ms-high-contrast-adjust: none !important;
+  forced-color-adjust: none !important;
   border-color: currentColor;
 }
 .katex .katex-version::after {
