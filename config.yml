@@ -20,7 +20,7 @@ googleAnalytics: G-C6GDZ56F4S
 
 minify:
     disableXML: true
-    # minifyOutput: true
+    disableHTML: true
 
 languages:
     # 偷懒，直接使用en的国际化
@@ -124,10 +124,6 @@ params:
         text: "仙羡小站"
         icon: img/earlybird.png
         iconHeight: 30
-
-    # analytics:
-    #     google:
-    #         SiteVerificationTag: "XYZabc"
 
     assets:
         disableHLJS: true
