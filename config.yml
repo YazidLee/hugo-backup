@@ -1,14 +1,15 @@
 baseURL: "https://www.liyangjie.cn/"
 title: 仙羡小站
-paginate: 5
+pagination:
+  pagerSize: 5
 theme: PaperMod
 defaultContentLanguage: cn
 
 outputs:
-    home:
-        - HTML
-        - RSS
-        - JSON # is necessary
+  home:
+    - HTML
+    - RSS
+    - JSON # is necessary
 
 enableInlineShortcodes: true
 enableRobotsTXT: true
@@ -19,28 +20,28 @@ enableEmoji: true
 googleAnalytics: G-C6GDZ56F4S
 
 minify:
-    disableXML: true
-    # minifyOutput: true
+  disableXML: true
+  # minifyOutput: true
 
 languages:
-    # 偷懒，直接使用en的国际化
-    cn:
-        languageName: "Chinese"
-        weight: 1
-        menu:
-            main:
-                - name: Archive
-                  url: archives/
-                  weight: 15
-                - name: Search
-                  url: search/
-                  weight: 16
-                - name: Tags
-                  url: tags/
-                  weight: 14
-                - name: Categories
-                  url: categories/
-                  weight: 13
+  # 偷懒，直接使用en的国际化
+  cn:
+    languageName: "Chinese"
+    weight: 1
+    menu:
+      main:
+        - name: Archive
+          url: archives/
+          weight: 15
+        - name: Search
+          url: search/
+          weight: 16
+        - name: Tags
+          url: tags/
+          weight: 14
+        - name: Categories
+          url: categories/
+          weight: 13
     # en:
     #     languageName: "English"
     #     weight: 1
@@ -61,150 +62,143 @@ languages:
     
 
 outputs:
-    home:
-        - HTML
-        - RSS
-        - JSON
+  home:
+    - HTML
+    - RSS
+    - JSON
 
 params:
-    env: production # to enable google analytics, opengraph, twitter-cards and schema.
-    description: "SadBird的狗窝-工作、学习和生活"
-    author: SadBird
-    # author: ["Me", "You"] # multiple authors
-    keywords: ["仙羡", "SadBird", "Study"]
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  description: "SadBird的狗窝-工作、学习和生活"
+  author: SadBird
+  # author: ["Me", "You"] # multiple authors
+  keywords: ["仙羡", "SadBird", "Study"]  
+  defaultTheme: auto
+  # disableThemeToggle: true
+  # ShowShareButtons: true
+  ShowReadingTime: true
+  ShowWordCount: true
+  ShowCodeCopyButtons: true
+  # disableSpecial1stPost: true
+  displayFullLangName: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowToc: true
+  comments: false
+  hideFooter: true # 使用自定义footer(新增备案号)，隐藏原footer
+  katex: false
+  images: ["https://i.loli.net/2021/09/26/3OMGXylm8HUYJ6p.png"] # link or path of image for opengraph, twitter-cards
 
-    defaultTheme: auto
-    # disableThemeToggle: true
-    # ShowShareButtons: true
-    ShowReadingTime: true
-    ShowWordCount: true
-    ShowCodeCopyButtons: true
-    # disableSpecial1stPost: true
-    displayFullLangName: true
-    ShowPostNavLinks: true
-    ShowBreadCrumbs: true
-    ShowCodeCopyButtons: true
-    ShowToc: true
-    comments: false
-    hideFooter: true # 使用自定义footer(新增备案号)，隐藏原footer
-    katex: false
-    images: ["https://i.loli.net/2021/09/26/3OMGXylm8HUYJ6p.png"] # link or path of image for opengraph, twitter-cards
+  # profileMode:
+  #     enabled: false
+  #     title: PaperMod
+  #     imageUrl: "#"
+  #     imageTitle: my image
+  #     # imageWidth: 120
+  #     # imageHeight: 120
+  #     buttons:
+  #         - name: Archives
+  #           url: archives
+  #         - name: Tags
+  #           url: tags
 
-    # profileMode:
-    #     enabled: false
-    #     title: PaperMod
-    #     imageUrl: "#"
-    #     imageTitle: my image
-    #     # imageWidth: 120
-    #     # imageHeight: 120
-    #     buttons:
-    #         - name: Archives
-    #           url: archives
-    #         - name: Tags
-    #           url: tags
+  homeInfoParams:
+    Title: "SadBird 的狗窝"
+    Content: >
+      怨无大小，生于所爱；物无美恶，过则为灾。
+  socialIcons:
+    - name: email
+      url: "mailto:foreverxianxian@gmail.com"
+    - name: telegram
+      url: "https://web.telegram.org/"
+    - name: RsS
+      url: "index.xml"  
+  editPost:
+    URL: "https://github.com/YazidLee/hugo-backup/tree/master/content"
+    Text: "Suggest Changes" # edit text
+    appendFilePath: true # to append file path to Edit link  
+  label:
+    text: "仙羡小站"
+    icon: img/earlybird.png
+    iconHeight: 30
 
-    homeInfoParams:
-        Title: "SadBird 的狗窝"
-        Content: >
-            怨无大小，生于所爱；物无美恶，过则为灾。
-    socialIcons:
-        - name: email
-          url: "mailto:foreverxianxian@gmail.com"
-        - name: telegram
-          url: "https://web.telegram.org/"
-        - name: RsS
-          url: "index.xml"
+  # analytics:
+  #     google:
+  #         SiteVerificationTag: "XYZabc"
 
-    editPost:
-        URL: "https://github.com/YazidLee/hugo-backup/tree/master/content"
-        Text: "Suggest Changes" # edit text
-        appendFilePath: true # to append file path to Edit link
+  assets:
+    disableHLJS: true
+    favicon: "/favicon/favicon.ico"
+    favicon16x16: "/favicon/favicon-16x16.png"
+    favicon32x32: "/favicon/favicon-32x32.png"
+    apple_touch_icon: "/favicon/apple-touch-icon.png"
+    safari_pinned_tab: "/favicon/safari-pinned-tab.svg"
 
-    label:
-        text: "仙羡小站"
-        icon: img/earlybird.png
-        iconHeight: 30
+  # Verify your site ownership
+  analytics: 
+    google:
+      SiteVerificationTag: "9Y3NHOxbRwaLb2hkR4GpapDQFWHBjXBYI585l_bLo6g"
+    #bing:
+    #  SiteVerificationTag:
+    yandex:
+      SiteVerificationTag: "3975215bf5f68fc0"
+    baidu:
+      SiteVerificationTag: "codeva-k083EJGzuw"  
+  cover:
+    hidden: true # hide everywhere but not in structured data
+    hiddenInList: true # hide on list pages and home
+    hiddenInSingle: false # hide on single page
 
-    # analytics:
-    #     google:
-    #         SiteVerificationTag: "XYZabc"
-
-    assets:
-        disableHLJS: true
-        favicon: "/favicon/favicon.ico"
-        favicon16x16: "/favicon/favicon-16x16.png"
-        favicon32x32: "/favicon/favicon-32x32.png"
-        apple_touch_icon: "/favicon/apple-touch-icon.png"
-        safari_pinned_tab: "/favicon/safari-pinned-tab.svg"
-
-    # Verify your site ownership
-    analytics: 
-        google:
-            SiteVerificationTag: "9Y3NHOxbRwaLb2hkR4GpapDQFWHBjXBYI585l_bLo6g"
-        # bing:
-        #     SiteVerificationTag:
-        yandex:
-            SiteVerificationTag: "3975215bf5f68fc0"
-        baidu:
-            SiteVerificationTag: "codeva-k083EJGzuw"
-
-    cover:
-        hidden: true # hide everywhere but not in structured data
-        hiddenInList: true # hide on list pages and home
-        hiddenInSingle: false # hide on single page
-
-    # for search
-    # https://fusejs.io/api/options.html
-    # fuseOpts:
-    #     isCaseSensitive: false
-    #     shouldSort: true
-    #     location: 0
-    #     distance: 1000
-    #     threshold: 0.4
-    #     minMatchCharLength: 0
-    #     keys: ["title", "permalink", "summary", "content"]
+  # for search
+  # https://fusejs.io/api/options.html
+  # fuseOpts:
+  #   isCaseSensitive: false
+  #   shouldSort: true
+  #   location: 0
+  #   distance: 1000
+  #   threshold: 0.4
+  #   minMatchCharLength: 0
+  #   keys: ["title", "permalink", "summary", "content"]
 
 taxonomies:
-    category: categories
-    tag: tags
-    series: series
+  category: categories
+  tag: tags
+  series: series
 
 #pygmentsUseClasses: true
 markup:
-    goldmark:
-        renderer:
-            unsafe: true
-    highlight:
-        # anchorLineNos: true
-        codeFences: true
-        guessSyntax: true
-        lineNos: true
-        # 设置noClasses为false需要手动生成css，放在assets/css/extended/中
-        # 生成方式为 hugo gen chromastyles --style=dracula > assets/css/extended/chroma.css，其中dracula可以更换为任意代码主题
-        noClasses: false
-        # noClasses为false时，style失效，因此必须手动生成css
-        style: monokai
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    # anchorLineNos: true
+    codeFences: true
+    guessSyntax: true
+    lineNos: true
+    # 设置noClasses为false需要手动生成css，放在assets/css/extended/中
+    # 生成方式为 hugo gen chromastyles --style=dracula > assets/css/extended/chroma.css，其中dracula可以更换为任意代码主题
+    noClasses: false
+    # noClasses为false时，style失效，因此必须手动生成css
+    style: monokai
 
 privacy:
-    vimeo:
-        disabled: false
-        simple: true
-
-    twitter:
-        disabled: false
-        enableDNT: true
-        simple: true
-
-    instagram:
-        disabled: false
-        simple: true
-
-    youtube:
-        disabled: false
-        privacyEnhanced: true
+  vimeo:
+    disabled: false
+    simple: true  
+  x:
+    disable: false
+    enableDNT: true
+    simple: true  
+  instagram:
+    disabled: false
+    simple: true  
+  youtube:
+    disabled: false
+    privacyEnhanced: true
 
 services:
-    instagram:
-        disableInlineCSS: true
-    twitter:
-        disableInlineCSS: true
+  instagram:
+    disableInlineCSS: true
+  x:
+    disableInlineCSS: true
