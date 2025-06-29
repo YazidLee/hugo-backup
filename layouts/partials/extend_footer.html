@@ -153,6 +153,7 @@
 
 {{- /* 自定义footer，增加了备案信息 */}}
 {{- $loading := resources.Get "svg/loading.svg" | minify -}}
+{{- $beian := resources.Get "img/beian.png" -}}
 <footer class="footer">
     {{- if .Site.Copyright }}
     <span>{{ .Site.Copyright | markdownify }}</span>
@@ -165,8 +166,13 @@
         <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
     </span>
     <div>
-        ICP证：
-        <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank">闽ICP备2024076817号-1</a>
+        <span>
+            <img src="{{ $beian.RelPermalink }}" style="display: inline-block; width: 15px; vertical-align: middle;">
+            <a href="https://beian.mps.gov.cn/#/query/webSearch?code=35011102351046" rel="noreferrer" target="_blank">闽公网安备35011102351046</a>
+        </span>
+        <span>
+            <a href="https://beian.miit.gov.cn" rel="noopener" target="_blank">闽ICP备2024076817号-1</a>
+        </span>
     </div>
 </footer>
 

@@ -20,8 +20,10 @@ enableEmoji: true
 googleAnalytics: G-C6GDZ56F4S
 
 minify:
-  disableXML: true
   # minifyOutput: true
+  disableXML: true
+  disableHTML: true
+
 
 languages:
   # 偷懒，直接使用en的国际化
@@ -149,7 +151,6 @@ params:
     hidden: true # hide everywhere but not in structured data
     hiddenInList: true # hide on list pages and home
     hiddenInSingle: false # hide on single page
-
   # for search
   # https://fusejs.io/api/options.html
   # fuseOpts:
