@@ -51,7 +51,7 @@ jobs:
       # Hugo generate static site    
       - name: Build
         run: |
-          hugo --gc --verbose --minify
+          hugo --gc --logLevel debug --minify
           cp -r .forestry/admin public/admin
 
       # Deploy site by using rsync
